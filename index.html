@@ -3,66 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Game</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>My Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+        
+        header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .game-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .game-image {
+            height: 180px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        
+        .clicker-game {
+            background-color: #ff7e5f;
+            background-image: linear-gradient(120deg, #ff7e5f 0%, #feb47b 100%);
+        }
+        
+        .quiz-game {
+            background-color: #76b852;
+            background-image: linear-gradient(120deg, #76b852 0%, #8DC26F 100%);
+        }
+        
+        .game-content {
+            padding: 1.5rem;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .game-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .play-btn {
+            display: inline-block;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        
+        .play-btn:hover {
+            background-color: #3a5982;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-text {
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4a6fa5;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: #3a5982;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            main {
+                padding: 1rem;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-image {
+                height: 150px;
+            }
+        }
+ /* Link Keren dengan Efek Underline Animasi */
+.cool-link {
+    font-size: medium;
+    position: relative;
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 4px 4px;
+    transition: all 0.3s ease;
+  }
+  
+  .cool-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #4a90e2;
+    transition: width 0.3s ease;
+  }
+  
+  .cool-link:hover {
+    color: #1c57a5;
+  }
+  
+  .cool-link:hover::after {
+    width: 100%;
+  }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="main-header">
-            <div class="profile-container">
-                <div class="profile-icon">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="profile-info">
-                    <p class="username">User123</p>
-                    <p class="level">Level 5</p>
-                </div>
-                <!-- Logout button will be dynamically added here -->
-            </div>
-            <div class="coin-container">
-                <i class="fas fa-coins"></i>
-                <span class="coin-count">500</span>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="character-container">
-                <img src="assets/images/char1.png" alt="Game Character" class="character" >
-            </div>
-            <button class="play-button" id="playButton">
-                <i class="fas fa-play"></i> PLAY
-            </button>
-        </main>
-
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <div class="nav-item active">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-box"></i>
-                <span>Inventory</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-shopping-cart"></i>
-                <span>Shop</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-trophy"></i>
-                <span>Achievement</span>
-            </div>
-        </nav>
-    </div>
-
-    <script src="assets/js/data.js"></script>
-    <script src="assets/js/main.js"></script>
+    <header>
+        <h1>My Games</h1>
+        <p class="subtitle">Koleksi game-game seru buatan saya</p>
+    </header>
     
-    <!-- Hapus script yang melakukan redirect tambahan di sini,
-         karena loadGameData() dalam data.js sudah menangani itu -->
+    <main>
+        <h2>Game Yang Sudah Saya Buat</h2>
+        <div class="games-container">
+            <div class="game-card">
+                <div class="game-image clicker-game"></div>
+                <div class="game-content">
+                    <h3 class="game-title">Clicker Game</h3>
+                    <p class="game-description">Game sederhana dengan konsep klik untuk mendapatkan poin. Kumpulkan poin sebanyak mungkin!</p>
+                    <a href="/clickme/index.html" class="play-btn">Main Sekarang</a>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image quiz-game"></div>
+                <div class="game-content">
+                    <h3 class="game-title">Game Quiz</h3>
+                    <p class="game-description">Uji pengetahuan Anda dengan berbagai pertanyaan menarik dalam game quiz interaktif ini.</p>
+                    <a href="/quiz/index.html" class="play-btn">Main Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 My Games. Semua hak cipta dilindungi.</p>
+            <p>Dibuat dengan ❤️</p>
+            <p><a href="https://enoted.netlify.app" target="_blank" class="cool-link">Enoted</a></p>
+            <div class="social-links">
+                <a href="https://facebook.com" class="social-icon">FB</a>
+                <a href="https://instagram.com" class="social-icon">IG</a>
+                <a href="https://x.com" class="social-icon">TW</a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
