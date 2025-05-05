@@ -20,7 +20,6 @@
                     <p class="username">User123</p>
                     <p class="level">Level 5</p>
                 </div>
-                <!-- Logout button will be dynamically added here -->
             </div>
             <div class="coin-container">
                 <i class="fas fa-coins"></i>
@@ -29,13 +28,10 @@
         </header>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <div class="character-container">
-                <img src="assets/images/char1.png" alt="Game Character" class="character" >
+        <main class="category-content">
+            <div class="categories-container" id="categoriesContainer">
+                <!-- Categories will be dynamically added here via JavaScript -->
             </div>
-            <button class="play-button" id="playButton">
-                <i class="fas fa-play"></i> PLAY
-            </button>
         </main>
 
         <!-- Bottom Navigation -->
@@ -61,8 +57,5 @@
 
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
-    
-    <!-- Hapus script yang melakukan redirect tambahan di sini,
-         karena loadGameData() dalam data.js sudah menangani itu -->
 </body>
 </html>
