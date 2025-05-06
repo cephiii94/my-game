@@ -25,6 +25,7 @@
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         h1 {
@@ -37,12 +38,93 @@
             opacity: 0.8;
         }
         
+        .user-section {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .username-display {
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .login-btn {
+            background-color: white;
+            color: #4a6fa5;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .login-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
         main {
             flex: 1;
             padding: 2rem;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+        }
+        
+        .welcome-section {
+            margin-bottom: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .welcome-message {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .progress-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .progress-card {
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            padding: 1rem;
+            border-left: 4px solid #4a6fa5;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .progress-value {
+            font-size: 1.2rem;
+            color: #4a6fa5;
         }
         
         .games-container {
@@ -90,6 +172,17 @@
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .game-progress-badge {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            background-color: #e6f4ff;
+            color: #0072c6;
+            border-radius: 20px;
         }
         
         .game-description {
@@ -163,6 +256,12 @@
                 font-size: 2rem;
             }
             
+            .user-section {
+                position: static;
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
             main {
                 padding: 1rem;
             }
@@ -175,61 +274,75 @@
                 height: 150px;
             }
         }
- /* Link Keren dengan Efek Underline Animasi */
-.cool-link {
-    font-size: medium;
-    position: relative;
-    color: #4a90e2;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 4px 4px;
-    transition: all 0.3s ease;
-  }
-  
-  .cool-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #4a90e2;
-    transition: width 0.3s ease;
-  }
-  
-  .cool-link:hover {
-    color: #1c57a5;
-  }
-  
-  .cool-link:hover::after {
-    width: 100%;
-  }
+        
+        /* Link Keren dengan Efek Underline Animasi */
+        .cool-link {
+            font-size: medium;
+            position: relative;
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 4px 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .cool-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #4a90e2;
+            transition: width 0.3s ease;
+        }
+        
+        .cool-link:hover {
+            color: #1c57a5;
+        }
+        
+        .cool-link:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>My Games</h1>
         <p class="subtitle">Koleksi game-game seru buatan saya</p>
+        <div class="user-section" id="user-section">
+            <!-- Konten akan diisi oleh JavaScript -->
+        </div>
     </header>
     
     <main>
+        <section class="welcome-section" id="welcome-section">
+            <!-- Konten akan diisi oleh JavaScript -->
+        </section>
+        
         <h2>Game Yang Sudah Saya Buat</h2>
         <div class="games-container">
             <div class="game-card">
                 <div class="game-image clicker-game"></div>
                 <div class="game-content">
-                    <h3 class="game-title">Clicker Game</h3>
+                    <h3 class="game-title">
+                        Clicker Game
+                        <span class="game-progress-badge" id="clicker-progress">Level 0</span>
+                    </h3>
                     <p class="game-description">Game sederhana dengan konsep klik untuk mendapatkan poin. Kumpulkan poin sebanyak mungkin!</p>
-                    <a href="/clickme/index.html" class="play-btn">Main Sekarang</a>
+                    <a href="/game/clickme/index.html" class="play-btn">Main Sekarang</a>
                 </div>
             </div>
             
             <div class="game-card">
                 <div class="game-image quiz-game"></div>
                 <div class="game-content">
-                    <h3 class="game-title">Game Quiz</h3>
+                    <h3 class="game-title">
+                        Game Quiz
+                        <span class="game-progress-badge" id="quiz-progress">0%</span>
+                    </h3>
                     <p class="game-description">Uji pengetahuan Anda dengan berbagai pertanyaan menarik dalam game quiz interaktif ini.</p>
-                    <a href="/quiz/index.html" class="play-btn">Main Sekarang</a>
+                    <a href="/game/quiz/index.html" class="play-btn">Main Sekarang</a>
                 </div>
             </div>
         </div>
@@ -247,5 +360,151 @@
             </div>
         </div>
     </footer>
+
+    <script type="module">
+        import { checkAuthStatus, logoutUser } from './assets/js/auth.js';
+        import { getUserStats, getGameProgress } from './assets/js/progress.js';
+        
+        // Elemen-elemen DOM
+        const userSection = document.getElementById('user-section');
+        const welcomeSection = document.getElementById('welcome-section');
+        const clickerProgressBadge = document.getElementById('clicker-progress');
+        const quizProgressBadge = document.getElementById('quiz-progress');
+        
+        // Load user data dan game progress
+        async function loadUserData() {
+            const user = await checkAuthStatus();
+            
+            if (user) {
+                // Tampilkan informasi user
+                userSection.innerHTML = `
+                    <span class="username-display">Halo, ${user.username || 'Pemain'}</span>
+                    <button class="logout-btn" id="logout-btn">Logout</button>
+                `;
+                
+                // Tambahkan event listener untuk tombol logout
+                document.getElementById('logout-btn').addEventListener('click', logoutUser);
+                
+                // Tampilkan welcome message dan game progress
+                welcomeSection.innerHTML = `
+                    <h2 class="welcome-message">Selamat datang kembali, ${user.username || 'Pemain'}!</h2>
+                    <p>Lanjutkan progress permainanmu atau coba game baru!</p>
+                    <div class="progress-cards" id="progress-cards">
+                        <div class="progress-card">
+                            <p class="progress-title">Memuat progress...</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Load statistik user dan progress game
+                loadGameProgress(user.id);
+            } else {
+                // Tampilkan tombol login
+                userSection.innerHTML = `
+                    <a href="/login.html" class="login-btn">Login</a>
+                `;
+                
+                // Tampilkan welcome message untuk user yang belum login
+                welcomeSection.innerHTML = `
+                    <h2 class="welcome-message">Selamat datang di My Games!</h2>
+                    <p>Silakan login untuk menyimpan progres permainanmu.</p>
+                    <div class="progress-cards">
+                        <div class="progress-card">
+                            <p class="progress-title">Fitur Permainan</p>
+                            <p>Login untuk akses fitur progres, achievement, dan skor tertinggi.</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Set badge default
+                clickerProgressBadge.textContent = 'Login untuk menyimpan progres';
+                quizProgressBadge.textContent = 'Login untuk menyimpan progres';
+            }
+        }
+        
+        // Load game progress
+        async function loadGameProgress(userId) {
+            try {
+                // Ambil statistik user
+                const { stats, error } = await getUserStats(userId);
+                
+                if (error) throw error;
+                
+                // Perbarui progress badge
+                if (stats && stats.gameProgress) {
+                    // Clicker game progress
+                    if (stats.gameProgress.clicker) {
+                        const clickerData = stats.gameProgress.clicker;
+                        clickerProgressBadge.textContent = `Level ${clickerData.level || 0}`;
+                    }
+                    
+                    // Quiz game progress
+                    if (stats.gameProgress.quiz) {
+                        const quizData = stats.gameProgress.quiz;
+                        const completionPercent = quizData.completedQuizzes 
+                            ? Math.round((quizData.completedQuizzes / quizData.totalQuizzes) * 100) 
+                            : 0;
+                        quizProgressBadge.textContent = `${completionPercent}%`;
+                    }
+                }
+                
+                // Tampilkan progress cards
+                const progressCards = document.getElementById('progress-cards');
+                if (progressCards) {
+                    let cardsHTML = '';
+                    
+                    if (stats.highScores.clicker) {
+                        cardsHTML += `
+                            <div class="progress-card">
+                                <p class="progress-title">Skor Tertinggi Clicker</p>
+                                <p class="progress-value">${stats.highScores.clicker}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    if (stats.highScores.quiz) {
+                        cardsHTML += `
+                            <div class="progress-card">
+                                <p class="progress-title">Skor Tertinggi Quiz</p>
+                                <p class="progress-value">${stats.highScores.quiz}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    cardsHTML += `
+                        <div class="progress-card">
+                            <p class="progress-title">Total Game Dimainkan</p>
+                            <p class="progress-value">${stats.totalGamesPlayed}</p>
+                        </div>
+                    `;
+                    
+                    if (stats.lastPlayed) {
+                        cardsHTML += `
+                            <div class="progress-card">
+                                <p class="progress-title">Terakhir Bermain</p>
+                                <p class="progress-value">${new Date(stats.lastPlayed).toLocaleDateString()}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    progressCards.innerHTML = cardsHTML || `
+                        <div class="progress-card">
+                            <p class="progress-title">Belum Ada Progress</p>
+                            <p>Mainkan game untuk melihat statistik!</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading game progress:', error);
+                welcomeSection.innerHTML = `
+                    <h2 class="welcome-message">Selamat datang!</h2>
+                    <p>Terjadi kesalahan saat memuat data. Silakan coba lagi nanti.</p>
+                `;
+            }
+        }
+        
+        // Jalankan saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadUserData);
+    </script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+
+
 // Variabel game
 let score = 0;
 let scorePerSecond = 0;
@@ -410,3 +412,4 @@ soundToggleButton.addEventListener('click', () => {
 
     }
 });
+

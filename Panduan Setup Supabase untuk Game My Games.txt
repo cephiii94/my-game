@@ -1,0 +1,94 @@
+# Panduan Setup Supabase untuk Game My Games
+
+Berikut adalah langkah-langkah untuk mengatur Supabase sebagai backend untuk sistem login dan game progress:
+
+## 1. Membuat Akun dan Proyek Supabase
+
+1. Kunjungi [Supabase](https://supabase.com) dan daftar/login
+2. Buat proyek baru dengan mengklik "New project"
+3. Isi detail proyek:
+   - Nama proyek
+   - Password database (simpan dengan aman)
+   - Region (pilih yang terdekat dengan lokasi pengguna)
+4. Klik "Create new project" dan tunggu hingga setup selesai
+
+## 2. Mendapatkan URL dan API Key
+
+1. Setelah proyek dibuat, buka dashboard proyek
+2. Klik "Settings" di sidebar kiri
+3. Pilih "API" di submenu
+4. Catat "Project URL" dan "anon/public key"
+5. Ganti nilai `SUPABASE_URL` dan `SUPABASE_KEY` di file `assets/js/supabase.js`
+
+## 3. Membuat Tabel dan Struktur Database
+
+1. Di dashboard Supabase, pergi ke bagian "Table Editor"
+2. Gunakan SQL Editor untuk membuat tabel-tabel yang diperlukan:
+   - Klik "SQL Editor" 
+   - Copy dan paste SQL dari file "Struktur Database Supabase"
+   - Klik "Run" untuk mengeksekusi query
+
+## 4. Mengatur Autentikasi dengan Username Saja
+
+1. Di dashboard Supabase, buka "Authentication" -> "Providers"
+2. Nonaktifkan opsi "Email confirmation" jika Anda ingin pengguna bisa langsung login
+3. Untuk opsi login dengan username saja, kita menggunakan tabel profiles dan sessionStorage
+4. Jika ingin menggunakan email/password, aktifkan "Email" provider
+
+## 5. Mengatur Row Level Security (RLS)
+
+1. Di dashboard Supabase, buka "Authentication" -> "Policies"
+2. Pastikan Row Level Security (RLS) diaktifkan untuk semua tabel
+3. Terapkan kebijakan (policy) yang telah didefinisikan dalam file SQL:
+   - Klik "New Policy" untuk setiap tabel
+   - Pilih jenis policy (SELECT, INSERT, UPDATE, DELETE)
+   - Masukkan kondisi dari file SQL
+
+## 6. Mengaktifkan Realtime Updates (Opsional)
+
+1. Di dashboard Supabase, buka "Database" -> "Replication"
+2. Aktifkan Realtime untuk tabel-tabel yang ingin memiliki update realtime
+3. Ini berguna jika Anda ingin menampilkan leaderboard secara realtime
+
+## 7. Deployment dan Pengujian
+
+1. Setelah semua setup selesai, uji koneksi ke Supabase dengan membuka halaman login
+2. Periksa apakah proses registrasi berfungsi dengan baik
+3. Coba login dan lihat apakah data pengguna dan progress game tersimpan
+
+## Tips Integrasi Game
+
+1. Untuk **Clicker Game**:
+   - Simpan progress setiap beberapa klik atau perubahan level
+   - Tambahkan auto-save setiap 30 detik
+   - Simpan high score setiap ada peningkatan skor
+
+2. Untuk **Quiz Game**:
+   - Simpan progress setelah menyelesaikan setiap quiz
+   - Catat statistik jawaban benar/salah
+   - Tandai quiz mana yang sudah diselesaikan
+
+3. Untuk kedua game:
+   - Tambahkan tombol login/register di halaman game
+   - Tampilkan pesan yang menunjukkan bahwa progress tidak akan disimpan jika belum login
+   - Tambahkan tampilan achievement untuk memotivasi pengguna
+
+## Pengembangan Lanjutan
+
+1. **Leaderboard**: 
+   - Buat halaman leaderboard untuk menampilkan skor tertinggi dari semua pemain
+   - Query tabel high_scores dan join dengan profiles untuk nama pengguna
+
+2. **Achievement System**: 
+   - Tambahkan notifikasi saat pemain mendapatkan achievement baru
+   - Buat halaman khusus untuk menampilkan semua achievement
+
+3. **Daily Rewards**:
+   - Tambahkan sistem reward harian untuk mendorong pemain login setiap hari
+
+## Catatan Penting untuk Keamanan
+
+- Jangan pernah menyimpan key Supabase di client-side untuk aplikasi produksi
+- Gunakan environment variables saat deployment
+- Pastikan semua tabel memiliki RLS yang tepat untuk mencegah akses yang tidak sah
+- Pertimbangkan untuk menambahkan captcha atau pembatasan rate untuk mencegah penyalahgunaan API

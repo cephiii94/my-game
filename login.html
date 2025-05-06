@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - My Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+        
+        header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+        
+        .btn:hover {
+            background-color: #3a5982;
+        }
+        
+        .switch-form {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .switch-link {
+            color: #4a6fa5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .switch-link:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            main {
+                padding: 1rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Games</h1>
+        <p class="subtitle">Masuk untuk mulai bermain</p>
+    </header>
+    
+    <main>
+        <div class="form-container" id="login-form">
+            <h2 class="form-title">Login</h2>
+            <form id="login">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" placeholder="Masukkan username kamu" required>
+                </div>
+                <div class="error-message" id="login-error"></div>
+                <button type="submit" class="btn">Masuk</button>
+            </form>
+            <div class="switch-form">
+                <p>Belum punya akun? <a href="#" class="switch-link" id="show-register">Daftar sekarang</a></p>
+            </div>
+        </div>
+        
+        <div class="form-container" id="register-form" style="display: none;">
+            <h2 class="form-title">Daftar Akun Baru</h2>
+            <form id="register">
+                <div class="form-group">
+                    <label for="register-username">Username</label>
+                    <input type="text" id="register-username" name="username" placeholder="Pilih username kamu" required>
+                </div>
+                <div class="error-message" id="register-error"></div>
+                <button type="submit" class="btn">Daftar</button>
+            </form>
+            <div class="switch-form">
+                <p>Sudah punya akun? <a href="#" class="switch-link" id="show-login">Login</a></p>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 My Games. Semua hak cipta dilindungi.</p>
+            <p>Dibuat dengan ❤️</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { loginWithUsername, registerUserWithUsername } from './assets/js/auth.js';
+        
+        // Elemen-elemen DOM
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showLoginBtn = document.getElementById('show-login');
+        const showRegisterBtn = document.getElementById('show-register');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        
+        // Toggle antara form login dan register
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        });
+        
+        showRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        });
+        
+        // Handle login form
+        document.getElementById('login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            
+            if (!username) {
+                loginError.textContent = 'Username tidak boleh kosong';
+                loginError.style.display = 'block';
+                return;
+            }
+            
+            const { user, error } = await loginWithUsername(username);
+            
+            if (error) {
+                loginError.textContent = error.message || 'Gagal login. Silakan coba lagi.';
+                loginError.style.display = 'block';
+                return;
+            }
+            
+            // Redirect ke halaman utama jika login berhasil
+            window.location.href = '/index.html';
+        });
+        
+        // Handle register form
+        document.getElementById('register').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value.trim();
+            
+            if (!username) {
+                registerError.textContent = 'Username tidak boleh kosong';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            if (username.length < 3) {
+                registerError.textContent = 'Username minimal 3 karakter';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            const { user, error } = await registerUserWithUsername(username);
+            
+            if (error) {
+                registerError.textContent = error.message || 'Gagal mendaftar. Silakan coba lagi.';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            // Redirect ke halaman utama jika registrasi berhasil
+            window.location.href = '/index.html';
+        });
+
+        // Cek apakah user sudah login
+        const checkAlreadyLoggedIn = () => {
+            const userId = sessionStorage.getItem('gameUserId');
+            if (userId) {
+                window.location.href = '/index.html';
+            }
+        };
+
+        // Jalankan saat halaman dimuat
+        checkAlreadyLoggedIn();
+    </script>
+</body>
+</html>
