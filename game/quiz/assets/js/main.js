@@ -85,16 +85,11 @@ function setupProfileDropdown() {
             });
             
             document.getElementById('logoutMenuItem').addEventListener('click', function() {
-                if (confirm('Apakah Anda yakin ingin keluar?')) {
-                    logoutUser();
-                }
+                showLogoutModal();
             });
             
             document.getElementById('resetMenuItem').addEventListener('click', function() {
-                if (confirm('PERHATIAN: Ini akan menghapus semua progres Anda! Lanjutkan?')) {
-                    resetUserData();
-                    window.location.reload();
-                }
+                showResetDataModal();
             });
             
             // Tutup dropdown jika user klik di luar dropdown
@@ -106,6 +101,128 @@ function setupProfileDropdown() {
             });
         });
     });
+}
+
+// Fungsi untuk menampilkan modal logout
+function showLogoutModal() {
+    // Cek apakah modal sudah ada dalam DOM
+    if (document.getElementById('logoutModal')) {
+        document.getElementById('logoutModal').classList.add('active');
+        return;
+    }
+    
+    // Buat modal logout
+    const logoutModal = document.createElement('div');
+    logoutModal.id = 'logoutModal';
+    logoutModal.className = 'modal';
+    
+    logoutModal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Konfirmasi Keluar</h2>
+                <div class="close-button" id="closeLogout">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="button cancel-button" id="cancelLogoutBtn">Batal</button>
+                <button class="button confirm-button" id="confirmLogoutBtn">Ya, Keluar</button>
+            </div>
+        </div>
+    `;
+    
+    // Tambahkan modal ke body
+    document.body.appendChild(logoutModal);
+    
+    // Tambahkan event listeners
+    document.getElementById('closeLogout').addEventListener('click', function() {
+        logoutModal.classList.remove('active');
+    });
+    
+    document.getElementById('cancelLogoutBtn').addEventListener('click', function() {
+        logoutModal.classList.remove('active');
+    });
+    
+    document.getElementById('confirmLogoutBtn').addEventListener('click', function() {
+        logoutUser();
+        logoutModal.classList.remove('active');
+    });
+    
+    // Tutup modal jika klik di luar modal
+    logoutModal.addEventListener('click', function(event) {
+        if (event.target === logoutModal) {
+            logoutModal.classList.remove('active');
+        }
+    });
+    
+    // Tampilkan modal
+    logoutModal.classList.add('active');
+}
+
+// Fungsi untuk menampilkan modal reset data
+function showResetDataModal() {
+    // Cek apakah modal sudah ada dalam DOM
+    if (document.getElementById('resetModal')) {
+        document.getElementById('resetModal').classList.add('active');
+        return;
+    }
+    
+    // Buat modal reset data
+    const resetModal = document.createElement('div');
+    resetModal.id = 'resetModal';
+    resetModal.className = 'modal';
+    
+    resetModal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Hapus Data</h2>
+                <div class="close-button" id="closeReset">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
+                <p>Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="button cancel-button" id="cancelResetBtn">Batal</button>
+                <button class="button danger-button" id="confirmResetBtn">Ya, Hapus Data</button>
+            </div>
+        </div>
+    `;
+    
+    // Tambahkan modal ke body
+    document.body.appendChild(resetModal);
+    
+    // Tambahkan event listeners
+    document.getElementById('closeReset').addEventListener('click', function() {
+        resetModal.classList.remove('active');
+    });
+    
+    document.getElementById('cancelResetBtn').addEventListener('click', function() {
+        resetModal.classList.remove('active');
+    });
+    
+    document.getElementById('confirmResetBtn').addEventListener('click', function() {
+        resetUserData();
+        resetModal.classList.remove('active');
+        window.location.reload();
+    });
+    
+    // Tutup modal jika klik di luar modal
+    resetModal.addEventListener('click', function(event) {
+        if (event.target === resetModal) {
+            resetModal.classList.remove('active');
+        }
+    });
+    
+    // Tampilkan modal
+    resetModal.classList.add('active');
 }
 
 // Setup event listeners berdasarkan halaman yang sedang dibuka
