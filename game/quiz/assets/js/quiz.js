@@ -18,7 +18,13 @@ let coinRewardElement;
 let xpRewardElement;
 let restartQuizBtn;
 let homeBtn;
+let nextLevelBtn;
+let selectLevelBtn;
 let quizCategoryLevelElement;
+let quitQuizBtn;
+let quitConfirmModal;
+let confirmQuitBtn;
+let cancelQuitBtn;
 
 // Inisialisasi Quiz
 document.addEventListener('DOMContentLoaded', function() {
@@ -43,7 +49,15 @@ document.addEventListener('DOMContentLoaded', function() {
     xpRewardElement = document.getElementById('xpReward');
     restartQuizBtn = document.getElementById('restartQuizBtn');
     homeBtn = document.getElementById('homeBtn');
+    nextLevelBtn = document.getElementById('nextLevelBtn');
+    selectLevelBtn = document.getElementById('selectLevelBtn');
     quizCategoryLevelElement = document.getElementById('quizCategoryLevel');
+    
+    // Inisialisasi tombol exit
+    quitQuizBtn = document.getElementById('quitQuizBtn');
+    quitConfirmModal = document.getElementById('quitConfirmModal');
+    confirmQuitBtn = document.getElementById('confirmQuitBtn');
+    cancelQuitBtn = document.getElementById('cancelQuitBtn');
     
     // Set judul kategori dan level
     const category = categoryData.find(cat => cat.id === quizCategory);
@@ -70,9 +84,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    if (nextLevelBtn) {
+        nextLevelBtn.addEventListener('click', function() {
+            goToNextLevel();
+        });
+    }
+    
+    if (selectLevelBtn) {
+        selectLevelBtn.addEventListener('click', function() {
+            window.location.href = `level.html?category=${quizCategory}`;
+        });
+    }
+    
+    // Setup tombol exit
+    if (quitQuizBtn) {
+        quitQuizBtn.addEventListener('click', function() {
+            showQuitConfirmation();
+        });
+    }
+    
+    if (confirmQuitBtn) {
+        confirmQuitBtn.addEventListener('click', function() {
+            // Pergi ke halaman level
+            window.location.href = `level.html?category=${quizCategory}`;
+        });
+    }
+    
+    if (cancelQuitBtn) {
+        cancelQuitBtn.addEventListener('click', function() {
+            hideQuitConfirmation();
+        });
+    }
+    
     // Mulai quiz
     startQuiz();
 });
+
+// Tampilkan konfirmasi keluar
+function showQuitConfirmation() {
+    if (quitConfirmModal) {
+        quitConfirmModal.classList.add('active');
+    }
+}
+
+// Sembunyikan konfirmasi keluar
+function hideQuitConfirmation() {
+    if (quitConfirmModal) {
+        quitConfirmModal.classList.remove('active');
+    }
+}
 
 // Mulai quiz
 function startQuiz() {
@@ -169,8 +229,46 @@ function endQuiz() {
     // Simpan data game
     saveGameData();
     
+    // Cek apakah ada level berikutnya
+    updateNextLevelButton();
+    
     // Tampilkan modal hasil
     resultModal.classList.add('active');
+}
+
+// Update tampilan tombol Next Level
+function updateNextLevelButton() {
+    const nextLevel = quizLevel + 1;
+    const category = categoryData.find(cat => cat.id === quizCategory);
+    
+    // Sembunyikan tombol jika ini level terakhir
+    if (nextLevelBtn) {
+        if (category && nextLevel <= category.totalLevels) {
+            // Cek apakah level berikutnya sudah terbuka
+            const levels = getLevelsForCategory(quizCategory);
+            const nextLevelInfo = levels.find(level => level.level === nextLevel);
+            
+            if (nextLevelInfo && nextLevelInfo.status !== 'locked') {
+                nextLevelBtn.style.display = 'block';
+            } else {
+                nextLevelBtn.style.display = 'none';
+            }
+        } else {
+            nextLevelBtn.style.display = 'none';
+        }
+    }
+}
+
+// Menuju level berikutnya
+function goToNextLevel() {
+    const nextLevel = quizLevel + 1;
+    
+    // Simpan level baru ke session storage
+    sessionStorage.setItem('quizCategory', quizCategory);
+    sessionStorage.setItem('quizLevel', nextLevel);
+    
+    // Reload halaman untuk mulai level baru
+    window.location.reload();
 }
 
 // Restart quiz

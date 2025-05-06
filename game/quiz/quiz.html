@@ -12,6 +12,9 @@
     <div class="container quiz-mode">
         <!-- Header -->
         <header class="quiz-header">
+            <div class="quit-button" id="quitQuizBtn">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="quiz-info">
                 <div class="category-level" id="quizCategoryLevel">Category - Level 1</div>
                 <div class="progress-container">
@@ -34,6 +37,22 @@
             </div>
         </main>
 
+        <!-- Quit Confirmation Modal -->
+        <div class="quit-modal" id="quitConfirmModal">
+            <div class="quit-content">
+                <h2 class="quit-title">Keluar Quiz?</h2>
+                <p class="quit-message">Progres quiz Anda tidak akan disimpan. Yakin ingin keluar?</p>
+                <div class="quit-buttons">
+                    <button id="confirmQuitBtn" class="btn-quit">
+                        <i class="fas fa-check"></i> Ya, Keluar
+                    </button>
+                    <button id="cancelQuitBtn" class="btn-cancel">
+                        <i class="fas fa-times"></i> Tidak, Lanjutkan
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Result Modal -->
         <div class="result-modal" id="resultModal">
             <div class="result-content">
@@ -55,6 +74,12 @@
                 <div class="result-buttons">
                     <button id="restartQuizBtn" class="btn-restart">
                         <i class="fas fa-redo"></i> Play Again
+                    </button>
+                    <button id="nextLevelBtn" class="btn-next">
+                        <i class="fas fa-forward"></i> Next Level
+                    </button>
+                    <button id="selectLevelBtn" class="btn-select">
+                        <i class="fas fa-list"></i> Select Level
                     </button>
                     <button id="homeBtn" class="btn-home">
                         <i class="fas fa-home"></i> Home

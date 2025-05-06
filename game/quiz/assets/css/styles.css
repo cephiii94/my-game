@@ -863,3 +863,468 @@ body {
         justify-content: center;
     }
 }
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Icon Grid */
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.icon-option {
+    font-size: 24px;
+    padding: 15px;
+    text-align: center;
+    background: #f0f0f0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.icon-option:hover {
+    background: #4CAF50;
+    color: white;
+    transform: scale(1.1);
+}
+
+.profile-avatar {
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.1);
+}
+
+/* Tambahkan CSS ini ke styles.css untuk menangani tombol Next Level dan Select Level */
+
+/* Tombol Next Level */
+.btn-next {
+    background-color: #9b59b6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-next:hover {
+    transform: translateY(-2px);
+    background-color: #8e44ad;
+}
+
+.btn-next i {
+    margin-right: 5px;
+}
+
+/* Tombol Select Level */
+.btn-select {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-select:hover {
+    transform: translateY(-2px);
+    background-color: #2980b9;
+}
+
+.btn-select i {
+    margin-right: 5px;
+}
+
+/* Atur ulang layout tombol pada result modal */
+.result-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.result-buttons button {
+    flex: 1 0 calc(50% - 10px);
+    min-width: 120px;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 480px) {
+    .result-buttons button {
+        flex: 1 0 100%;
+    }
+}
+
+/* CSS for Quiz Exit Button and Confirmation Modal */
+
+/* Tombol Exit di header quiz */
+.quit-button {
+    font-size: 1.2rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.quit-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #3498db;
+    color: white;
+}
+
+/* Modal konfirmasi keluar */
+.quit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s;
+}
+
+.quit-modal.active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.quit-content {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 90%;
+    width: 350px;
+    transform: scale(0.8);
+    transition: transform 0.3s;
+}
+
+.quit-modal.active .quit-content {
+    transform: scale(1);
+}
+
+.quit-title {
+    font-size: 1.4rem;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+.quit-message {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.quit-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-quit, .btn-cancel {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-quit {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #ecf0f1;
+    color: #34495e;
+}
+
+.btn-quit:hover, .btn-cancel:hover {
+    transform: translateY(-2px);
+}
+
+.btn-quit i, .btn-cancel i {
+    margin-right: 5px;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 480px) {
+    .quit-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-quit, .btn-cancel {
+        width: 100%;
+    }
+    
+    .quit-content {
+        width: 85%;
+        padding: 20px;
+    }
+}
+
+/* CSS for Shop and Inventory Modals */
+
+/* Modal Basic Style */
+.feature-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s;
+}
+
+.feature-modal.active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.feature-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    transition: transform 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-modal.active .feature-content {
+    transform: scale(1);
+}
+
+/* Header Section */
+.feature-header {
+    padding: 15px 20px;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feature-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.close-feature {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-feature:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Body Section */
+.feature-body {
+    padding: 25px 20px;
+    flex: 1;
+}
+
+.feature-message {
+    text-align: center;
+}
+
+.feature-icon {
+    font-size: 4rem;
+    color: #3498db;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.feature-message p {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.feature-description {
+    font-size: 0.9rem !important;
+    color: #7f8c8d !important;
+    margin-top: 15px !important;
+    font-weight: normal !important;
+    line-height: 1.5;
+}
+
+/* Footer Section */
+.feature-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #ecf0f1;
+}
+
+.btn-ok {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-ok:hover {
+    transform: translateY(-2px);
+    background-color: #2980b9;
+}
+
+.btn-ok i {
+    margin-right: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+    .feature-content {
+        width: 95%;
+    }
+    
+    .feature-title {
+        font-size: 1.2rem;
+    }
+    
+    .feature-message p {
+        font-size: 1rem;
+    }
+    
+    .feature-description {
+        font-size: 0.85rem !important;
+    }
+    
+    .feature-icon {
+        font-size: 3.5rem;
+    }
+}
+
+/* Custom Style for Inventory Modal */
+#inventoryModal .feature-icon {
+    color: #e67e22;
+}
+
+#inventoryModal .feature-header {
+    background-color: #e67e22;
+}
+
+#inventoryModal .btn-ok {
+    background-color: #e67e22;
+}
+
+#inventoryModal .btn-ok:hover {
+    background-color: #d35400;
+}
+
+/* Custom Style for Shop Modal */
+#shopModal .feature-icon {
+    color: #9b59b6;
+}
+
+#shopModal .feature-header {
+    background-color: #9b59b6;
+}
+
+#shopModal .btn-ok {
+    background-color: #9b59b6;
+}
+
+#shopModal .btn-ok:hover {
+    background-color: #8e44ad;
+}

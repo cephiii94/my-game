@@ -27,7 +27,7 @@
             <!-- Profile Header -->
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <i class="fas fa-user"></i>
+                    <i class="${userData.profileIcon || 'fas fa-user'}"></i>
                 </div>
                 <div class="profile-details">
                     <h2 class="username">User123</h2>
@@ -54,6 +54,8 @@
             </div>
         </main>
 
+        
+
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="nav-item">
@@ -68,24 +70,150 @@
                 <i class="fas fa-shopping-cart"></i>
                 <span>Shop</span>
             </div>
-            <div class="nav-item active">
+            <div class="nav-item active" id="navAchievement">
                 <i class="fas fa-trophy"></i>
                 <span>Achievement</span>
             </div>
+            
         </nav>
     </div>
 
-    <script src="assets/js/data.js"></script>
-    <script src="assets/js/main.js"></script>
-    
-    <script>
-        // Tampilkan jumlah XP
-        document.addEventListener('DOMContentLoaded', function() {
-            const xpCountElement = document.getElementById('xpCount');
-            if (xpCountElement) {
-                xpCountElement.textContent = userData.xp;
+    <!-- Tambahkan sebelum </body> di profile.html -->
+<div id="iconModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Pilih Ikon Profil</h3>
+        <div class="icon-grid" id="iconGrid">
+            <!-- Icons will be populated here -->
+        </div>
+    </div>
+</div>
+
+<!-- Inventory Modal -->
+<div class="feature-modal" id="inventoryModal">
+    <div class="feature-content">
+        <div class="feature-header">
+            <h2 class="feature-title">Inventory</h2>
+            <button class="close-feature" id="closeInventory">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="feature-body">
+            <div class="feature-message">
+                <i class="fas fa-box feature-icon"></i>
+                <p>Fitur Inventory akan segera hadir!</p>
+                <p class="feature-description">Di sini Anda akan dapat melihat dan menggunakan item-item yang sudah Anda beli atau dapatkan dari hadiah.</p>
+            </div>
+        </div>
+        <div class="feature-footer">
+            <button class="btn-ok" id="okInventoryBtn">
+                <i class="fas fa-check"></i> OK
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Shop Modal -->
+<div class="feature-modal" id="shopModal">
+    <div class="feature-content">
+        <div class="feature-header">
+            <h2 class="feature-title">Shop</h2>
+            <button class="close-feature" id="closeShop">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="feature-body">
+            <div class="feature-message">
+                <i class="fas fa-shopping-cart feature-icon"></i>
+                <p>Fitur Shop akan segera hadir!</p>
+                <p class="feature-description">Di sini Anda akan dapat membeli berbagai item dan power-up menggunakan koin yang telah Anda kumpulkan.</p>
+            </div>
+        </div>
+        <div class="feature-footer">
+            <button class="btn-ok" id="okShopBtn">
+                <i class="fas fa-check"></i> OK
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Pastikan script data.js dimuat terlebih dahulu -->
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+    // Tambahkan script untuk menangani penggantian ikon
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pastikan profile avatar menunjukkan icon yang benar
+        updateProfileIcon();
+        
+        const profileAvatar = document.querySelector('.profile-avatar');
+        const iconModal = document.getElementById('iconModal');
+        
+        // Buka modal saat ikon profil diklik
+        profileAvatar.addEventListener('click', function() {
+            iconModal.style.display = 'block';
+            renderProfileIcons();
+        });
+        
+        // Tutup modal
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            iconModal.style.display = 'none';
+        });
+        
+        // Tutup modal jika klik di luar
+        window.addEventListener('click', function(event) {
+            if (event.target === iconModal) {
+                iconModal.style.display = 'none';
             }
         });
-    </script>
+        
+        // Tampilkan jumlah XP
+        const xpCountElement = document.getElementById('xpCount');
+        if (xpCountElement) {
+            xpCountElement.textContent = userData.xp;
+        }
+    });
+    
+    // Fungsi untuk update tampilan icon profile
+    function updateProfileIcon() {
+        const profileAvatar = document.querySelector('.profile-avatar');
+        if (profileAvatar) {
+            profileAvatar.innerHTML = `<i class="${userData.profileIcon || 'fas fa-user'}"></i>`;
+        }
+    }
+    
+    function renderProfileIcons() {
+        const iconGrid = document.getElementById('iconGrid');
+        iconGrid.innerHTML = '';
+        
+        profileIcons.forEach(icon => {
+            const iconElement = document.createElement('div');
+            iconElement.className = 'icon-option';
+            iconElement.innerHTML = `<i class="${icon.icon}"></i>`;
+            
+            iconElement.addEventListener('click', function() {
+                // Update ikon profil
+                userData.profileIcon = icon.icon;
+                
+                // Simpan perubahan ke localStorage
+                saveGameData();
+                
+                // Update tampilan
+                updateProfileIcon();
+                document.getElementById('iconModal').style.display = 'none';
+                
+                // Log untuk debugging
+                console.log('Icon updated:', userData.profileIcon);
+                console.log('Data saved to localStorage');
+            });
+            
+            iconGrid.appendChild(iconElement);
+        });
+    }
+
+
+
+</script>
 </body>
 </html>

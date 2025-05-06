@@ -9,6 +9,7 @@ let userData = {
   level: 1,
   coins: 100,
   xp: 0,
+  profileIcon: "fas fa-user", // Tambahkan ini
   // Menambahkan properti achievements untuk track pencapaian
   achievements: [],
   completedLevels: {
@@ -77,6 +78,18 @@ const achievementsData = [
         description: "Mendapatkan nilai sempurna pada satu quiz",
         icon: "fas fa-award"
     }
+];
+
+// Tambahkan Opsi Ikon
+const profileIcons = [
+  { id: "user", icon: "fas fa-user" },
+  { id: "robot", icon: "fas fa-robot" },
+  { id: "cat", icon: "fas fa-cat" },
+  { id: "dog", icon: "fas fa-dog" },
+  { id: "gamepad", icon: "fas fa-gamepad" },
+  { id: "graduation-cap", icon: "fas fa-graduation-cap" },
+  { id: "rocket", icon: "fas fa-rocket" },
+  { id: "crown", icon: "fas fa-crown" }
 ];
 
 // Data Level dan Pertanyaan
@@ -414,6 +427,7 @@ function loadGameData() {
         userData.level = parsedData.level || 1;
         userData.coins = parsedData.coins || 100;
         userData.xp = parsedData.xp || 0;
+        userData.profileIcon = parsedData.profileIcon || "fas fa-user"; // Tambahkan ini
         userData.completedLevels = parsedData.completedLevels || {
           "science": [],
           "history": [],
@@ -468,6 +482,7 @@ function resetUserData() {
     level: 1,
     coins: 100,
     xp: 0,
+    profileIcon: "fas fa-user", // Tambahkan ini
     achievements: [],
     completedLevels: {
       "science": [],

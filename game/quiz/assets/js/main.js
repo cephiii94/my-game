@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup profile dropdown menu
     setupProfileDropdown();
+
+    // Setup modal untuk Inventory dan Shop
+    setupFeatureModals();
+
+    // Update profile icon dari data yang tersimpan (jika di homepage)
+    updateHomepageProfileIcon();
 });
 
 // Update UI dengan data user
@@ -360,12 +366,18 @@ function setupNavBarListeners() {
                     window.location.href = 'index.html';
                     break;
                 case 'inventory':
-                    // TODO: Implementasi halaman inventory
-                    alert('Fitur Inventory akan segera hadir!');
+                    // Menampilkan modal inventory (tidak langsung navigasi)
+                    const inventoryModal = document.getElementById('inventoryModal');
+                    if (inventoryModal) {
+                        inventoryModal.classList.add('active');
+                    }
                     break;
                 case 'shop':
-                    // TODO: Implementasi halaman shop
-                    alert('Fitur Shop akan segera hadir!');
+                    // Menampilkan modal shop (tidak langsung navigasi)
+                    const shopModal = document.getElementById('shopModal');
+                    if (shopModal) {
+                        shopModal.classList.add('active');
+                    }
                     break;
                 case 'achievement':
                     window.location.href = 'profile.html';
@@ -434,4 +446,84 @@ function startQuiz(categoryId, level) {
     
     // Navigasi ke halaman quiz
     window.location.href = 'quiz.html';
+}
+
+// Fungsi untuk update icon profile di homepage
+function updateHomepageProfileIcon() {
+    const profileIconElement = document.getElementById('userProfileIcon');
+    if (profileIconElement && userData && userData.profileIcon) {
+        // Hapus class icon sebelumnya
+        profileIconElement.className = '';
+        // Tambahkan class icon yang tersimpan
+        profileIconElement.className = userData.profileIcon;
+    }
+}
+
+// Setup feature modals untuk Inventory dan Shop
+function setupFeatureModals() {
+    // Elements
+    const navInventory = document.getElementById('navInventory');
+    const navShop = document.getElementById('navShop');
+    const inventoryModal = document.getElementById('inventoryModal');
+    const shopModal = document.getElementById('shopModal');
+    const closeInventory = document.getElementById('closeInventory');
+    const closeShop = document.getElementById('closeShop');
+    const okInventoryBtn = document.getElementById('okInventoryBtn');
+    const okShopBtn = document.getElementById('okShopBtn');
+    
+    // Close button handlers
+    if (closeInventory) {
+        closeInventory.addEventListener('click', function() {
+            inventoryModal.classList.remove('active');
+            resetNavActiveStatus();
+            document.getElementById('navHome').classList.add('active');
+        });
+    }
+    
+    if (closeShop) {
+        closeShop.addEventListener('click', function() {
+            shopModal.classList.remove('active');
+            resetNavActiveStatus();
+            document.getElementById('navHome').classList.add('active');
+        });
+    }
+    
+    // OK button handlers
+    if (okInventoryBtn) {
+        okInventoryBtn.addEventListener('click', function() {
+            inventoryModal.classList.remove('active');
+            resetNavActiveStatus();
+            document.getElementById('navHome').classList.add('active');
+        });
+    }
+    
+    if (okShopBtn) {
+        okShopBtn.addEventListener('click', function() {
+            shopModal.classList.remove('active');
+            resetNavActiveStatus();
+            document.getElementById('navHome').classList.add('active');
+        });
+    }
+    
+    // Tutup modal jika klik di luar modal
+    window.addEventListener('click', function(event) {
+        if (event.target === inventoryModal) {
+            inventoryModal.classList.remove('active');
+            resetNavActiveStatus();
+            document.getElementById('navHome').classList.add('active');
+        }
+        if (event.target === shopModal) {
+            shopModal.classList.remove('active');
+            resetNavActiveStatus();
+            document.getElementById('navHome').classList.add('active');
+        }
+    });
+}
+
+// Reset active status pada bottom nav
+function resetNavActiveStatus() {
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.classList.remove('active');
+    });
 }
