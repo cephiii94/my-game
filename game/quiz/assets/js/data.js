@@ -409,7 +409,17 @@ function checkLevelUp() {
 
 // Simpan data ke localStorage
 function saveGameData() {
-  localStorage.setItem('quizUserData', JSON.stringify(userData));
+  localStorage.setItem(`quizUserData`, JSON.stringify(userData));
+  
+  // Simpan juga daftar username yang pernah login
+  let userList = JSON.parse(localStorage.getItem('quizUserList') || '[]');
+  if (!userList.includes(userData.username)) {
+      userList.push(userData.username);
+      localStorage.setItem('quizUserList', JSON.stringify(userList));
+  }
+  
+  // Simpan username yang sedang aktif
+  localStorage.setItem('quizActiveUser', userData.username);
 }
 
 // Ambil data dari localStorage
@@ -457,7 +467,13 @@ function loadGameData() {
 
 // Fungsi untuk logout
 function logoutUser() {
-  localStorage.removeItem('quizUserData');
+  // Simpan data pengguna saat ini sebelum logout
+  saveGameData();
+  
+  // Hapus hanya indikator pengguna aktif
+  localStorage.removeItem('quizActiveUser');
+  
+  // Redirect ke login
   redirectToLogin();
 }
 

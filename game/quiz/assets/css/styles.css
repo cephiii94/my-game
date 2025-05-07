@@ -874,38 +874,58 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.7);
+    overflow: auto; /* Menambahkan scroll jika konten terlalu panjang */
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
+    margin: 15% auto; /* Posisi lebih ke tengah */
+    padding: 25px;
     border-radius: 10px;
     width: 90%;
-    max-width: 500px;
+    max-width: 400px; /* Ukuran maksimal yang lebih kecil */
     position: relative;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .close-modal {
     position: absolute;
     right: 15px;
-    top: 10px;
+    top: 15px;
     font-size: 24px;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-modal:hover {
+    background-color: #f0f0f0;
 }
 
 /* Icon Grid */
 .icon-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* 4 ikon per baris */
     gap: 15px;
-    margin-top: 15px;
+    margin-top: 20px;
+    justify-content: center;
 }
 
 .icon-option {
+    aspect-ratio: 1/1; /* Memastikan bentuk kotak */
     font-size: 24px;
-    padding: 15px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #f0f0f0;
     border-radius: 50%;
     cursor: pointer;
@@ -913,9 +933,35 @@ body {
 }
 
 .icon-option:hover {
-    background: #4CAF50;
+    background: #3498db;
     color: white;
     transform: scale(1.1);
+}
+
+/* Judul modal */
+.modal-content h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    padding-right: 30px; /* Memberikan ruang untuk tombol close */
+}
+
+/* Responsive untuk layar kecil */
+@media (max-width: 480px) {
+    .icon-grid {
+        grid-template-columns: repeat(4, 1fr); /* Tetap 4 per baris di mobile */
+        gap: 10px;
+    }
+    
+    .icon-option {
+        font-size: 20px;
+    }
+    
+    .modal-content {
+        width: 85%;
+        padding: 20px;
+        margin: 30% auto; /* Posisi lebih ke tengah untuk mobile */
+    }
 }
 
 .profile-avatar {
