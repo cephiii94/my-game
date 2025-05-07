@@ -109,44 +109,54 @@
     </div>
 
     <!-- Modal Logout -->
-<div id="logoutModal" class="feature-modal">
-    <div class="feature-content">
-        <div class="feature-header">
-            <h2 class="feature-title">Konfirmasi Keluar</h2>
-            <div class="close-feature" id="closeLogout">
-                <i class="fas fa-times"></i>
+    <div id="logoutModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Konfirmasi Keluar</h2>
+                <button class="close-feature" id="closeLogout">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-        </div>
-        <div class="feature-body">
-            <div class="modal-icon">
-                <i class="fas fa-sign-out-alt"></i>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-sign-out-alt feature-icon"></i>
+                    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+                </div>
             </div>
-            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
-        </div>
-        <div class="feature-modal">
-            <button class="button cancel-button" id="cancelLogoutBtn">Batal</button>
-            <button class="button confirm-button" id="confirmLogoutBtn">Ya, Keluar</button>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelLogoutBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-ok" id="confirmLogoutBtn">
+                    <i class="fas fa-check"></i> Ya, Keluar
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
 <!-- Modal Reset Data -->
-<div id="resetModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Hapus Data</h2>
-            <div class="close-button" id="closeReset">&times;</div>
+<div id="resetModal" class="feature-modal">
+    <div class="feature-content">
+        <div class="feature-header">
+            <h2 class="feature-title">Hapus Data</h2>
+            <button class="close-feature" id="closeReset">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-        <div class="modal-body">
-            <div class="modal-icon warning">
-                <i class="fas fa-exclamation-triangle"></i>
+        <div class="feature-body">
+            <div class="feature-message">
+                <i class="fas fa-exclamation-triangle feature-icon"></i>
+                <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
+                <p class="feature-description">Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
             </div>
-            <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
-            <p>Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
         </div>
-        <div class="modal-footer">
-            <button class="button cancel-button" id="cancelResetBtn">Batal</button>
-            <button class="button danger-button" id="confirmResetBtn">Ya, Hapus Data</button>
+        <div class="feature-footer">
+            <button class="btn-cancel" id="cancelResetBtn">
+                <i class="fas fa-times"></i> Batal
+            </button>
+            <button class="btn-danger" id="confirmResetBtn">
+                <i class="fas fa-trash"></i> Ya, Hapus Data
+            </button>
         </div>
     </div>
 </div>

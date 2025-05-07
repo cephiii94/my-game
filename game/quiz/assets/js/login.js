@@ -57,3 +57,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+const newUserData = {
+    username: username,
+    level: 1,
+    coins: 100,
+    xp: 0,
+    profileIcon: "fas fa-user", // Add this
+    achievements: [],
+    completedLevels: {
+        "science": [],
+        "history": [],
+        "geography": [],
+        "entertainment": []
+    }
+};

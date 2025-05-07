@@ -1131,6 +1131,20 @@ body {
     }
 }
 
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
 /* CSS for Shop and Inventory Modals */
 
 /* Modal Basic Style */
