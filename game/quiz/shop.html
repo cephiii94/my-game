@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Quiz Game</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="back-button" id="backToHome">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <h2 class="page-title">Shop</h2>
+            <div class="coin-container">
+                <i class="fas fa-coins"></i>
+                <span class="coin-count">500</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="shop-content">
+            <div class="shop-tabs">
+                <div class="tab active" data-tab="items">
+                    <i class="fas fa-box"></i>
+                    <span>Items</span>
+                </div>
+                <div class="tab" data-tab="boosters">
+                    <i class="fas fa-bolt"></i>
+                    <span>Boosters</span>
+                </div>
+                <div class="tab" data-tab="characters">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Characters</span>
+                </div>
+            </div>
+
+            <div class="tab-content active" id="items-content">
+                <div class="shop-grid">
+                    <!-- Items will be dynamically added here -->
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Extra Life</h3>
+                            <p>Tambahan nyawa saat bermain quiz</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>50</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Time Extender</h3>
+                            <p>Tambah waktu 30 detik</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>75</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Hint</h3>
+                            <p>Menghilangkan 2 pilihan jawaban salah</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>100</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="boosters-content">
+                <div class="shop-grid">
+                    <!-- Boosters will be dynamically added here -->
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-coin"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Coin Booster</h3>
+                            <p>Koin 2x lipat untuk 3 quiz berikutnya</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>150</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>XP Booster</h3>
+                            <p>XP 2x lipat untuk 3 quiz berikutnya</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>200</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="characters-content">
+                <div class="shop-grid">
+                    <!-- Characters will be dynamically added here -->
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <img src="assets/images/char2.png" alt="Robot Character">
+                        </div>
+                        <div class="item-info">
+                            <h3>Robot</h3>
+                            <p>Karakter robot futuristik</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>300</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <img src="assets/images/char3.png" alt="Ninja Character">
+                        </div>
+                        <div class="item-info">
+                            <h3>Ninja</h3>
+                            <p>Karakter ninja misterius</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>300</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item" id="navHome">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" id="navInventory">
+                <i class="fas fa-box"></i>
+                <span>Inventory</span>
+            </div>
+            <div class="nav-item active" id="navShop">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Shop</span>
+            </div>
+            <div class="nav-item" id="navAchievement">
+                <i class="fas fa-trophy"></i>
+                <span>Achievement</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Modal Logout -->
+    <div id="logoutModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Konfirmasi Keluar</h2>
+                <button class="close-feature" id="closeLogout">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-sign-out-alt feature-icon"></i>
+                    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelLogoutBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-ok" id="confirmLogoutBtn">
+                    <i class="fas fa-check"></i> Ya, Keluar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reset Data -->
+    <div id="resetModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Hapus Data</h2>
+                <button class="close-feature" id="closeReset">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-exclamation-triangle feature-icon"></i>
+                    <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
+                    <p class="feature-description">Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelResetBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-danger" id="confirmResetBtn">
+                    <i class="fas fa-trash"></i> Ya, Hapus Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Confirmation Modal -->
+    <div id="purchaseModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Konfirmasi Pembelian</h2>
+                <button class="close-feature" id="closePurchase">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-shopping-cart feature-icon"></i>
+                    <p>Apakah Anda yakin ingin membeli <span id="purchaseItemName">Item Name</span>?</p>
+                    <div class="purchase-details">
+                        <div class="purchase-price">
+                            <i class="fas fa-coins"></i>
+                            <span id="purchaseItemPrice">100</span>
+                        </div>
+                        <div class="purchase-balance">
+                            <span>Saldo Anda: </span>
+                            <span id="userBalance">500</span>
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelPurchaseBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-ok" id="confirmPurchaseBtn">
+                    <i class="fas fa-check"></i> Ya, Beli
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Purchase Modal -->
+    <div id="successModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header" style="background-color: #2ecc71;">
+                <h2 class="feature-title">Pembelian Berhasil</h2>
+                <button class="close-feature" id="closeSuccess">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-check-circle feature-icon" style="color: #2ecc71;"></i>
+                    <p>Anda telah berhasil membeli <span id="successItemName">Item Name</span>!</p>
+                    <p class="feature-description">Item telah ditambahkan ke inventory Anda.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-ok" id="okSuccessBtn" style="background-color: #2ecc71;">
+                    <i class="fas fa-check"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insufficient Funds Modal -->
+    <div id="insufficientModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header" style="background-color: #e74c3c;">
+                <h2 class="feature-title">Koin Tidak Cukup</h2>
+                <button class="close-feature" id="closeInsufficient">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-exclamation-circle feature-icon" style="color: #e74c3c;"></i>
+                    <p>Koin Anda tidak cukup untuk membeli item ini!</p>
+                    <p class="feature-description">Mainkan lebih banyak quiz untuk mendapatkan koin tambahan.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-ok" id="okInsufficientBtn" style="background-color: #e74c3c;">
+                    <i class="fas fa-check"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/shop.js"></script>
+</body>
+</html>

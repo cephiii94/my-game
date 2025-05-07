@@ -471,23 +471,18 @@ function setupNavBarListeners() {
                 case 'home':
                     window.location.href = 'index.html';
                     break;
-                case 'inventory':
-                    // Menampilkan modal inventory (tidak langsung navigasi)
-                    const inventoryModal = document.getElementById('inventoryModal');
-                    if (inventoryModal) {
-                        inventoryModal.classList.add('active');
-                    }
-                    break;
-                case 'shop':
-                    // Menampilkan modal shop (tidak langsung navigasi)
-                    const shopModal = document.getElementById('shopModal');
-                    if (shopModal) {
-                        shopModal.classList.add('active');
-                    }
-                    break;
-                case 'achievement':
-                    window.location.href = 'profile.html';
-                    break;
+                    case 'inventaris':
+                        case 'inventory':
+                            window.location.href = 'inventory.html';
+                            break;
+                        case 'toko':
+                        case 'shop':
+                            window.location.href = 'shop.html';
+                            break;
+                        case 'prestasi':
+                        case 'achievement':
+                            window.location.href = 'profile.html';
+                            break;
             }
         });
     });

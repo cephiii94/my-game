@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Quiz Game</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="back-button" id="backToHome">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <h2 class="page-title">Inventory</h2>
+            <div class="coin-container">
+                <i class="fas fa-coins"></i>
+                <span class="coin-count">500</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="inventory-content">
+            <div class="inventory-tabs">
+                <div class="tab active" data-tab="items">
+                    <i class="fas fa-box"></i>
+                    <span>Items</span>
+                </div>
+                <div class="tab" data-tab="boosters">
+                    <i class="fas fa-bolt"></i>
+                    <span>Boosters</span>
+                </div>
+                <div class="tab" data-tab="characters">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Characters</span>
+                </div>
+            </div>
+
+            <div class="tab-content active" id="items-content">
+                <div class="inventory-grid">
+                    <!-- Item slots will be dynamically added here -->
+                    <div class="inventory-message">
+                        <i class="fas fa-box-open"></i>
+                        <p>Belum ada item yang dimiliki</p>
+                        <p class="inventory-description">Kunjungi toko untuk membeli item.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="boosters-content">
+                <div class="inventory-grid">
+                    <!-- Boosters slots will be dynamically added here -->
+                    <div class="inventory-message">
+                        <i class="fas fa-bolt"></i>
+                        <p>Belum ada booster yang dimiliki</p>
+                        <p class="inventory-description">Kunjungi toko untuk membeli booster.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="characters-content">
+                <div class="inventory-grid">
+                    <!-- Character slots will be dynamically added here -->
+                    <div class="inventory-item">
+                        <div class="item-icon active">
+                            <img src="assets/images/char1.png" alt="Default Character">
+                        </div>
+                        <div class="item-info">
+                            <h3>Default</h3>
+                            <p>Karakter awal</p>
+                        </div>
+                        <div class="item-action">
+                            <button class="btn-use active">Digunakan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item" id="navHome">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item active" id="navInventory">
+                <i class="fas fa-box"></i>
+                <span>Inventory</span>
+            </div>
+            <div class="nav-item" id="navShop">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Shop</span>
+            </div>
+            <div class="nav-item" id="navAchievement">
+                <i class="fas fa-trophy"></i>
+                <span>Achievement</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Modal Logout -->
+    <div id="logoutModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Konfirmasi Keluar</h2>
+                <button class="close-feature" id="closeLogout">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-sign-out-alt feature-icon"></i>
+                    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelLogoutBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-ok" id="confirmLogoutBtn">
+                    <i class="fas fa-check"></i> Ya, Keluar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reset Data -->
+    <div id="resetModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Hapus Data</h2>
+                <button class="close-feature" id="closeReset">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-exclamation-triangle feature-icon"></i>
+                    <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
+                    <p class="feature-description">Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelResetBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-danger" id="confirmResetBtn">
+                    <i class="fas fa-trash"></i> Ya, Hapus Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Detail Modal -->
+    <div id="itemDetailModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Detail Item</h2>
+                <button class="close-feature" id="closeItemDetail">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="item-detail-container">
+                    <div class="item-detail-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 class="item-detail-name">Nama Item</h3>
+                    <p class="item-detail-description">Deskripsi item akan ditampilkan di sini.</p>
+                    <div class="item-detail-stats">
+                        <div class="stat">
+                            <i class="fas fa-sync"></i>
+                            <span>Remaining: <span class="item-usage-count">3</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="closeDetailBtn">
+                    <i class="fas fa-times"></i> Tutup
+                </button>
+                <button class="btn-ok" id="useItemBtn">
+                    <i class="fas fa-check"></i> Gunakan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/inventory.js"></script>
+</body>
+</html>
