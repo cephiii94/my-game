@@ -152,6 +152,7 @@ body {
 }
 
 /* Bottom Navigation Styles */
+/* Bottom Navigation Styles - Updated */
 .bottom-nav {
     display: flex;
     justify-content: space-around;
@@ -162,24 +163,59 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
     width: 100%;
+    z-index: 1000;
 }
 
-/* Tambahkan padding-bottom pada container agar konten tidak tersembunyi di bawah navigasi */
+/* Container wrapper to ensure proper width matching */
 .container {
-    padding-bottom: 60px; /* Sesuaikan dengan tinggi bottom-nav */
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    position: relative;
+    padding-bottom: 60px; /* Ruang untuk bottom navigation */
 }
 
-/* Untuk halaman dengan konten yang scrollable, tambahkan ini */
+/* Media query untuk layar yang berbeda ukuran */
+@media (min-width: 769px) {
+    .container {
+        max-width: 768px;
+        margin: 0 auto;
+        border-left: 1px solid #e0e0e0;
+        border-right: 1px solid #e0e0e0;
+    }
+    
+    .bottom-nav {
+        max-width: 768px; /* Sama dengan container */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* Media query untuk extra large devices */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 768px;
+    }
+    
+    .bottom-nav {
+        max-width: 768px; /* Sama dengan container */
+    }
+}
+
+/* Untuk halaman dengan konten yang dapat di-scroll */
 .inventory-content,
 .shop-content,
 .category-content,
 .profile-content {
-    padding-bottom: 70px; /* Sesuaikan dengan tinggi bottom-nav + extra padding */
+    padding-bottom: 70px; /* Padding yang disesuaikan untuk bottom nav */
     overflow-y: auto;
 }
 
+/* Style untuk item navigasi */
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -201,6 +237,37 @@ body {
 
 .nav-item span {
     font-size: 0.8rem;
+}
+
+/* Media query untuk layar kecil */
+@media (max-width: 576px) {
+    .nav-item i {
+        font-size: 1.2rem;
+    }
+    
+    .nav-item span {
+        font-size: 0.7rem;
+    }
+}
+
+/* Media query untuk mode landscape */
+@media (max-height: 500px) and (orientation: landscape) {
+    .bottom-nav {
+        padding: 5px 0;
+    }
+    
+    .nav-item {
+        padding: 5px 10px;
+    }
+    
+    .nav-item i {
+        font-size: 1.1rem;
+        margin-bottom: 2px;
+    }
+    
+    .nav-item span {
+        font-size: 0.7rem;
+    }
 }
 
 /* Category Page Styles */
