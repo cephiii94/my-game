@@ -488,17 +488,24 @@ function redirectToLogin() {
   }
 }
 
-// Fungsi untuk reset data user
+// Fungsi untuk reset data user dan semua user
 function resetUserData() {
-  const username = userData.username;
+  // Hapus data pengguna aktif
+  localStorage.removeItem('quizActiveUser');
   
-  // Reset ke data awal tapi pertahankan username
+  // Hapus daftar pengguna
+  localStorage.removeItem('quizUserList');
+  
+  // Hapus data spesifik pengguna saat ini
+  localStorage.removeItem('quizUserData');
+  
+  // Reset userData ke nilai default
   userData = {
-    username: username,
+    username: "Guest",
     level: 1,
     coins: 100,
     xp: 0,
-    profileIcon: "fas fa-user", // Tambahkan ini
+    profileIcon: "fas fa-user",
     achievements: [],
     completedLevels: {
       "science": [],
@@ -508,8 +515,8 @@ function resetUserData() {
     }
   };
   
-  // Simpan data yang telah direset
-  saveGameData();
+  // Redirect ke halaman login
+  redirectToLogin();
 }
 
 // Coba load data dengan penanganan error yang lebih baik
@@ -517,5 +524,5 @@ try {
   loadGameData();
 } catch (error) {
   console.error("Error loading game data:", error);
-  // Jangan redirect di sini, biarkan loadGameData yang menangani
+  // Jangan redirect di sini, biarkan loadGameData yang menangani 
 }
