@@ -9,7 +9,13 @@ let userData = {
   level: 1,
   coins: 100,
   xp: 0,
-  profileIcon: "fas fa-user", // Tambahkan ini
+  profileIcon: "fas fa-user",
+  // Menambahkan properti inventory untuk menyimpan item yang dibeli
+  inventory: {
+    items: [],
+    boosters: [],
+    characters: ['default']
+  },
   // Menambahkan properti achievements untuk track pencapaian
   achievements: [],
   completedLevels: {
@@ -19,6 +25,76 @@ let userData = {
       "entertainment": []
   }
 };
+
+// Fungsi Tambahan untuk memastikan struktur data inventory
+function ensureInventoryStructure() {
+  // Pastikan properti inventory ada
+  if (!userData.inventory) {
+    userData.inventory = {
+      items: [],
+      boosters: [],
+      characters: ['default']
+    };
+  }
+  
+  // Pastikan setiap property dalam inventory ada
+  if (!userData.inventory.items) userData.inventory.items = [];
+  if (!userData.inventory.boosters) userData.inventory.boosters = [];
+  if (!userData.inventory.characters) userData.inventory.characters = ['default'];
+}
+
+// Modifikasi loadGameData untuk memastikan struktur inventory valid
+function loadGameData() {
+  // Mencegah redirect loop
+  if (redirectingToLogin) return;
+  
+  const savedData = localStorage.getItem('quizUserData');
+  if (savedData) {
+    try {
+      const parsedData = JSON.parse(savedData);
+      // Pastikan data valid sebelum digunakan
+      if (parsedData && parsedData.username && parsedData.username.trim() !== '') {
+        userData.username = parsedData.username;
+        userData.level = parsedData.level || 1;
+        userData.coins = parsedData.coins || 100;
+        userData.xp = parsedData.xp || 0;
+        userData.profileIcon = parsedData.profileIcon || "fas fa-user";
+        userData.completedLevels = parsedData.completedLevels || {
+          "science": [],
+          "history": [],
+          "geography": [],
+          "entertainment": []
+        };
+        userData.achievements = parsedData.achievements || [];
+        
+        // Pastikan struktur inventory sudah benar
+        userData.inventory = parsedData.inventory || {
+          items: [],
+          boosters: [],
+          characters: ['default']
+        };
+        
+        // Pastikan semua bagian inventory ada
+        ensureInventoryStructure();
+        
+        // Pastikan achievements dalam format yang benar
+        if (!Array.isArray(userData.achievements)) {
+          userData.achievements = [];
+        }
+      } else {
+        redirectToLogin();
+      }
+    } catch (error) {
+      console.error("Error parsing game data:", error);
+      redirectToLogin();
+    }
+  } else {
+    // Hanya redirect jika kita TIDAK berada di halaman login
+    if (!window.location.pathname.includes('login.html')) {
+      redirectToLogin();
+    }
+  }
+}
 
 // Data Kategori
 const categoryData = [

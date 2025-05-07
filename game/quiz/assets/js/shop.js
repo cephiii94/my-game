@@ -57,7 +57,7 @@ function setupBackButton() {
 
 // Render shop items
 function renderShopItems() {
-    // Data item toko (hardcoded untuk demo)
+    // Data item toko
     const shopData = getShopData();
     
     // Render items
@@ -75,8 +75,7 @@ function renderShopItems() {
 
 // Get shop data
 function getShopData() {
-    // Untuk tujuan demo, kita gunakan data hardcoded
-    // Dalam implementasi sebenarnya, data ini bisa diambil dari server
+    // Data yang sama dengan yang diharapkan oleh inventory.js
     return {
         items: [
             {
@@ -156,8 +155,17 @@ function renderShopTab(tabType, items) {
         return;
     }
     
+    // Pastikan struktur inventory ada
+    if (!userData.inventory) {
+        userData.inventory = {
+            items: [],
+            boosters: [],
+            characters: ['default']
+        };
+    }
+    
     // Cek item yang sudah dibeli (untuk karakter)
-    const boughtCharacters = userData.inventory && userData.inventory.characters ? userData.inventory.characters : ['default'];
+    const boughtCharacters = userData.inventory.characters || ['default'];
     
     // Render setiap item
     items.forEach(item => {
@@ -245,6 +253,8 @@ function showPurchaseConfirmation(itemId, itemType, itemPrice, itemName) {
 
 // Proses pembelian item
 function purchaseItem(itemId, itemType, itemPrice, itemName) {
+    console.log(`Membeli ${itemName} (${itemId}) - tipe: ${itemType}, harga: ${itemPrice}`);
+    
     // Cek apakah user punya cukup koin
     if (userData.coins < itemPrice) {
         showInsufficientFundsModal();
@@ -254,7 +264,7 @@ function purchaseItem(itemId, itemType, itemPrice, itemName) {
     // Kurangi koin
     userData.coins -= itemPrice;
     
-    // Tambahkan item ke inventory
+    // Pastikan inventory sudah diinisialisasi
     if (!userData.inventory) {
         userData.inventory = {
             items: [],
@@ -265,23 +275,38 @@ function purchaseItem(itemId, itemType, itemPrice, itemName) {
     
     // Update inventory berdasarkan tipe item
     if (itemType === 'characters') {
+        if (!userData.inventory.characters) {
+            userData.inventory.characters = ['default'];
+        }
+        
         if (!userData.inventory.characters.includes(itemId)) {
             userData.inventory.characters.push(itemId);
         }
     } else {
+        // Pastikan array items/boosters ada
+        if (!userData.inventory[itemType]) {
+            userData.inventory[itemType] = [];
+        }
+        
         // Untuk items dan boosters, kita tambah quantity jika sudah ada
-        const inventory = userData.inventory[itemType];
-        const existingItemIndex = inventory.findIndex(item => item.id === itemId);
+        const existingItemIndex = userData.inventory[itemType].findIndex(item => item.id === itemId);
         
         if (existingItemIndex !== -1) {
-            inventory[existingItemIndex].quantity = (inventory[existingItemIndex].quantity || 1) + 1;
+            // Item sudah ada, tambah quantity
+            userData.inventory[itemType][existingItemIndex].quantity += 1;
+            console.log(`Item ${itemId} sudah ada, quantity sekarang: ${userData.inventory[itemType][existingItemIndex].quantity}`);
         } else {
-            inventory.push({
+            // Item belum ada, tambahkan baru
+            userData.inventory[itemType].push({
                 id: itemId,
                 quantity: 1
             });
+            console.log(`Item baru ${itemId} ditambahkan ke inventory`);
         }
     }
+    
+    // Log inventory setelah pembelian
+    console.log("Inventory setelah pembelian:", userData.inventory);
     
     // Simpan data
     saveGameData();

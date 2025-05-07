@@ -57,10 +57,7 @@ function setupBackButton() {
 
 // Render inventory items
 function renderInventoryItems() {
-    // Untuk tujuan demo, kita akan menggunakan data dari userData.inventory
-    // Jika tidak ada data inventory, kita tampilkan pesan "inventory kosong"
-    
-    // Jika userData belum memiliki properti inventory, kita inisialisasi
+    // Pastikan userData memiliki properti inventory dengan struktur yang benar
     if (!userData.inventory) {
         userData.inventory = {
             items: [],
@@ -71,6 +68,8 @@ function renderInventoryItems() {
         // Simpan data baru
         saveGameData();
     }
+    
+    console.log("Current inventory data:", userData.inventory);
     
     // Render Items tab
     renderInventoryTab('items');
@@ -90,18 +89,22 @@ function renderInventoryTab(tabType) {
     // Reset grid content
     inventoryGrid.innerHTML = '';
     
+    // Dapatkan item dari inventory
+    const inventoryItems = userData.inventory[tabType] || [];
+    
+    // Debug: Tampilkan item inventory di console
+    console.log(`Rendering ${tabType} tab with items:`, inventoryItems);
+    
     // Jika tidak ada item di kategori ini, tampilkan pesan kosong
-    if (!userData.inventory[tabType] || userData.inventory[tabType].length === 0) {
-        if (tabType !== 'characters') { // Karakter selalu ada yang default
-            inventoryGrid.innerHTML = `
-                <div class="inventory-message">
-                    <i class="fas fa-${tabType === 'items' ? 'box-open' : (tabType === 'boosters' ? 'bolt' : 'user-astronaut')}"></i>
-                    <p>Belum ada ${tabType === 'items' ? 'item' : (tabType === 'boosters' ? 'booster' : 'karakter')} yang dimiliki</p>
-                    <p class="inventory-description">Kunjungi toko untuk membeli ${tabType === 'items' ? 'item' : (tabType === 'boosters' ? 'booster' : 'karakter')}.</p>
-                </div>
-            `;
-            return;
-        }
+    if (tabType !== 'characters' && (inventoryItems.length === 0)) {
+        inventoryGrid.innerHTML = `
+            <div class="inventory-message">
+                <i class="fas fa-${tabType === 'items' ? 'box-open' : 'bolt'}"></i>
+                <p>Belum ada ${tabType === 'items' ? 'item' : 'booster'} yang dimiliki</p>
+                <p class="inventory-description">Kunjungi toko untuk membeli ${tabType === 'items' ? 'item' : 'booster'}.</p>
+            </div>
+        `;
+        return;
     }
     
     // Khusus untuk tab characters, minimal ada karakter default
@@ -156,10 +159,6 @@ function renderInventoryTab(tabType) {
         }
     } else {
         // Untuk tab items dan boosters
-        // Data inventory untuk tab ini
-        const inventoryItems = userData.inventory[tabType] || [];
-        
-        // Jika tidak ada item, tampilkan pesan kosong
         if (inventoryItems.length === 0) {
             inventoryGrid.innerHTML = `
                 <div class="inventory-message">
@@ -173,7 +172,11 @@ function renderInventoryTab(tabType) {
         
         // Render setiap item
         inventoryItems.forEach(item => {
+            // Debug setiap item
+            console.log(`Processing item:`, item);
+            
             const itemData = getItemData(item.id, tabType);
+            console.log(`Item data for ${item.id}:`, itemData);
             
             if (itemData) {
                 inventoryGrid.innerHTML += `
@@ -192,6 +195,8 @@ function renderInventoryTab(tabType) {
                         </div>
                     </div>
                 `;
+            } else {
+                console.error(`Data tidak ditemukan untuk item: ${item.id} di kategori ${tabType}`);
             }
         });
     }
@@ -199,7 +204,7 @@ function renderInventoryTab(tabType) {
 
 // Mendapatkan data item dari shopItems
 function getItemData(itemId, type) {
-    // Seharusnya kita mengambil dari data toko, tapi untuk sementara kita hardcode
+    // Data items
     const itemsData = {
         'heart': {
             name: 'Extra Life',
@@ -221,6 +226,7 @@ function getItemData(itemId, type) {
         }
     };
     
+    // Data boosters
     const boostersData = {
         'coin': {
             name: 'Coin Booster',
@@ -247,7 +253,7 @@ function getItemData(itemId, type) {
 
 // Mendapatkan data karakter
 function getCharacterData(charId) {
-    // Seharusnya kita mengambil dari data toko, tapi untuk sementara kita hardcode
+    // Data karakter
     const charactersData = {
         'default': {
             name: 'Default',
@@ -291,14 +297,20 @@ function setupItemDetailModal() {
     const closeDetailBtn = document.getElementById('closeDetailBtn');
     const useItemBtn = document.getElementById('useItemBtn');
     
-    // Tutup modal saat tombol close diklik
-    closeButton.addEventListener('click', function() {
-        modal.classList.remove('active');
-    });
+    if (!modal) return;
     
-    closeDetailBtn.addEventListener('click', function() {
-        modal.classList.remove('active');
-    });
+    // Tutup modal saat tombol close diklik
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+    }
+    
+    if (closeDetailBtn) {
+        closeDetailBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+    }
     
     // Tutup modal saat klik di luar modal
     modal.addEventListener('click', function(event) {
@@ -308,29 +320,39 @@ function setupItemDetailModal() {
     });
     
     // Gunakan item saat tombol use diklik
-    useItemBtn.addEventListener('click', function() {
-        const itemId = this.getAttribute('data-item-id');
-        const itemType = this.getAttribute('data-item-type');
-        
-        useItem(itemId, itemType);
-        
-        // Tutup modal
-        modal.classList.remove('active');
-    });
+    if (useItemBtn) {
+        useItemBtn.addEventListener('click', function() {
+            const itemId = this.getAttribute('data-item-id');
+            const itemType = this.getAttribute('data-item-type');
+            
+            useItem(itemId, itemType);
+            
+            // Tutup modal
+            modal.classList.remove('active');
+        });
+    }
 }
 
 // Tampilkan detail item
 function showItemDetail(itemId, type) {
     const modal = document.getElementById('itemDetailModal');
+    if (!modal) return;
+    
     const itemData = getItemData(itemId, type);
     
-    if (!itemData) return;
+    if (!itemData) {
+        console.error(`Item data not found for ${itemId} in ${type}`);
+        return;
+    }
     
     // Cari item dari inventory
     const inventory = userData.inventory[type] || [];
     const item = inventory.find(i => i.id === itemId);
     
-    if (!item) return;
+    if (!item) {
+        console.error(`Item ${itemId} not found in user inventory for ${type}`);
+        return;
+    }
     
     // Update judul modal
     modal.querySelector('.feature-title').textContent = `Detail ${type === 'items' ? 'Item' : 'Booster'}`;
