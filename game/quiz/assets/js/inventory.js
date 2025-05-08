@@ -320,16 +320,22 @@ function getCharacterData(charId) {
             image: 'assets/images/char1.png',
             price: 0
         },
-        'robot': {
+        'penguin': {
             name: 'Robot',
             description: 'Karakter robot futuristik',
             image: 'assets/images/char2.png',
             price: 300
         },
+        'robot': {
+            name: 'Penguin',
+            description: 'Karakter robot futuristik',
+            image: 'assets/images/char3.png',
+            price: 300
+        },
         'ninja': {
             name: 'Ninja',
             description: 'Karakter ninja misterius',
-            image: 'assets/images/char3.png',
+            image: 'assets/images/char4.png',
             price: 300
         }
     };

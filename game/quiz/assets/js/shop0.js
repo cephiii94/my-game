@@ -108,6 +108,7 @@ function getShopData() {
                 price: 150,
                 icon: 'fas fa-coin'
             },
+            
             {
                 id: 'xp',
                 name: 'XP Booster',
@@ -121,16 +122,24 @@ function getShopData() {
                 id: 'robot',
                 name: 'Robot',
                 description: 'Karakter robot futuristik',
-                price: 300,
+                price: 0,
                 image: 'assets/images/char2.png'
+            },
+            {
+                id: 'penguin',
+                name: 'Penguin',
+                description: 'Karakter penguin lucu',
+                price: 0,
+                image: 'assets/images/char3.png'
             },
             {
                 id: 'ninja',
                 name: 'Ninja',
                 description: 'Karakter ninja misterius',
-                price: 300,
-                image: 'assets/images/char3.png'
+                price: 0,
+                image: 'assets/images/char4.png'
             }
+            
         ]
     };
 }
