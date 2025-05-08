@@ -1,39 +1,57 @@
-// JavaScript untuk halaman Inventory
+/**
+ * INVENTORY MANAGER
+ * ================
+ * File ini berfungsi untuk mengelola semua fitur di halaman inventory,
+ * termasuk menampilkan item, booster, dan karakter yang dimiliki pengguna.
+ * 
+ * Dibuat: Mei 2025
+ */
 
+// ========= INISIALISASI HALAMAN =========
+
+/**
+ * Event listener saat DOM telah dimuat sepenuhnya
+ * Menginisialisasi semua fungsi utama halaman inventory
+ */
 document.addEventListener('DOMContentLoaded', function() {
-    // Update UI dengan data user
+    // Memperbarui UI dengan data pengguna
     updateUserUI();
     
-    // Setup profile dropdown menu
+    // Menyiapkan menu dropdown profil
     setupProfileDropdown();
     
-    // Setup event listeners untuk tabs
+    // Menyiapkan event listener untuk tab navigasi
     setupInventoryTabs();
     
-    // Setup back button
+    // Menyiapkan tombol kembali ke halaman utama
     setupBackButton();
     
-    // Render inventory items
+    // Menampilkan item-item di inventory
     renderInventoryItems();
     
-    // Setup event listeners untuk modal
+    // Menyiapkan event listener untuk modal detail item
     setupItemDetailModal();
 });
 
-// Setup event listeners untuk tabs
+// ========= FUNGSI NAVIGASI DAN UI =========
+
+/**
+ * Mengatur event listener untuk tab navigasi inventory
+ * Berpindah antar kategori: items, boosters, characters
+ */
 function setupInventoryTabs() {
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
     
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            // Hapus kelas active dari semua tab
+            // Menghapus kelas active dari semua tab
             tabs.forEach(t => t.classList.remove('active'));
             
-            // Tambah kelas active ke tab yang diklik
+            // Menambahkan kelas active ke tab yang diklik
             this.classList.add('active');
             
-            // Tampilkan content yang sesuai
+            // Menampilkan konten yang sesuai dengan tab
             const tabId = this.getAttribute('data-tab');
             tabContents.forEach(content => {
                 content.classList.remove('active');
@@ -44,7 +62,9 @@ function setupInventoryTabs() {
     });
 }
 
-// Setup back button
+/**
+ * Mengatur tombol kembali ke halaman utama
+ */
 function setupBackButton() {
     const backButton = document.getElementById('backToHome');
     
@@ -55,47 +75,56 @@ function setupBackButton() {
     }
 }
 
-// Render inventory items
+// ========= RENDER INVENTORY =========
+
+/**
+ * Menampilkan semua item di inventory pengguna
+ * Memastikan struktur data inventory tersedia dan valid
+ */
 function renderInventoryItems() {
-    // Pastikan userData memiliki properti inventory dengan struktur yang benar
+    // Memeriksa dan memastikan userData memiliki properti inventory dengan struktur yang benar
     if (!userData.inventory) {
         userData.inventory = {
             items: [],
             boosters: [],
-            characters: ['default'] // Karakter default selalu ada
+            characters: ['default'] // Karakter default selalu tersedia
         };
         
-        // Simpan data baru
+        // Menyimpan data baru
         saveGameData();
     }
     
-    console.log("Current inventory data:", userData.inventory);
+    console.log("Data inventory saat ini:", userData.inventory);
     
-    // Render Items tab
+    // Menampilkan tab Items
     renderInventoryTab('items');
     
-    // Render Boosters tab
+    // Menampilkan tab Boosters
     renderInventoryTab('boosters');
     
-    // Render Characters tab
+    // Menampilkan tab Characters
     renderInventoryTab('characters');
 }
 
-// Render tab inventory tertentu
+/**
+ * Menampilkan item-item pada tab tertentu (items, boosters, atau characters)
+ * @param {string} tabType - Tipe tab ('items', 'boosters', atau 'characters')
+ */
 function renderInventoryTab(tabType) {
     const contentContainer = document.getElementById(`${tabType}-content`);
     const inventoryGrid = contentContainer.querySelector('.inventory-grid');
     
-    // Reset grid content
+    // Mengosongkan konten grid sebelum menampilkan item baru
     inventoryGrid.innerHTML = '';
     
-    // Dapatkan item dari inventory
+    // Mendapatkan daftar item dari inventory pengguna
     const inventoryItems = userData.inventory[tabType] || [];
     
-    // Debug: Tampilkan item inventory di console
-    console.log(`Rendering ${tabType} tab with items:`, inventoryItems);
+    // Debug: Menampilkan item inventory di console
+    console.log(`Menampilkan tab ${tabType} dengan item:`, inventoryItems);
     
-    // Jika tidak ada item di kategori ini, tampilkan pesan kosong
+    // Menampilkan pesan kosong jika tidak ada item di kategori ini
+    // Kecuali untuk kategori characters yang selalu memiliki karakter default
     if (tabType !== 'characters' && (inventoryItems.length === 0)) {
         inventoryGrid.innerHTML = `
             <div class="inventory-message">
@@ -107,104 +136,129 @@ function renderInventoryTab(tabType) {
         return;
     }
     
-    // Khusus untuk tab characters, minimal ada karakter default
+    // Logika khusus untuk tab characters
     if (tabType === 'characters') {
-        // Karakter yang sedang aktif
-        const activeCharacter = userData.activeCharacter || 'default';
-        
-        // Karakter default
-        inventoryGrid.innerHTML += `
-            <div class="inventory-item" data-item-id="default">
-                <div class="item-icon ${activeCharacter === 'default' ? 'active' : ''}">
-                    <img src="assets/images/char1.png" alt="Default Character">
-                </div>
-                <div class="item-info">
-                    <h3>Default</h3>
-                    <p>Karakter awal</p>
-                </div>
-                <div class="item-action">
-                    <button class="btn-use ${activeCharacter === 'default' ? 'active' : ''}" onclick="setActiveCharacter('default')">
-                        ${activeCharacter === 'default' ? 'Digunakan' : 'Gunakan'}
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        // Karakter tambahan jika ada
-        if (userData.inventory.characters && userData.inventory.characters.length > 0) {
-            userData.inventory.characters.forEach(charId => {
-                if (charId !== 'default') {
-                    // Dapatkan data karakter dari shopItems
-                    const character = getCharacterData(charId);
-                    if (character) {
-                        inventoryGrid.innerHTML += `
-                            <div class="inventory-item" data-item-id="${charId}">
-                                <div class="item-icon ${activeCharacter === charId ? 'active' : ''}">
-                                    <img src="${character.image}" alt="${character.name} Character">
-                                </div>
-                                <div class="item-info">
-                                    <h3>${character.name}</h3>
-                                    <p>${character.description}</p>
-                                </div>
-                                <div class="item-action">
-                                    <button class="btn-use ${activeCharacter === charId ? 'active' : ''}" onclick="setActiveCharacter('${charId}')">
-                                        ${activeCharacter === charId ? 'Digunakan' : 'Gunakan'}
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                }
-            });
-        }
+        renderCharactersTab(inventoryGrid);
     } else {
-        // Untuk tab items dan boosters
-        if (inventoryItems.length === 0) {
-            inventoryGrid.innerHTML = `
-                <div class="inventory-message">
-                    <i class="fas fa-${tabType === 'items' ? 'box-open' : 'bolt'}"></i>
-                    <p>Belum ada ${tabType === 'items' ? 'item' : 'booster'} yang dimiliki</p>
-                    <p class="inventory-description">Kunjungi toko untuk membeli ${tabType === 'items' ? 'item' : 'booster'}.</p>
-                </div>
-            `;
-            return;
-        }
-        
-        // Render setiap item
-        inventoryItems.forEach(item => {
-            // Debug setiap item
-            console.log(`Processing item:`, item);
-            
-            const itemData = getItemData(item.id, tabType);
-            console.log(`Item data for ${item.id}:`, itemData);
-            
-            if (itemData) {
-                inventoryGrid.innerHTML += `
-                    <div class="inventory-item" data-item-id="${item.id}" onclick="showItemDetail('${item.id}', '${tabType}')">
-                        <div class="item-icon">
-                            <i class="${itemData.icon}"></i>
+        // Logika untuk tab items dan boosters
+        renderItemsOrBoostersTab(tabType, inventoryItems, inventoryGrid);
+    }
+}
+
+/**
+ * Menampilkan karakter yang dimiliki pengguna
+ * @param {HTMLElement} inventoryGrid - Element grid yang akan diisi
+ */
+function renderCharactersTab(inventoryGrid) {
+    // Karakter yang sedang aktif
+    const activeCharacter = userData.activeCharacter || 'default';
+    
+    // Karakter default selalu ada
+    inventoryGrid.innerHTML += `
+        <div class="inventory-item" data-item-id="default">
+            <div class="item-icon ${activeCharacter === 'default' ? 'active' : ''}">
+                <img src="assets/images/char1.png" alt="Default Character">
+            </div>
+            <div class="item-info">
+                <h3>Default</h3>
+                <p>Karakter awal</p>
+            </div>
+            <div class="item-action">
+                <button class="btn-use ${activeCharacter === 'default' ? 'active' : ''}" onclick="setActiveCharacter('default')">
+                    ${activeCharacter === 'default' ? 'Digunakan' : 'Gunakan'}
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Menampilkan karakter tambahan jika ada
+    if (userData.inventory.characters && userData.inventory.characters.length > 0) {
+        userData.inventory.characters.forEach(charId => {
+            if (charId !== 'default') {
+                // Mendapatkan data karakter dari database
+                const character = getCharacterData(charId);
+                if (character) {
+                    inventoryGrid.innerHTML += `
+                        <div class="inventory-item" data-item-id="${charId}">
+                            <div class="item-icon ${activeCharacter === charId ? 'active' : ''}">
+                                <img src="${character.image}" alt="${character.name} Character">
+                            </div>
+                            <div class="item-info">
+                                <h3>${character.name}</h3>
+                                <p>${character.description}</p>
+                            </div>
+                            <div class="item-action">
+                                <button class="btn-use ${activeCharacter === charId ? 'active' : ''}" onclick="setActiveCharacter('${charId}')">
+                                    ${activeCharacter === charId ? 'Digunakan' : 'Gunakan'}
+                                </button>
+                            </div>
                         </div>
-                        <div class="item-info">
-                            <h3>${itemData.name}</h3>
-                            <p>${itemData.description}</p>
-                        </div>
-                        <div class="item-action">
-                            <button class="btn-use">
-                                Jumlah: ${item.quantity || 1}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                console.error(`Data tidak ditemukan untuk item: ${item.id} di kategori ${tabType}`);
+                    `;
+                }
             }
         });
     }
 }
 
-// Mendapatkan data item dari shopItems
+/**
+ * Menampilkan item atau booster yang dimiliki pengguna
+ * @param {string} tabType - Tipe tab ('items' atau 'boosters')
+ * @param {Array} inventoryItems - Daftar item yang dimiliki
+ * @param {HTMLElement} inventoryGrid - Element grid yang akan diisi
+ */
+function renderItemsOrBoostersTab(tabType, inventoryItems, inventoryGrid) {
+    if (inventoryItems.length === 0) {
+        inventoryGrid.innerHTML = `
+            <div class="inventory-message">
+                <i class="fas fa-${tabType === 'items' ? 'box-open' : 'bolt'}"></i>
+                <p>Belum ada ${tabType === 'items' ? 'item' : 'booster'} yang dimiliki</p>
+                <p class="inventory-description">Kunjungi toko untuk membeli ${tabType === 'items' ? 'item' : 'booster'}.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Menampilkan setiap item yang dimiliki
+    inventoryItems.forEach(item => {
+        // Debug setiap item
+        console.log(`Memproses item:`, item);
+        
+        const itemData = getItemData(item.id, tabType);
+        console.log(`Data untuk item ${item.id}:`, itemData);
+        
+        if (itemData) {
+            inventoryGrid.innerHTML += `
+                <div class="inventory-item" data-item-id="${item.id}" onclick="showItemDetail('${item.id}', '${tabType}')">
+                    <div class="item-icon">
+                        <i class="${itemData.icon}"></i>
+                    </div>
+                    <div class="item-info">
+                        <h3>${itemData.name}</h3>
+                        <p>${itemData.description}</p>
+                    </div>
+                    <div class="item-action">
+                        <button class="btn-use">
+                            Jumlah: ${item.quantity || 1}
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            console.error(`Data tidak ditemukan untuk item: ${item.id} di kategori ${tabType}`);
+        }
+    });
+}
+
+// ========= DATABASE ITEM =========
+
+/**
+ * Mendapatkan data item dari database berdasarkan ID dan tipe
+ * @param {string} itemId - ID item yang dicari
+ * @param {string} type - Tipe item ('items' atau 'boosters')
+ * @returns {Object|null} - Data item atau null jika tidak ditemukan
+ */
 function getItemData(itemId, type) {
-    // Data items
+    // Database items
     const itemsData = {
         'heart': {
             name: 'Extra Life',
@@ -226,7 +280,7 @@ function getItemData(itemId, type) {
         }
     };
     
-    // Data boosters
+    // Database boosters
     const boostersData = {
         'coin': {
             name: 'Coin Booster',
@@ -242,6 +296,7 @@ function getItemData(itemId, type) {
         }
     };
     
+    // Mengembalikan data yang sesuai berdasarkan tipe
     if (type === 'items') {
         return itemsData[itemId];
     } else if (type === 'boosters') {
@@ -251,9 +306,13 @@ function getItemData(itemId, type) {
     return null;
 }
 
-// Mendapatkan data karakter
+/**
+ * Mendapatkan data karakter dari database berdasarkan ID
+ * @param {string} charId - ID karakter yang dicari
+ * @returns {Object|null} - Data karakter atau null jika tidak ditemukan
+ */
 function getCharacterData(charId) {
-    // Data karakter
+    // Database karakter
     const charactersData = {
         'default': {
             name: 'Default',
@@ -278,19 +337,26 @@ function getCharacterData(charId) {
     return charactersData[charId];
 }
 
-// Set karakter aktif
+// ========= FUNGSI PENGGUNAAN ITEM =========
+
+/**
+ * Mengatur karakter aktif yang digunakan
+ * @param {string} charId - ID karakter yang akan diaktifkan
+ */
 function setActiveCharacter(charId) {
-    // Update data user
+    // Memperbarui data pengguna
     userData.activeCharacter = charId;
     
-    // Simpan perubahan
+    // Menyimpan perubahan
     saveGameData();
     
-    // Re-render karakter
+    // Memperbarui tampilan karakter
     renderInventoryTab('characters');
 }
 
-// Setup event listeners untuk item detail modal
+/**
+ * Menyiapkan event listener untuk modal detail item
+ */
 function setupItemDetailModal() {
     const modal = document.getElementById('itemDetailModal');
     const closeButton = document.getElementById('closeItemDetail');
@@ -299,7 +365,7 @@ function setupItemDetailModal() {
     
     if (!modal) return;
     
-    // Tutup modal saat tombol close diklik
+    // Menutup modal saat tombol close diklik
     if (closeButton) {
         closeButton.addEventListener('click', function() {
             modal.classList.remove('active');
@@ -312,14 +378,14 @@ function setupItemDetailModal() {
         });
     }
     
-    // Tutup modal saat klik di luar modal
+    // Menutup modal saat klik di luar area modal
     modal.addEventListener('click', function(event) {
         if (event.target === this) {
             modal.classList.remove('active');
         }
     });
     
-    // Gunakan item saat tombol use diklik
+    // Menggunakan item saat tombol use diklik
     if (useItemBtn) {
         useItemBtn.addEventListener('click', function() {
             const itemId = this.getAttribute('data-item-id');
@@ -327,13 +393,17 @@ function setupItemDetailModal() {
             
             useItem(itemId, itemType);
             
-            // Tutup modal
+            // Menutup modal setelah penggunaan item
             modal.classList.remove('active');
         });
     }
 }
 
-// Tampilkan detail item
+/**
+ * Menampilkan detail item dalam modal
+ * @param {string} itemId - ID item yang akan ditampilkan
+ * @param {string} type - Tipe item ('items' atau 'boosters')
+ */
 function showItemDetail(itemId, type) {
     const modal = document.getElementById('itemDetailModal');
     if (!modal) return;
@@ -341,77 +411,85 @@ function showItemDetail(itemId, type) {
     const itemData = getItemData(itemId, type);
     
     if (!itemData) {
-        console.error(`Item data not found for ${itemId} in ${type}`);
+        console.error(`Data tidak ditemukan untuk item ${itemId} dalam kategori ${type}`);
         return;
     }
     
-    // Cari item dari inventory
+    // Mencari item dari inventory pengguna
     const inventory = userData.inventory[type] || [];
     const item = inventory.find(i => i.id === itemId);
     
     if (!item) {
-        console.error(`Item ${itemId} not found in user inventory for ${type}`);
+        console.error(`Item ${itemId} tidak ditemukan dalam inventory pengguna untuk kategori ${type}`);
         return;
     }
     
-    // Update judul modal
+    // Memperbarui judul modal
     modal.querySelector('.feature-title').textContent = `Detail ${type === 'items' ? 'Item' : 'Booster'}`;
     
-    // Update icon
+    // Memperbarui ikon
     const iconElement = modal.querySelector('.item-detail-icon');
     iconElement.innerHTML = `<i class="${itemData.icon}"></i>`;
     
-    // Update nama item
+    // Memperbarui nama item
     modal.querySelector('.item-detail-name').textContent = itemData.name;
     
-    // Update deskripsi
+    // Memperbarui deskripsi
     modal.querySelector('.item-detail-description').textContent = itemData.description;
     
-    // Update jumlah
+    // Memperbarui jumlah
     modal.querySelector('.item-usage-count').textContent = item.quantity || 1;
     
-    // Setup tombol use
+    // Menyiapkan tombol penggunaan
     const useButton = document.getElementById('useItemBtn');
     useButton.setAttribute('data-item-id', itemId);
     useButton.setAttribute('data-item-type', type);
     
-    // Tampilkan modal
+    // Menampilkan modal
     modal.classList.add('active');
 }
 
-// Gunakan item
+/**
+ * Menggunakan item dari inventory
+ * @param {string} itemId - ID item yang akan digunakan
+ * @param {string} type - Tipe item ('items' atau 'boosters')
+ */
 function useItem(itemId, type) {
-    // Cari item dari inventory
+    // Mencari item dari inventory
     const inventory = userData.inventory[type] || [];
     const itemIndex = inventory.findIndex(i => i.id === itemId);
     
     if (itemIndex === -1) return;
     
-    // Kurangi jumlah item
+    // Mengurangi jumlah item
     inventory[itemIndex].quantity--;
     
-    // Jika habis, hapus dari inventory
+    // Menghapus item dari inventory jika jumlahnya habis
     if (inventory[itemIndex].quantity <= 0) {
         inventory.splice(itemIndex, 1);
     }
     
-    // Simpan perubahan
+    // Menyimpan perubahan
     saveGameData();
     
-    // Terapkan efek item
+    // Menerapkan efek item
     applyItemEffect(itemId, type);
     
-    // Re-render inventory
+    // Memperbarui tampilan inventory
     renderInventoryTab(type);
 }
 
-// Terapkan efek item
+/**
+ * Menerapkan efek dari item yang digunakan
+ * @param {string} itemId - ID item yang digunakan
+ * @param {string} type - Tipe item ('items' atau 'boosters')
+ */
 function applyItemEffect(itemId, type) {
-    // Seharusnya kita menerapkan efek item ke game
-    // Tapi untuk sementara, kita hanya tampilkan pesan
+    // TODO: Implementasi efek item pada gameplay
+    // Untuk sementara, hanya menampilkan pesan
     
     alert(`Item ${getItemData(itemId, type).name} telah digunakan!`);
     
     // Dalam implementasi yang sebenarnya, kita akan menyimpan efek item
-    // ke dalam userData.activeEffects atau sejenisnya
+    // ke dalam userData.activeEffects atau struktur data serupa
 }

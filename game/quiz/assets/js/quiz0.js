@@ -39,26 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Inisialisasi element
-    initializeElements();
-    
-    // Set judul kategori dan level
-    updateCategoryTitle();
-    
-    // Ambil pertanyaan
-    currentQuestions = getQuestionsForLevel(quizCategory, quizLevel);
-    
-    // Acak urutan pertanyaan
-    shuffleArray(currentQuestions);
-    
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Mulai quiz
-    startQuiz();
-});
-
-// Inisialisasi elemen-elemen DOM
-function initializeElements() {
     questionText = document.getElementById('questionText');
     optionsContainer = document.getElementById('optionsContainer');
     quizProgress = document.getElementById('quizProgress');
@@ -78,12 +58,24 @@ function initializeElements() {
     quitConfirmModal = document.getElementById('quitConfirmModal');
     confirmQuitBtn = document.getElementById('confirmQuitBtn');
     cancelQuitBtn = document.getElementById('cancelQuitBtn');
-}
-
-// Setup event listeners
-function setupEventListeners() {
+    
+    // Set judul kategori dan level
+    const category = categoryData.find(cat => cat.id === quizCategory);
+    if (category && quizCategoryLevelElement) {
+        quizCategoryLevelElement.textContent = `${category.title} - Level ${quizLevel}`;
+    }
+    
+    // Ambil pertanyaan
+    currentQuestions = getQuestionsForLevel(quizCategory, quizLevel);
+    
+    // Acak urutan pertanyaan
+    shuffleArray(currentQuestions);
+    
+    // Setup event listeners
     if (restartQuizBtn) {
-        restartQuizBtn.addEventListener('click', restartQuiz);
+        restartQuizBtn.addEventListener('click', function() {
+            restartQuiz();
+        });
     }
     
     if (homeBtn) {
@@ -93,7 +85,9 @@ function setupEventListeners() {
     }
     
     if (nextLevelBtn) {
-        nextLevelBtn.addEventListener('click', goToNextLevel);
+        nextLevelBtn.addEventListener('click', function() {
+            goToNextLevel();
+        });
     }
     
     if (selectLevelBtn) {
@@ -104,7 +98,9 @@ function setupEventListeners() {
     
     // Setup tombol exit
     if (quitQuizBtn) {
-        quitQuizBtn.addEventListener('click', showQuitConfirmation);
+        quitQuizBtn.addEventListener('click', function() {
+            showQuitConfirmation();
+        });
     }
     
     if (confirmQuitBtn) {
@@ -115,17 +111,14 @@ function setupEventListeners() {
     }
     
     if (cancelQuitBtn) {
-        cancelQuitBtn.addEventListener('click', hideQuitConfirmation);
+        cancelQuitBtn.addEventListener('click', function() {
+            hideQuitConfirmation();
+        });
     }
-}
-
-// Update judul kategori dan level
-function updateCategoryTitle() {
-    const category = categoryData.find(cat => cat.id === quizCategory);
-    if (category && quizCategoryLevelElement) {
-        quizCategoryLevelElement.textContent = `${category.title} - Level ${quizLevel}`;
-    }
-}
+    
+    // Mulai quiz
+    startQuiz();
+});
 
 // Tampilkan konfirmasi keluar
 function showQuitConfirmation() {

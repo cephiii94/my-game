@@ -1,12 +1,6 @@
 // JavaScript untuk halaman Shop
 
-// Data user
-let userData = {};
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Ambil data user dari localStorage
-    loadUserData();
-    
     // Update UI dengan data user
     updateUserUI();
     
@@ -25,51 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup event listeners untuk modals
     setupShopModals();
 });
-
-// Ambil data user dari localStorage
-function loadUserData() {
-    try {
-        const savedData = localStorage.getItem('quizUserData');
-        if (savedData) {
-            userData = JSON.parse(savedData);
-        }
-    } catch (error) {
-        console.error("Error loading user data:", error);
-        userData = {};
-    }
-}
-
-// Update UI dengan data user
-function updateUserUI() {
-    const usernameElement = document.getElementById('username');
-    const levelElement = document.getElementById('level');
-    const coinsElement = document.getElementById('coins');
-    
-    if (userData && usernameElement && levelElement && coinsElement) {
-        usernameElement.textContent = userData.username || 'User';
-        levelElement.textContent = userData.level || 1;
-        coinsElement.textContent = userData.coins || 0;
-    }
-}
-
-// Setup profile dropdown menu
-function setupProfileDropdown() {
-    const profileButton = document.getElementById('profileButton');
-    const profileDropdown = document.getElementById('profileDropdown');
-    
-    if (profileButton && profileDropdown) {
-        profileButton.addEventListener('click', function() {
-            profileDropdown.classList.toggle('active');
-        });
-        
-        // Tutup dropdown saat klik di luar
-        document.addEventListener('click', function(event) {
-            if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
-                profileDropdown.classList.remove('active');
-            }
-        });
-    }
-}
 
 // Setup event listeners untuk tabs
 function setupShopTabs() {
@@ -356,6 +305,9 @@ function purchaseItem(itemId, itemType, itemPrice, itemName) {
         }
     }
     
+    // Log inventory setelah pembelian
+    console.log("Inventory setelah pembelian:", userData.inventory);
+    
     // Simpan data
     saveGameData();
     
@@ -369,11 +321,6 @@ function purchaseItem(itemId, itemType, itemPrice, itemName) {
     
     // Tampilkan pesan sukses
     showSuccessPurchaseModal(itemName);
-}
-
-// Simpan data game ke localStorage
-function saveGameData() {
-    localStorage.setItem('quizUserData', JSON.stringify(userData));
 }
 
 // Tampilkan pesan sukses pembelian

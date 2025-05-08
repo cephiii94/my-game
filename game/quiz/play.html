@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
+    <!-- 
+        File CSS dan dependencies
+        Penting untuk konsistensi tampilan antar halaman
+    -->
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- 
+            Header
+            Catatan: Struktur header ini digunakan di beberapa halaman
+            Sebaiknya dijadikan komponen yang bisa digunakan ulang
+        -->
         <header class="main-header">
             <div class="back-button" id="backToHome">
                 <i class="fas fa-arrow-left"></i>
@@ -22,15 +30,48 @@
             </div>
         </header>
 
-        <!-- Main Content -->
+        <!-- 
+            Konten Utama 
+            Berisi daftar kategori yang dihasilkan secara dinamis
+        -->
         <main class="category-content">
             <div class="categories-container" id="categoriesContainer">
-                <!-- Categories will be dynamically added here via JavaScript -->
+                <!-- 
+                    Kategori akan ditambahkan secara dinamis oleh JavaScript
+                    Ini menerapkan DRY karena konten tidak ditulis langsung dalam HTML
+                -->
             </div>
         </main>
 
+        <!-- 
+            Navigasi Bawah
+            Catatan: Ditambahkan karena halaman lain menggunakan struktur navigasi yang sama
+            Ini menerapkan prinsip konsistensi antar halaman
+        -->
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-box"></i>
+                <span>Inventory</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Shop</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-trophy"></i>
+                <span>Achievement</span>
+            </div>
+        </nav>
+    </div>
 
-
+    <!-- 
+        Script JavaScript
+        Menerapkan DRY dengan memisahkan data dan logika aplikasi
+    -->
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
 </body>

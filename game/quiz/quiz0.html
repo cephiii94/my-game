@@ -4,20 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game - Quiz</title>
-    <!-- 
-        File CSS dan dependencies
-        Konsisten dengan halaman lain
-    -->
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container quiz-mode">
-        <!-- 
-            Header Quiz
-            Berbeda dari header standar karena kebutuhan khusus halaman quiz
-        -->
+        <!-- Header -->
         <header class="quiz-header">
             <div class="quit-button" id="quitQuizBtn">
                 <i class="fas fa-times"></i>
@@ -34,28 +27,17 @@
             </div>
         </header>
 
-        <!-- 
-            Konten Quiz
-            Area untuk menampilkan pertanyaan dan pilihan jawaban
-        -->
+        <!-- Main Content -->
         <main class="quiz-content">
             <div class="question-container">
                 <h2 class="question-text" id="questionText">Question text will appear here</h2>
                 <div class="options-container" id="optionsContainer">
-                    <!-- 
-                        Opsi jawaban akan dihasilkan secara dinamis dengan JavaScript
-                        Menerapkan DRY dengan tidak menuliskannya secara hardcoded
-                    -->
+                    <!-- Options will be dynamically added here via JavaScript -->
                 </div>
             </div>
         </main>
 
-        <!-- 
-            Modal-modal Quiz
-            Setiap modal memiliki struktur yang konsisten namun berbeda tujuan
-        -->
-        
-        <!-- Modal Konfirmasi Keluar -->
+        <!-- Quit Confirmation Modal -->
         <div class="quit-modal" id="quitConfirmModal">
             <div class="quit-content">
                 <h2 class="quit-title">Keluar Quiz?</h2>
@@ -71,16 +53,14 @@
             </div>
         </div>
 
-        <!-- Modal Hasil Quiz -->
+        <!-- Result Modal -->
         <div class="result-modal" id="resultModal">
             <div class="result-content">
                 <h2 class="result-title">Quiz Completed!</h2>
-                <!-- Bagian Skor -->
                 <div class="result-score">
                     <i class="fas fa-star"></i>
                     <span id="finalScore">0</span>
                 </div>
-                <!-- Bagian Hadiah -->
                 <div class="reward-container">
                     <div class="reward-coin">
                         <i class="fas fa-coins"></i>
@@ -91,7 +71,6 @@
                         <span id="xpReward">+100 XP</span>
                     </div>
                 </div>
-                <!-- Tombol-tombol Navigasi -->
                 <div class="result-buttons">
                     <button id="restartQuizBtn" class="btn-restart">
                         <i class="fas fa-redo"></i> Play Again
@@ -110,10 +89,6 @@
         </div>
     </div>
 
-    <!-- 
-        Script JavaScript
-        Memisahkan logika quiz ke file terpisah (DRY)
-    -->
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/quiz.js"></script>

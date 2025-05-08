@@ -1,100 +1,48 @@
-/**
- * main.js - File untuk navigasi dan fungsi umum aplikasi
- * 
- * File ini berisi fungsi-fungsi utama untuk:
- * - Pengelolaan UI berdasarkan data pengguna
- * - Manajemen navigasi antar halaman
- * - Pengaturan dropdown profil dan modal
- * - Penanganan fitur-fitur umum aplikasi
- */
+// Main JavaScript untuk navigasi dan fungsi umum
 
-// ===============================================
-// VARIABEL GLOBAL
-// ===============================================
-let currentCategory = ""; // Kategori yang sedang dipilih
-let currentLevel = 0;     // Level yang sedang aktif
+// Variabel Global
+let currentCategory = "";
+let currentLevel = 0;
 
-// ===============================================
-// INISIALISASI APLIKASI
-// ===============================================
-
-/**
- * Event listener untuk inisialisasi ketika DOM sudah dimuat
- * Menjalankan semua fungsi setup awal yang dibutuhkan aplikasi
- */
+// Event Listener ketika DOM sudah diload
 document.addEventListener('DOMContentLoaded', function() {
     // Update UI dengan data user
     updateUserUI();
     
-    // Setup event listeners sesuai halaman yang aktif
+    // Setup event listeners berdasarkan halaman yang sedang dibuka
     setupPageEventListeners();
     
-    // Setup menu dropdown profil
+    // Setup profile dropdown menu
     setupProfileDropdown();
 
     // Setup modal untuk Inventory dan Shop
     setupFeatureModals();
 
-    // Update ikon profil dari data yang tersimpan (jika di homepage)
+    // Update profile icon dari data yang tersimpan (jika di homepage)
     updateHomepageProfileIcon();
 });
 
-// ===============================================
-// FUNGSI PENGELOLAAN USER INTERFACE
-// ===============================================
-
-/**
- * Memperbarui semua elemen UI yang terkait data pengguna
- * - Username
- * - Level
- * - Koin
- */
+// Update UI dengan data user
 function updateUserUI() {
-    // Mencari semua elemen yang perlu diperbarui
+    // Update username dan level jika elemen ada
     const usernameElements = document.querySelectorAll('.username');
     const levelElements = document.querySelectorAll('.level');
     const coinElements = document.querySelectorAll('.coin-count');
     
-    // Update username di semua elemen terkait
     usernameElements.forEach(element => {
         element.textContent = userData.username;
     });
     
-    // Update level di semua elemen terkait
     levelElements.forEach(element => {
         element.textContent = `Level ${userData.level}`;
     });
     
-    // Update jumlah koin di semua elemen terkait
     coinElements.forEach(element => {
         element.textContent = userData.coins;
     });
 }
 
-/**
- * Memperbarui ikon profil di halaman utama
- * Mengambil data ikon dari userData
- */
-function updateHomepageProfileIcon() {
-    const profileIconElement = document.getElementById('userProfileIcon');
-    if (profileIconElement && userData && userData.profileIcon) {
-        // Hapus class icon sebelumnya
-        profileIconElement.className = '';
-        // Tambahkan class icon yang tersimpan
-        profileIconElement.className = userData.profileIcon;
-    }
-}
-
-// ===============================================
-// MENU PROFIL DAN DROPDOWN
-// ===============================================
-
-/**
- * Mengatur menu dropdown profil
- * - Toggle tampilan dropdown
- * - Posisi dropdown
- * - Event handlers untuk item menu
- */
+// Setup profile dropdown menu
 function setupProfileDropdown() {
     const profileContainers = document.querySelectorAll('.profile-container');
     
@@ -155,14 +103,7 @@ function setupProfileDropdown() {
     });
 }
 
-// ===============================================
-// FUNGSI MODAL LOGOUT
-// ===============================================
-
-/**
- * Menampilkan modal konfirmasi logout
- * Menyiapkan semua event handlers terkait
- */
+// Fungsi untuk menampilkan modal logout
 function showLogoutModal() {
     const logoutModal = document.getElementById('logoutModal');
     
@@ -175,7 +116,7 @@ function showLogoutModal() {
         const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
         
         if (closeLogout) {
-            // Hapus event listener lama jika ada untuk menghindari duplikasi
+            // Hapus event listener lama jika ada, untuk menghindari duplikasi
             closeLogout.removeEventListener('click', hideLogoutModal);
             closeLogout.addEventListener('click', hideLogoutModal);
         }
@@ -190,15 +131,13 @@ function showLogoutModal() {
             confirmLogoutBtn.addEventListener('click', confirmLogout);
         }
         
-        // Event listener untuk klik di luar modal
+        // Tambahkan event listener untuk klik di luar modal
         logoutModal.removeEventListener('click', handleOutsideClick);
         logoutModal.addEventListener('click', handleOutsideClick);
     }
 }
 
-/**
- * Menyembunyikan modal logout
- */
+// Fungsi untuk menyembunyikan modal logout
 function hideLogoutModal() {
     const logoutModal = document.getElementById('logoutModal');
     if (logoutModal) {
@@ -206,45 +145,33 @@ function hideLogoutModal() {
     }
 }
 
-/**
- * Menangani proses logout setelah konfirmasi
- */
+// Fungsi untuk menangani logout
 function confirmLogout() {
     logoutUser();
     hideLogoutModal();
 }
 
-/**
- * Menangani klik di luar modal logout
- * Menutup modal jika klik di area luar
- */
+// Fungsi untuk menangani klik di luar modal
 function handleOutsideClick(event) {
     if (event.target === this) {
         hideLogoutModal();
     }
 }
 
-// ===============================================
-// FUNGSI MODAL RESET DATA
-// ===============================================
-
-/**
- * Menampilkan modal konfirmasi reset data
- * Menyiapkan semua event handlers terkait
- */
+// Fungsi untuk menampilkan modal reset data
 function showResetDataModal() {
     const resetModal = document.getElementById('resetModal');
     
     if (resetModal) {
         resetModal.classList.add('active');
         
-        // Pasang event listeners dengan benar
+        // Pastikan event listener terpasang dengan benar
         const closeReset = document.getElementById('closeReset');
         const cancelResetBtn = document.getElementById('cancelResetBtn');
         const confirmResetBtn = document.getElementById('confirmResetBtn');
         
         if (closeReset) {
-            // Hapus event listener lama jika ada untuk menghindari duplikasi
+            // Hapus event listener lama jika ada, untuk menghindari duplikasi
             closeReset.removeEventListener('click', hideResetModal);
             closeReset.addEventListener('click', hideResetModal);
         }
@@ -259,15 +186,13 @@ function showResetDataModal() {
             confirmResetBtn.addEventListener('click', confirmReset);
         }
         
-        // Event listener untuk klik di luar modal
+        // Tambahkan event listener untuk klik di luar modal
         resetModal.removeEventListener('click', handleResetOutsideClick);
         resetModal.addEventListener('click', handleResetOutsideClick);
     }
 }
 
-/**
- * Menyembunyikan modal reset data
- */
+// Fungsi untuk menyembunyikan modal reset
 function hideResetModal() {
     const resetModal = document.getElementById('resetModal');
     if (resetModal) {
@@ -275,131 +200,52 @@ function hideResetModal() {
     }
 }
 
-/**
- * Menangani proses reset data setelah konfirmasi
- * Muat ulang halaman setelah reset
- */
+// Fungsi untuk menangani reset data
 function confirmReset() {
     resetUserData();
     hideResetModal();
     window.location.reload();
 }
 
-/**
- * Menangani klik di luar modal reset
- * Menutup modal jika klik di area luar
- */
+// Fungsi untuk menangani klik di luar modal reset
 function handleResetOutsideClick(event) {
     if (event.target === this) {
         hideResetModal();
     }
 }
 
-// ===============================================
-// SETUP HALAMAN DAN EVENT LISTENERS
-// ===============================================
-
-/**
- * Setup event listeners berdasarkan halaman yang sedang aktif
- * Mendeteksi halaman dari URL dan memanggil fungsi setup yang sesuai
- */
+// Setup event listeners berdasarkan halaman yang sedang dibuka
 function setupPageEventListeners() {
     // Cek halaman mana yang sedang dibuka
     const pathname = window.location.pathname;
     const filename = pathname.split('/').pop();
     
-    // Setup listeners berdasarkan halaman aktif
+    // Halaman utama (index.html atau /)
     if (filename === '' || filename === 'index.html') {
-        // Halaman utama
         setupHomePageListeners();
-    } else if (filename === 'play.html') {
-        // Halaman daftar kategori (play)
+    }
+    // Halaman play (play.html)
+    else if (filename === 'play.html') {
         setupPlayPageListeners();
-    } else if (filename === 'level.html') {
-        // Halaman daftar level
+    }
+    // Halaman level (level.html)
+    else if (filename === 'level.html') {
         setupLevelPageListeners();
-    } else if (filename === 'quiz.html') {
-        // Quiz listeners akan diatur di quiz.js
-    } else if (filename === 'profile.html') {
-        // Halaman profil
+    }
+    // Halaman quiz (quiz.html)
+    else if (filename === 'quiz.html') {
+        // Quiz listeners akan di-setup di quiz.js
+    }
+    // Halaman profile (profile.html)
+    else if (filename === 'profile.html') {
         setupProfilePageListeners();
     }
     
-    // Setup navigasi untuk semua halaman
+    // Setup navigation bar listeners untuk semua halaman
     setupNavBarListeners();
 }
 
-/**
- * Setup event listeners untuk halaman utama (index.html)
- */
-function setupHomePageListeners() {
-    const playButton = document.getElementById('playButton');
-    
-    if (playButton) {
-        playButton.addEventListener('click', function() {
-            window.location.href = 'play.html';
-        });
-    }
-}
-
-/**
- * Setup event listeners untuk halaman play (kategori)
- * Termasuk render daftar kategori
- */
-function setupPlayPageListeners() {
-    const backButton = document.getElementById('backToHome');
-    const categoriesContainer = document.getElementById('categoriesContainer');
-    
-    if (backButton) {
-        backButton.addEventListener('click', function() {
-            window.location.href = 'index.html';
-        });
-    }
-    
-    if (categoriesContainer) {
-        // Render daftar kategori
-        renderCategories(categoriesContainer);
-    }
-}
-
-/**
- * Setup event listeners untuk halaman level
- * Mengambil data kategori dari URL parameter
- */
-function setupLevelPageListeners() {
-    const backButton = document.getElementById('backToCategories');
-    const levelsContainer = document.getElementById('levelsContainer');
-    const categoryTitle = document.getElementById('categoryTitle');
-    
-    // Ambil kategori dari URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    currentCategory = urlParams.get('category');
-    
-    if (backButton) {
-        backButton.addEventListener('click', function() {
-            window.location.href = 'play.html';
-        });
-    }
-    
-    if (levelsContainer && currentCategory) {
-        // Set judul kategori
-        if (categoryTitle) {
-            const category = categoryData.find(cat => cat.id === currentCategory);
-            if (category) {
-                categoryTitle.textContent = category.title;
-            }
-        }
-        
-        // Render daftar level
-        const levels = getLevelsForCategory(currentCategory);
-        renderLevels(levelsContainer, levels);
-    }
-}
-
-/**
- * Setup event listeners untuk halaman profil
- * Menampilkan XP dan achievements
- */
+// Setup event listeners untuk halaman profile
 function setupProfilePageListeners() {
     const backButton = document.getElementById('backToHome');
     
@@ -409,140 +255,17 @@ function setupProfilePageListeners() {
         });
     }
     
-    // Update tampilan XP
+    // Update XP display
     const xpCountElement = document.getElementById('xpCount');
     if (xpCountElement) {
         xpCountElement.textContent = userData.xp;
     }
     
-    // Render daftar achievements
+    // Render data achievement
     renderAchievements();
 }
 
-/**
- * Setup event listeners untuk navigation bar
- * Navigasi antar halaman utama
- */
-function setupNavBarListeners() {
-    const navItems = document.querySelectorAll('.nav-item');
-    
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const text = this.querySelector('span').textContent.toLowerCase();
-            
-            // Hapus kelas active dari semua item
-            navItems.forEach(i => i.classList.remove('active'));
-            
-            // Tambah kelas active ke item yang diklik
-            this.classList.add('active');
-            
-            // Navigasi berdasarkan teks
-            switch (text) {
-                case 'home':
-                    window.location.href = 'index.html';
-                    break;
-                case 'inventaris':
-                case 'inventory':
-                    window.location.href = 'inventory.html';
-                    break;
-                case 'toko':
-                case 'shop':
-                    window.location.href = 'shop.html';
-                    break;
-                case 'prestasi':
-                case 'achievement':
-                    window.location.href = 'profile.html';
-                    break;
-            }
-        });
-    });
-}
-
-// ===============================================
-// RENDER KATEGORI DAN LEVEL
-// ===============================================
-
-/**
- * Render daftar kategori ke dalam container
- * @param {HTMLElement} container - Element container untuk menampilkan kategori
- */
-function renderCategories(container) {
-    container.innerHTML = '';
-    
-    categoryData.forEach(category => {
-        const categoryCard = document.createElement('div');
-        categoryCard.className = 'category-card';
-        categoryCard.dataset.categoryId = category.id;
-        
-        categoryCard.innerHTML = `
-            <img src="${category.image}" alt="${category.title}" class="category-image">
-            <div class="category-info">
-                <h3 class="category-title">${category.title}</h3>
-                <p class="category-description">${category.description}</p>
-            </div>
-        `;
-        
-        categoryCard.addEventListener('click', function() {
-            const categoryId = this.dataset.categoryId;
-            window.location.href = `level.html?category=${categoryId}`;
-        });
-        
-        container.appendChild(categoryCard);
-    });
-}
-
-/**
- * Render daftar level ke dalam container
- * @param {HTMLElement} container - Element container untuk menampilkan level
- * @param {Array} levels - Array data level yang akan ditampilkan
- */
-function renderLevels(container, levels) {
-    container.innerHTML = '';
-    
-    levels.forEach(level => {
-        const levelCard = document.createElement('div');
-        levelCard.className = `level-card ${level.status}`;
-        levelCard.dataset.level = level.level;
-        
-        levelCard.innerHTML = `
-            <div class="level-number">${level.level}</div>
-            <div class="level-status">${level.status === 'completed' ? 'Selesai' : (level.status === 'unlocked' ? 'Buka' : 'Terkunci')}</div>
-        `;
-        
-        if (level.status !== 'locked') {
-            levelCard.addEventListener('click', function() {
-                const levelNumber = parseInt(this.dataset.level);
-                startQuiz(currentCategory, levelNumber);
-            });
-        }
-        
-        container.appendChild(levelCard);
-    });
-}
-
-/**
- * Memulai quiz dengan kategori dan level tertentu
- * Menyimpan data ke sessionStorage dan navigasi ke halaman quiz
- * @param {string} categoryId - ID kategori yang dipilih
- * @param {number} level - Nomor level yang dipilih
- */
-function startQuiz(categoryId, level) {
-    // Simpan kategori dan level yang dipilih ke sessionStorage
-    sessionStorage.setItem('quizCategory', categoryId);
-    sessionStorage.setItem('quizLevel', level);
-    
-    // Navigasi ke halaman quiz
-    window.location.href = 'quiz.html';
-}
-
-// ===============================================
-// RENDER ACHIEVEMENTS
-// ===============================================
-
-/**
- * Render data achievements ke halaman profil
- * Menampilkan achievements khusus dan level yang sudah diselesaikan
- */
+// Render achievements di halaman profile
 function renderAchievements() {
     const achievementsContainer = document.getElementById('achievementsContainer');
     
@@ -670,16 +393,178 @@ function renderAchievements() {
     }
 }
 
-// ===============================================
-// SETUP MODAL FITUR
-// ===============================================
+// Setup event listeners untuk halaman utama
+function setupHomePageListeners() {
+    const playButton = document.getElementById('playButton');
+    
+    if (playButton) {
+        playButton.addEventListener('click', function() {
+            window.location.href = 'play.html';
+        });
+    }
+}
 
-/**
- * Setup modal untuk fitur Inventory dan Shop
- * Menambahkan event listeners untuk tombol dan interaksi
- */
+// Setup event listeners untuk halaman play (kategori)
+function setupPlayPageListeners() {
+    const backButton = document.getElementById('backToHome');
+    const categoriesContainer = document.getElementById('categoriesContainer');
+    
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    }
+    
+    if (categoriesContainer) {
+        // Render kategori
+        renderCategories(categoriesContainer);
+    }
+}
+
+// Setup event listeners untuk halaman level
+function setupLevelPageListeners() {
+    const backButton = document.getElementById('backToCategories');
+    const levelsContainer = document.getElementById('levelsContainer');
+    const categoryTitle = document.getElementById('categoryTitle');
+    
+    // Ambil kategori dari URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    currentCategory = urlParams.get('category');
+    
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            window.location.href = 'play.html';
+        });
+    }
+    
+    if (levelsContainer && currentCategory) {
+        // Set judul kategori
+        if (categoryTitle) {
+            const category = categoryData.find(cat => cat.id === currentCategory);
+            if (category) {
+                categoryTitle.textContent = category.title;
+            }
+        }
+        
+        // Render level
+        const levels = getLevelsForCategory(currentCategory);
+        renderLevels(levelsContainer, levels);
+    }
+}
+
+// Setup event listeners untuk navbar
+function setupNavBarListeners() {
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const text = this.querySelector('span').textContent.toLowerCase();
+            
+            // Hapus kelas active dari semua item
+            navItems.forEach(i => i.classList.remove('active'));
+            
+            // Tambah kelas active ke item yang diklik
+            this.classList.add('active');
+            
+            // Navigasi berdasarkan teks
+            switch (text) {
+                case 'home':
+                    window.location.href = 'index.html';
+                    break;
+                    case 'inventaris':
+                        case 'inventory':
+                            window.location.href = 'inventory.html';
+                            break;
+                        case 'toko':
+                        case 'shop':
+                            window.location.href = 'shop.html';
+                            break;
+                        case 'prestasi':
+                        case 'achievement':
+                            window.location.href = 'profile.html';
+                            break;
+            }
+        });
+    });
+}
+
+// Render kategori ke dalam container
+function renderCategories(container) {
+    container.innerHTML = '';
+    
+    categoryData.forEach(category => {
+        const categoryCard = document.createElement('div');
+        categoryCard.className = 'category-card';
+        categoryCard.dataset.categoryId = category.id;
+        
+        categoryCard.innerHTML = `
+            <img src="${category.image}" alt="${category.title}" class="category-image">
+            <div class="category-info">
+                <h3 class="category-title">${category.title}</h3>
+                <p class="category-description">${category.description}</p>
+            </div>
+        `;
+        
+        categoryCard.addEventListener('click', function() {
+            const categoryId = this.dataset.categoryId;
+            window.location.href = `level.html?category=${categoryId}`;
+        });
+        
+        container.appendChild(categoryCard);
+    });
+}
+
+// Render level ke dalam container
+function renderLevels(container, levels) {
+    container.innerHTML = '';
+    
+    levels.forEach(level => {
+        const levelCard = document.createElement('div');
+        levelCard.className = `level-card ${level.status}`;
+        levelCard.dataset.level = level.level;
+        
+        levelCard.innerHTML = `
+            <div class="level-number">${level.level}</div>
+            <div class="level-status">${level.status === 'completed' ? 'Selesai' : (level.status === 'unlocked' ? 'Buka' : 'Terkunci')}</div>
+        `;
+        
+        if (level.status !== 'locked') {
+            levelCard.addEventListener('click', function() {
+                const levelNumber = parseInt(this.dataset.level);
+                startQuiz(currentCategory, levelNumber);
+            });
+        }
+        
+        container.appendChild(levelCard);
+    });
+}
+
+// Mulai quiz dengan kategori dan level tertentu
+function startQuiz(categoryId, level) {
+    // Simpan kategori dan level yang dipilih ke sessionStorage
+    sessionStorage.setItem('quizCategory', categoryId);
+    sessionStorage.setItem('quizLevel', level);
+    
+    // Navigasi ke halaman quiz
+    window.location.href = 'quiz.html';
+}
+
+// Fungsi untuk update icon profile di homepage
+function updateHomepageProfileIcon() {
+    const profileIconElement = document.getElementById('userProfileIcon');
+    if (profileIconElement && userData && userData.profileIcon) {
+        // Hapus class icon sebelumnya
+        profileIconElement.className = '';
+        // Tambahkan class icon yang tersimpan
+        profileIconElement.className = userData.profileIcon;
+    }
+}
+
+// Setup feature modals untuk Inventory dan Shop
 function setupFeatureModals() {
     // Elements
+    const navInventory = document.getElementById('navInventory');
+    const navShop = document.getElementById('navShop');
     const inventoryModal = document.getElementById('inventoryModal');
     const shopModal = document.getElementById('shopModal');
     const closeInventory = document.getElementById('closeInventory');
@@ -736,10 +621,9 @@ function setupFeatureModals() {
     });
 }
 
-/**
- * Reset status active pada bottom navigation
- * Menghapus kelas 'active' dari semua item navigasi
- */
+
+
+// Reset active status pada bottom nav
 function resetNavActiveStatus() {
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {

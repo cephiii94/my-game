@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game - Profil</title>
+    <!-- 
+        File CSS dan dependencies 
+        Konsistensi dengan file lain menerapkan DRY
+    -->
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- 
+            Header 
+            Struktur yang sama dengan halaman lain (DRY)
+        -->
         <header class="main-header">
             <div class="back-button" id="backToHome">
                 <i class="fas fa-arrow-left"></i>
@@ -22,9 +28,15 @@
             </div>
         </header>
 
-        <!-- Main Content -->
+        <!-- 
+            Konten Utama
+            Dibagi menjadi beberapa bagian logis dengan komentar
+        -->
         <main class="profile-content">
-            <!-- Profile Header -->
+            <!-- 
+                Header Profil
+                Menampilkan avatar, username, level dan statistik
+            -->
             <div class="profile-header">
                 <div class="profile-avatar">
                     <i id="profileAvatarIcon" class="fas fa-user"></i>
@@ -33,6 +45,10 @@
                     <h2 class="username">User</h2>
                     <p class="level">Level</p>
                     <div class="profile-stats">
+                        <!-- 
+                            Statistik Profil
+                            Struktur yang konsisten untuk setiap statistik
+                        -->
                         <div class="stat-item">
                             <i class="fas fa-coins coins"></i>
                             <span class="coin-count">500</span> Koin
@@ -45,18 +61,22 @@
                 </div>
             </div>
             
-            <!-- Achievements Section -->
+            <!-- 
+                Bagian Pencapaian
+                Menampilkan daftar pencapaian yang dihasilkan secara dinamis
+            -->
             <div class="profile-section">
                 <h3>Pencapaian Saya</h3>
                 <div id="achievementsContainer">
-                    <!-- Achievements will be rendered dynamically -->
+                    <!-- Pencapaian akan dirender secara dinamis -->
                 </div>
             </div>
         </main>
 
-        
-
-        <!-- Bottom Navigation -->
+        <!-- 
+            Navigasi Bawah 
+            Struktur yang sama dengan halaman lain (DRY)
+        -->
         <nav class="bottom-nav">
             <div class="nav-item">
                 <i class="fas fa-home"></i>
@@ -74,146 +94,84 @@
                 <i class="fas fa-trophy"></i>
                 <span>Achievement</span>
             </div>
-            
         </nav>
     </div>
 
-    <!-- Tambahkan sebelum </body> di profile.html -->
-<div id="iconModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h3>Pilih Ikon Profil</h3>
-        <div class="icon-grid" id="iconGrid">
-            <!-- Icons will be populated here -->
-        </div>
-    </div>
-</div>
-
-<!-- Inventory Modal -->
-<div class="feature-modal" id="inventoryModal">
-    <div class="feature-content">
-        <div class="feature-header">
-            <h2 class="feature-title">Inventory</h2>
-            <button class="close-feature" id="closeInventory">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="feature-body">
-            <div class="feature-message">
-                <i class="fas fa-box feature-icon"></i>
-                <p>Fitur Inventory akan segera hadir!</p>
-                <p class="feature-description">Di sini Anda akan dapat melihat dan menggunakan item-item yang sudah Anda beli atau dapatkan dari hadiah.</p>
+    <!-- 
+        Modal-modal
+        Setiap modal memiliki struktur yang konsisten 
+    -->
+    
+    <!-- Modal Pemilihan Ikon Profil -->
+    <div id="iconModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Pilih Ikon Profil</h3>
+            <div class="icon-grid" id="iconGrid">
+                <!-- Ikon akan dihasilkan dinamis oleh JavaScript -->
             </div>
         </div>
-        <div class="feature-footer">
-            <button class="btn-ok" id="okInventoryBtn">
-                <i class="fas fa-check"></i> OK
-            </button>
-        </div>
     </div>
-</div>
 
-<!-- Shop Modal -->
-<div class="feature-modal" id="shopModal">
-    <div class="feature-content">
-        <div class="feature-header">
-            <h2 class="feature-title">Shop</h2>
-            <button class="close-feature" id="closeShop">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="feature-body">
-            <div class="feature-message">
-                <i class="fas fa-shopping-cart feature-icon"></i>
-                <p>Fitur Shop akan segera hadir!</p>
-                <p class="feature-description">Di sini Anda akan dapat membeli berbagai item dan power-up menggunakan koin yang telah Anda kumpulkan.</p>
+    <!-- 
+        Modal-modal Fitur
+        Menggunakan struktur yang sama untuk konsistensi (DRY)
+    -->
+    
+    <!-- Modal Inventory (Coming Soon) -->
+    <div class="feature-modal" id="inventoryModal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Inventory</h2>
+                <button class="close-feature" id="closeInventory">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-box feature-icon"></i>
+                    <p>Fitur Inventory akan segera hadir!</p>
+                    <p class="feature-description">Di sini Anda akan dapat melihat dan menggunakan item-item yang sudah Anda beli atau dapatkan dari hadiah.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-ok" id="okInventoryBtn">
+                    <i class="fas fa-check"></i> OK
+                </button>
             </div>
         </div>
-        <div class="feature-footer">
-            <button class="btn-ok" id="okShopBtn">
-                <i class="fas fa-check"></i> OK
-            </button>
+    </div>
+
+    <!-- Modal Shop (Coming Soon) -->
+    <div class="feature-modal" id="shopModal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Shop</h2>
+                <button class="close-feature" id="closeShop">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-shopping-cart feature-icon"></i>
+                    <p>Fitur Shop akan segera hadir!</p>
+                    <p class="feature-description">Di sini Anda akan dapat membeli berbagai item dan power-up menggunakan koin yang telah Anda kumpulkan.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-ok" id="okShopBtn">
+                    <i class="fas fa-check"></i> OK
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Pastikan script data.js dimuat terlebih dahulu -->
-<script src="assets/js/data.js"></script>
-<script src="assets/js/main.js"></script>
-
-<script>
-    // Tambahkan script untuk menangani penggantian ikon
-    document.addEventListener('DOMContentLoaded', function() {
-        // Pastikan profile avatar menunjukkan icon yang benar
-        updateProfileIcon();
-        
-        const profileAvatar = document.querySelector('.profile-avatar');
-        const iconModal = document.getElementById('iconModal');
-        
-        // Buka modal saat ikon profil diklik
-        profileAvatar.addEventListener('click', function() {
-            iconModal.style.display = 'block';
-            renderProfileIcons();
-        });
-        
-        // Tutup modal
-        document.querySelector('.close-modal').addEventListener('click', function() {
-            iconModal.style.display = 'none';
-        });
-        
-        // Tutup modal jika klik di luar
-        window.addEventListener('click', function(event) {
-            if (event.target === iconModal) {
-                iconModal.style.display = 'none';
-            }
-        });
-        
-        // Tampilkan jumlah XP
-        const xpCountElement = document.getElementById('xpCount');
-        if (xpCountElement) {
-            xpCountElement.textContent = userData.xp;
-        }
-    });
-    
-    // Fungsi untuk update tampilan icon profile
-    function updateProfileIcon() {
-        const profileAvatar = document.querySelector('.profile-avatar');
-        if (profileAvatar) {
-            profileAvatar.innerHTML = `<i class="${userData.profileIcon || 'fas fa-user'}"></i>`;
-        }
-    }
-    
-    function renderProfileIcons() {
-        const iconGrid = document.getElementById('iconGrid');
-        iconGrid.innerHTML = '';
-        
-        profileIcons.forEach(icon => {
-            const iconElement = document.createElement('div');
-            iconElement.className = 'icon-option';
-            iconElement.innerHTML = `<i class="${icon.icon}"></i>`;
-            
-            iconElement.addEventListener('click', function() {
-                // Update ikon profil
-                userData.profileIcon = icon.icon;
-                
-                // Simpan perubahan ke localStorage
-                saveGameData();
-                
-                // Update tampilan
-                updateProfileIcon();
-                document.getElementById('iconModal').style.display = 'none';
-                
-                // Log untuk debugging
-                console.log('Icon updated:', userData.profileIcon);
-                console.log('Data saved to localStorage');
-            });
-            
-            iconGrid.appendChild(iconElement);
-        });
-    }
-
-
-
-</script>
+    <!-- 
+        Script JavaScript
+        Catatan: Kode JavaScript dari bagian script inline dipindahkan ke file terpisah
+    -->
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/profile.js"></script>
 </body>
 </html>

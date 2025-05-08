@@ -1,4 +1,16 @@
-/* Reset and Base Styles */
+/* 
+* Quiz App - CSS Teroptimasi
+* =============================================
+* CATATAN:
+* - File ini menggabungkan styles.css dan responsive.css
+* - Struktur CSS diorganisir berdasarkan komponen
+* - Pendekatan DRY (Don't Repeat Yourself) diterapkan
+* - Media queries dikelompokkan berdasarkan ukuran layar
+*/
+
+/* =================== */
+/* RESET DAN BASE STYLES */
+/* =================== */
 * {
     margin: 0;
     padding: 0;
@@ -12,15 +24,19 @@ body {
 }
 
 .container {
-    
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
     background-color: #fff;
     position: relative;
+    padding-bottom: 60px; /* Ruang untuk bottom navigation */
+    max-width: 100%;
+    margin: 0 auto;
 }
 
-/* Header Styles */
+/* =================== */
+/* HEADER STYLES */
+/* =================== */
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -34,6 +50,8 @@ body {
 .profile-container {
     display: flex;
     align-items: center;
+    position: relative;
+    cursor: pointer;
 }
 
 .profile-icon {
@@ -84,7 +102,9 @@ body {
     font-weight: bold;
 }
 
-/* Main Content Styles */
+/* =================== */
+/* MAIN CONTENT STYLES */
+/* =================== */
 .main-content {
     flex: 1;
     display: flex;
@@ -99,7 +119,7 @@ body {
     margin-bottom: 30px;
     justify-content: center;
     align-items: center;
-    animation: alternate float 3s ease-in-out infinite;
+    animation: float 3s ease-in-out infinite alternate;
 }
 
 @keyframes float {
@@ -109,16 +129,9 @@ body {
 }
 
 .character {
-    width: 200px; /* Ukuran default karakter */
+    width: 200px;
     height: auto;
-    object-fit: contain; /* Pastikan gambar tidak terdistorsi */
-}
-
-/* Ukuran untuk layar kecil */
-@media (max-width: 576px) {
-    .character {
-        width: 200px;
-    }
+    object-fit: contain;
 }
 
 .play-button {
@@ -151,8 +164,9 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Bottom Navigation Styles */
-/* Bottom Navigation Styles - Updated */
+/* =================== */
+/* BOTTOM NAVIGATION */
+/* =================== */
 .bottom-nav {
     display: flex;
     justify-content: space-around;
@@ -167,55 +181,6 @@ body {
     z-index: 1000;
 }
 
-/* Container wrapper to ensure proper width matching */
-.container {
-    max-width: 100%;
-    margin: 0 auto;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    position: relative;
-    padding-bottom: 60px; /* Ruang untuk bottom navigation */
-}
-
-/* Media query untuk layar yang berbeda ukuran */
-@media (min-width: 769px) {
-    .container {
-        max-width: 768px;
-        margin: 0 auto;
-        border-left: 1px solid #e0e0e0;
-        border-right: 1px solid #e0e0e0;
-    }
-    
-    .bottom-nav {
-        max-width: 768px; /* Sama dengan container */
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-
-/* Media query untuk extra large devices */
-@media (min-width: 1200px) {
-    .container {
-        max-width: 768px;
-    }
-    
-    .bottom-nav {
-        max-width: 768px; /* Sama dengan container */
-    }
-}
-
-/* Untuk halaman dengan konten yang dapat di-scroll */
-.inventory-content,
-.shop-content,
-.category-content,
-.profile-content {
-    padding-bottom: 70px; /* Padding yang disesuaikan untuk bottom nav */
-    overflow-y: auto;
-}
-
-/* Style untuk item navigasi */
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -239,42 +204,14 @@ body {
     font-size: 0.8rem;
 }
 
-/* Media query untuk layar kecil */
-@media (max-width: 576px) {
-    .nav-item i {
-        font-size: 1.2rem;
-    }
-    
-    .nav-item span {
-        font-size: 0.7rem;
-    }
-}
-
-/* Media query untuk mode landscape */
-@media (max-height: 500px) and (orientation: landscape) {
-    .bottom-nav {
-        padding: 5px 0;
-    }
-    
-    .nav-item {
-        padding: 5px 10px;
-    }
-    
-    .nav-item i {
-        font-size: 1.1rem;
-        margin-bottom: 2px;
-    }
-    
-    .nav-item span {
-        font-size: 0.7rem;
-    }
-}
-
-/* Category Page Styles */
+/* =================== */
+/* CATEGORY PAGE STYLES */
+/* =================== */
 .category-content {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    padding-bottom: 70px;
 }
 
 .categories-container {
@@ -321,7 +258,9 @@ body {
     line-height: 1.4;
 }
 
-/* Level Page Styles */
+/* =================== */
+/* LEVEL PAGE STYLES */
+/* =================== */
 .level-content {
     flex: 1;
     padding: 20px;
@@ -365,6 +304,7 @@ body {
     color: #7f8c8d;
 }
 
+/* Level card states */
 .level-card.locked {
     background-color: #f5f5f5;
     cursor: not-allowed;
@@ -399,7 +339,9 @@ body {
     margin-top: 5px;
 }
 
-/* Quiz Page Styles */
+/* =================== */
+/* QUIZ PAGE STYLES */
+/* =================== */
 .quiz-mode {
     background-color: #f8f9fa;
 }
@@ -508,7 +450,28 @@ body {
     border-color: #e74c3c;
 }
 
-/* Result Modal Styles */
+/* Quiz Exit Button */
+.quit-button {
+    font-size: 1.2rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.quit-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* =================== */
+/* RESULT MODAL STYLES */
+/* =================== */
 .result-modal {
     position: fixed;
     top: 0;
@@ -594,11 +557,18 @@ body {
 
 .result-buttons {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
 }
 
-.btn-restart, .btn-home {
+.result-buttons button {
+    flex: 1 0 calc(50% - 10px);
+    min-width: 120px;
+}
+
+/* Tombol actions */
+.btn-restart, .btn-home, .btn-next, .btn-select {
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
@@ -620,461 +590,9 @@ body {
     color: #2c3e50;
 }
 
-.btn-restart:hover, .btn-home:hover {
-    transform: translateY(-2px);
-}
-
-.btn-restart i, .btn-home i {
-    margin-right: 5px;
-}
-
-/* Styles for Logout Button */
-.profile-container {
-    position: relative;
-}
-
-.logout-btn {
-    position: absolute;
-    top: 0;
-    right: -30px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.logout-btn:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Additional styles for login page */
-.login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.login-logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.login-logo i {
-    font-size: 5rem;
-    color: #3498db;
-    margin-bottom: 10px;
-}
-
-.login-title {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.login-form {
-    background-color: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #2c3e50;
-}
-
-.form-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-}
-
-.form-input:focus {
-    border-color: #3498db;
-    outline: none;
-}
-
-.login-button {
-    width: 100%;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-button:hover {
-    background-color: #2980b9;
-}
-
-/* Styles untuk Profile Dropdown */
-.profile-container {
-    position: relative;
-    cursor: pointer;
-}
-
-.profile-dropdown {
-    position: absolute;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    width: 180px;
-    z-index: 1000;
-    animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-item {
-    padding: 12px 15px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.dropdown-item:hover {
-    background-color: #f5f7fa;
-}
-
-.dropdown-item:first-child {
-    border-radius: 8px 8px 0 0;
-}
-
-.dropdown-item:last-child {
-    border-radius: 0 0 8px 8px;
-}
-
-.dropdown-item i {
-    margin-right: 10px;
-    color: #3498db;
-    width: 20px;
-    text-align: center;
-}
-
-#logoutMenuItem i {
-    color: #e74c3c;
-}
-
-#resetMenuItem i {
-    color: #e67e22;
-}
-
-/* Styles untuk halaman profile */
-.profile-content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.profile-header {
-    background-color: #f5f7fa;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-avatar {
-    font-size: 3rem;
-    color: #3498db;
-    background-color: rgba(52, 152, 219, 0.1);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-}
-
-.profile-details h2 {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-    color: #2c3e50;
-}
-
-.profile-stats {
-    display: flex;
-    margin-top: 10px;
-}
-
-.stat-item {
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.stat-item i {
-    margin-right: 5px;
-}
-
-.stat-item .coins {
-    color: #f39c12;
-}
-
-.stat-item .xp {
-    color: #9b59b6;
-}
-
-.profile-section {
-    background-color: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-section h3 {
-    font-size: 1.2rem;
-    color: #2c3e50;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ecf0f1;
-}
-
-.achievement-category {
-    margin-bottom: 20px;
-}
-
-.achievement-category h3 {
-    font-size: 1.1rem;
-    color: #3498db;
-    margin-bottom: 10px;
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.achievement-levels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.achievement-badge {
-    display: flex;
-    align-items: center;
-    background-color: #f5f7fa;
-    border-radius: 8px;
-    padding: 10px;
-    width: calc(50% - 8px);
-    transition: transform 0.2s;
-}
-
-.achievement-badge:hover {
-    transform: translateY(-3px);
-}
-
-.badge-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(241, 196, 15, 0.1);
-    color: #f1c40f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin-right: 12px;
-}
-
-.badge-info {
-    flex: 1;
-}
-
-.badge-title {
-    font-weight: bold;
-    font-size: 0.9rem;
-    color: #2c3e50;
-}
-
-.badge-points {
-    font-size: 0.8rem;
-    color: #7f8c8d;
-}
-
-.no-achievements {
-    text-align: center;
-    padding: 30px;
-    color: #7f8c8d;
-}
-
-.no-achievements i {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    color: #bdc3c7;
-}
-
-/* Responsif */
-@media (max-width: 576px) {
-    .achievement-badge {
-        width: 100%;
-    }
-    
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .profile-avatar {
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-    
-    .profile-stats {
-        justify-content: center;
-    }
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    overflow: auto; /* Menambahkan scroll jika konten terlalu panjang */
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* Posisi lebih ke tengah */
-    padding: 25px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px; /* Ukuran maksimal yang lebih kecil */
-    position: relative;
-    animation: modalFadeIn 0.3s ease-out;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.close-modal {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-    border-radius: 50%;
-    transition: background-color 0.2s;
-}
-
-.close-modal:hover {
-    background-color: #f0f0f0;
-}
-
-/* Icon Grid */
-.icon-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 ikon per baris */
-    gap: 15px;
-    margin-top: 20px;
-    justify-content: center;
-}
-
-.icon-option {
-    aspect-ratio: 1/1; /* Memastikan bentuk kotak */
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f0f0f0;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.icon-option:hover {
-    background: #3498db;
-    color: white;
-    transform: scale(1.1);
-}
-
-/* Judul modal */
-.modal-content h3 {
-    text-align: center;
-    margin-bottom: 15px;
-    color: #2c3e50;
-    padding-right: 30px; /* Memberikan ruang untuk tombol close */
-}
-
-/* Responsive untuk layar kecil */
-@media (max-width: 480px) {
-    .icon-grid {
-        grid-template-columns: repeat(4, 1fr); /* Tetap 4 per baris di mobile */
-        gap: 10px;
-    }
-    
-    .icon-option {
-        font-size: 20px;
-    }
-    
-    .modal-content {
-        width: 85%;
-        padding: 20px;
-        margin: 30% auto; /* Posisi lebih ke tengah untuk mobile */
-    }
-}
-
-.profile-avatar {
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.profile-avatar:hover {
-    transform: scale(1.1);
-}
-
-/* Tambahkan CSS ini ke styles.css untuk menangani tombol Next Level dan Select Level */
-
-/* Tombol Next Level */
 .btn-next {
     background-color: #9b59b6;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s, background-color 0.2s;
 }
 
 .btn-next:hover {
@@ -1082,16 +600,29 @@ body {
     background-color: #8e44ad;
 }
 
-.btn-next i {
-    margin-right: 5px;
-}
-
-/* Tombol Select Level */
 .btn-select {
     background-color: #3498db;
     color: white;
+}
+
+.btn-select:hover {
+    transform: translateY(-2px);
+    background-color: #2980b9;
+}
+
+.btn-restart:hover, .btn-home:hover {
+    transform: translateY(-2px);
+}
+
+.btn-restart i, .btn-home i, .btn-next i, .btn-select i {
+    margin-right: 5px;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 40px;
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
@@ -1101,66 +632,9 @@ body {
     transition: transform 0.2s, background-color 0.2s;
 }
 
-.btn-select:hover {
-    transform: translateY(-2px);
-    background-color: #2980b9;
-}
-
-.btn-select i {
-    margin-right: 5px;
-}
-
-/* Atur ulang layout tombol pada result modal */
-.result-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.result-buttons button {
-    flex: 1 0 calc(50% - 10px);
-    min-width: 120px;
-}
-
-/* Responsif untuk layar kecil */
-@media (max-width: 480px) {
-    .result-buttons button {
-        flex: 1 0 100%;
-    }
-}
-
-/* CSS for Quiz Exit Button and Confirmation Modal */
-
-/* Tombol Exit di header quiz */
-.quit-button {
-    font-size: 1.2rem;
-    background-color: rgba(255, 255, 255, 0.2);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-}
-
-.quit-button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.quiz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background-color: #3498db;
-    color: white;
-}
-
-/* Modal konfirmasi keluar */
+/* =================== */
+/* QUIT CONFIRMATION MODAL */
+/* =================== */
 .quit-modal {
     position: fixed;
     top: 0;
@@ -1248,237 +722,389 @@ body {
     margin-right: 5px;
 }
 
-/* Responsif untuk layar kecil */
-@media (max-width: 480px) {
-    .quit-buttons {
-        flex-direction: column;
-    }
-    
-    .btn-quit, .btn-cancel {
-        width: 100%;
-    }
-    
-    .quit-content {
-        width: 85%;
-        padding: 20px;
-    }
-}
-
-.btn-danger {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 40px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-/* CSS for Shop and Inventory Modals */
-
-/* Modal Basic Style */
-.feature-modal {
+/* =================== */
+/* MODAL STYLES */
+/* =================== */
+.modal {
+    display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 0.3s, opacity 0.3s;
+    background-color: rgba(0,0,0,0.7);
+    overflow: auto;
 }
 
-.feature-modal.active {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.3s;
-}
-
-.feature-content {
-    background-color: white;
-    border-radius: 12px;
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 10px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transform: scale(0.8);
-    transition: transform 0.3s;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    animation: modalFadeIn 0.3s ease-out;
 }
 
-.feature-modal.active .feature-content {
-    transform: scale(1);
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Header Section */
-.feature-header {
-    padding: 15px 20px;
-    background-color: #3498db;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.feature-title {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin: 0;
-}
-
-.close-feature {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
     cursor: pointer;
     width: 30px;
     height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+    text-align: center;
+    line-height: 30px;
     border-radius: 50%;
     transition: background-color 0.2s;
 }
 
-.close-feature:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+.close-modal:hover {
+    background-color: #f0f0f0;
 }
 
-/* Body Section */
-.feature-body {
-    padding: 25px 20px;
-    flex: 1;
-}
-
-.feature-message {
+.modal-content h3 {
     text-align: center;
-}
-
-.feature-icon {
-    font-size: 4rem;
-    color: #3498db;
     margin-bottom: 15px;
-    display: block;
-}
-
-.feature-message p {
-    font-size: 1.1rem;
     color: #2c3e50;
-    margin-bottom: 10px;
-    font-weight: bold;
+    padding-right: 30px;
 }
 
-.feature-description {
-    font-size: 0.9rem !important;
-    color: #7f8c8d !important;
-    margin-top: 15px !important;
-    font-weight: normal !important;
-    line-height: 1.5;
-}
-
-/* Footer Section */
-.feature-footer {
-    padding: 15px 20px;
-    display: flex;
+/* =================== */
+/* ICON GRID */
+/* =================== */
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
     justify-content: center;
-    border-top: 1px solid #ecf0f1;
 }
 
-.btn-ok {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 40px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
+.icon-option {
+    aspect-ratio: 1/1;
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s, background-color 0.2s;
+    background: #f0f0f0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.btn-ok:hover {
-    transform: translateY(-2px);
-    background-color: #2980b9;
+.icon-option:hover {
+    background: #3498db;
+    color: white;
+    transform: scale(1.1);
 }
 
-.btn-ok i {
+/* =================== */
+/* PROFILE STYLES */
+/* =================== */
+.profile-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    padding-bottom: 70px;
+}
+
+.profile-header {
+    background-color: #f5f7fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar {
+    font-size: 3rem;
+    color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.1);
+}
+
+.profile-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.profile-stats {
+    display: flex;
+    margin-top: 10px;
+}
+
+.stat-item {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.stat-item i {
     margin-right: 5px;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 480px) {
-    .feature-content {
-        width: 95%;
-    }
-    
-    .feature-title {
-        font-size: 1.2rem;
-    }
-    
-    .feature-message p {
-        font-size: 1rem;
-    }
-    
-    .feature-description {
-        font-size: 0.85rem !important;
-    }
-    
-    .feature-icon {
-        font-size: 3.5rem;
-    }
+.stat-item .coins {
+    color: #f39c12;
 }
 
-/* Custom Style for Inventory Modal */
-#inventoryModal .feature-icon {
-    color: #e67e22;
-}
-
-#inventoryModal .feature-header {
-    background-color: #e67e22;
-}
-
-#inventoryModal .btn-ok {
-    background-color: #e67e22;
-}
-
-#inventoryModal .btn-ok:hover {
-    background-color: #d35400;
-}
-
-/* Custom Style for Shop Modal */
-#shopModal .feature-icon {
+.stat-item .xp {
     color: #9b59b6;
 }
 
-#shopModal .feature-header {
-    background-color: #9b59b6;
+.profile-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-#shopModal .btn-ok {
-    background-color: #9b59b6;
+.profile-section h3 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ecf0f1;
 }
 
-#shopModal .btn-ok:hover {
-    background-color: #8e44ad;
+/* Profile dropdown */
+.profile-dropdown {
+    position: absolute;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 180px;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
 }
 
-/* Inventory & Shop Page Styles */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-/* Tab Navigation */
+.dropdown-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f7fa;
+}
+
+.dropdown-item:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.dropdown-item i {
+    margin-right: 10px;
+    color: #3498db;
+    width: 20px;
+    text-align: center;
+}
+
+#logoutMenuItem i {
+    color: #e74c3c;
+}
+
+#resetMenuItem i {
+    color: #e67e22;
+}
+
+/* =================== */
+/* ACHIEVEMENT STYLES */
+/* =================== */
+.achievement-category {
+    margin-bottom: 20px;
+}
+
+.achievement-category h3 {
+    font-size: 1.1rem;
+    color: #3498db;
+    margin-bottom: 10px;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.achievement-levels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.achievement-badge {
+    display: flex;
+    align-items: center;
+    background-color: #f5f7fa;
+    border-radius: 8px;
+    padding: 10px;
+    width: calc(50% - 8px);
+    transition: transform 0.2s;
+}
+
+.achievement-badge:hover {
+    transform: translateY(-3px);
+}
+
+.badge-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(241, 196, 15, 0.1);
+    color: #f1c40f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 12px;
+}
+
+.badge-info {
+    flex: 1;
+}
+
+.badge-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #2c3e50;
+}
+
+.badge-points {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+.no-achievements {
+    text-align: center;
+    padding: 30px;
+    color: #7f8c8d;
+}
+
+.no-achievements i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #bdc3c7;
+}
+
+/* =================== */
+/* LOGIN STYLES */
+/* =================== */
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo i {
+    font-size: 5rem;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.login-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.login-button {
+    width: 100%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #2980b9;
+}
+
+/* =================== */
+/* INVENTORY & SHOP STYLES */
+/* =================== */
+.inventory-content,
+.shop-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    padding-bottom: 70px;
+}
+
+/* Tabs */
 .inventory-tabs,
 .shop-tabs {
     display: flex;
@@ -1523,12 +1149,7 @@ body {
     display: block;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Inventory & Shop Grid */
+/* Grid Layout */
 .inventory-grid,
 .shop-grid {
     display: grid;
@@ -1536,7 +1157,7 @@ body {
     gap: 15px;
 }
 
-/* Inventory Message */
+/* Empty message */
 .inventory-message {
     grid-column: 1 / -1;
     text-align: center;
@@ -1699,7 +1320,7 @@ body {
     opacity: 0.7;
 }
 
-/* Item Detail Modal */
+/* Item Detail */
 .item-detail-container {
     text-align: center;
     padding: 10px;
@@ -1776,14 +1397,342 @@ body {
     color: #f39c12;
 }
 
-/* Responsive Shop Grid */
-@media (max-width: 768px) {
-    .shop-grid, .inventory-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
+/* =================== */
+/* FEATURE MODAL STYLES */
+/* =================== */
+.feature-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s;
 }
 
-@media (max-width: 480px) {
+.feature-modal.active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.feature-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    transition: transform 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-modal.active .feature-content {
+    transform: scale(1);
+}
+
+.feature-header {
+    padding: 15px 20px;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feature-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.close-feature {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-feature:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.feature-body {
+    padding: 25px 20px;
+    flex: 1;
+}
+
+.feature-message {
+    text-align: center;
+}
+
+.feature-icon {
+    font-size: 4rem;
+    color: #3498db;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.feature-message p {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.feature-description {
+    font-size: 0.9rem !important;
+    color: #7f8c8d !important;
+    margin-top: 15px !important;
+    font-weight: normal !important;
+    line-height: 1.5;
+}
+
+.feature-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #ecf0f1;
+}
+
+.btn-ok {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-ok:hover {
+    transform: translateY(-2px);
+    background-color: #2980b9;
+}
+
+.btn-ok i {
+    margin-right: 5px;
+}
+
+/* Modal Color Variants */
+#inventoryModal .feature-icon {
+    color: #e67e22;
+}
+
+#inventoryModal .feature-header {
+    background-color: #e67e22;
+}
+
+#inventoryModal .btn-ok {
+    background-color: #e67e22;
+}
+
+#inventoryModal .btn-ok:hover {
+    background-color: #d35400;
+}
+
+#shopModal .feature-icon {
+    color: #9b59b6;
+}
+
+#shopModal .feature-header {
+    background-color: #9b59b6;
+}
+
+#shopModal .btn-ok {
+    background-color: #9b59b6;
+}
+
+#shopModal .btn-ok:hover {
+    background-color: #8e44ad;
+}
+
+/* =================== */
+/* LOGOUT AND RESET */
+/* =================== */
+.logout-btn {
+    position: absolute;
+    top: 0;
+    right: -30px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* =================== */
+/* MEDIA QUERIES - RESPONSIVE DESIGN */
+/* =================== */
+
+/* Small Devices (smartphones, 576px and down) */
+@media (max-width: 576px) {
+    .main-header {
+        padding: 10px;
+    }
+    
+    .profile-icon {
+        font-size: 1.8rem;
+    }
+    
+    .username {
+        font-size: 0.85rem;
+    }
+    
+    .level {
+        font-size: 0.75rem;
+    }
+    
+    .play-button {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+    
+    .nav-item i {
+        font-size: 1.2rem;
+    }
+    
+    .nav-item span {
+        font-size: 0.7rem;
+    }
+    
+    .categories-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .levels-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .question-text {
+        font-size: 1.1rem;
+    }
+    
+    .option-item {
+        padding: 12px;
+    }
+    
+    .result-content {
+        padding: 20px;
+    }
+    
+    .result-title {
+        font-size: 1.3rem;
+    }
+    
+    .result-score {
+        font-size: 2rem;
+    }
+    
+    .reward-coin, .reward-xp {
+        font-size: 1rem;
+    }
+    
+    .btn-restart, .btn-home {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .achievement-badge {
+        width: 100%;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .profile-stats {
+        justify-content: center;
+    }
+    
+    .icon-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+    
+    .icon-option {
+        font-size: 20px;
+    }
+    
+    .modal-content {
+        width: 85%;
+        padding: 20px;
+        margin: 30% auto;
+    }
+    
+    .quit-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-quit, .btn-cancel {
+        width: 100%;
+    }
+    
+    .quit-content {
+        width: 85%;
+        padding: 20px;
+    }
+    
+    .feature-content {
+        width: 95%;
+    }
+    
+    .feature-title {
+        font-size: 1.2rem;
+    }
+    
+    .feature-message p {
+        font-size: 1rem;
+    }
+    
+    .feature-description {
+        font-size: 0.85rem !important;
+    }
+    
+    .feature-icon {
+        font-size: 3.5rem;
+    }
+    
+    .result-buttons button {
+        flex: 1 0 100%;
+    }
+    
     .shop-grid, .inventory-grid {
         grid-template-columns: 1fr;
     }
@@ -1794,5 +1743,89 @@ body {
     
     .tab span {
         font-size: 0.8rem;
+    }
+}
+
+/* Medium Devices (tablets, 768px and down) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .categories-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .levels-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .shop-grid, .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+/* Large Devices (desktops, 992px and up) */
+@media (min-width: 769px) {
+    .container {
+        max-width: 768px;
+        margin: 0 auto;
+        border-left: 1px solid #e0e0e0;
+        border-right: 1px solid #e0e0e0;
+    }
+    
+    .bottom-nav {
+        max-width: 768px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .categories-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .levels-container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Extra Large Devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 768px;
+    }
+    
+    .bottom-nav {
+        max-width: 768px;
+    }
+}
+
+/* Landscape Mode Adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-content {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    .character-container {
+        margin-bottom: 0;
+        margin-right: 20px;
+    }
+    
+    .character {
+        max-height: 150px;
+    }
+    
+    .bottom-nav {
+        padding: 5px 0;
+    }
+    
+    .nav-item {
+        padding: 5px 10px;
+    }
+    
+    .nav-item i {
+        font-size: 1.1rem;
+        margin-bottom: 2px;
+    }
+    
+    .nav-item span {
+        font-size: 0.7rem;
     }
 }

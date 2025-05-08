@@ -4,19 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - Quiz Game</title>
-    <!-- 
-        File CSS dan dependencies
-        Konsisten dengan halaman lain (DRY)
-    -->
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- 
-            Header
-            Struktur yang sama dengan halaman lain (DRY)
-        -->
+        <!-- Header -->
         <header class="main-header">
             <div class="back-button" id="backToHome">
                 <i class="fas fa-arrow-left"></i>
@@ -24,19 +18,12 @@
             <h2 class="page-title">Shop</h2>
             <div class="coin-container">
                 <i class="fas fa-coins"></i>
-                <span class="coin-count">0</span>
+                <span class="coin-count">500</span>
             </div>
         </header>
 
-        <!-- 
-            Konten Utama
-            Struktur toko dengan tab dan grid item
-        -->
+        <!-- Main Content -->
         <main class="shop-content">
-            <!-- 
-                Tab Navigasi
-                Memungkinkan pengguna beralih antar kategori item
-            -->
             <div class="shop-tabs">
                 <div class="tab active" data-tab="items">
                     <i class="fas fa-box"></i>
@@ -52,17 +39,9 @@
                 </div>
             </div>
 
-            <!-- 
-                Tab Content - Items
-                Catatan: Sebaiknya data item dihasilkan dengan JavaScript
-                dari sumber data terpusat (DRY)
-            -->
             <div class="tab-content active" id="items-content">
-                <div class="shop-grid" id="items-grid">
-                    <!-- 
-                        Template Item Toko
-                        Struktur dasar yang sama untuk semua item
-                    -->
+                <div class="shop-grid">
+                    <!-- Items will be dynamically added here -->
                     <div class="shop-item">
                         <div class="item-icon">
                             <i class="fas fa-heart"></i>
@@ -77,38 +56,111 @@
                         </div>
                         <button class="btn-buy">Beli</button>
                     </div>
-
                     
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Time Extender</h3>
+                            <p>Tambah waktu 30 detik</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>75</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
                     
-                    <!-- Item lainnya dengan struktur yang sama -->
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Hint</h3>
+                            <p>Menghilangkan 2 pilihan jawaban salah</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>100</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 
-                Tab Content - Boosters
-                Menggunakan struktur yang sama dengan tab items (DRY)
-            -->
             <div class="tab-content" id="boosters-content">
-                <div class="shop-grid" id="boosters-grid">
-                    <!-- Item booster ditampilkan di sini -->
+                <div class="shop-grid">
+                    <!-- Boosters will be dynamically added here -->
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-coin"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>Coin Booster</h3>
+                            <p>Koin 2x lipat untuk 3 quiz berikutnya</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>150</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>XP Booster</h3>
+                            <p>XP 2x lipat untuk 3 quiz berikutnya</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>200</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 
-                Tab Content - Characters
-                Menggunakan struktur yang sama dengan tab lainnya (DRY)
-            -->
             <div class="tab-content" id="characters-content">
-                <div class="shop-grid" id="characters-grid">
-                    <!-- Karakter ditampilkan di sini -->
+                <div class="shop-grid">
+                    <!-- Characters will be dynamically added here -->
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <img src="assets/images/char2.png" alt="Robot Character">
+                        </div>
+                        <div class="item-info">
+                            <h3>Robot</h3>
+                            <p>Karakter robot futuristik</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>300</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <div class="item-icon">
+                            <img src="assets/images/char3.png" alt="Ninja Character">
+                        </div>
+                        <div class="item-info">
+                            <h3>Ninja</h3>
+                            <p>Karakter ninja misterius</p>
+                        </div>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>300</span>
+                        </div>
+                        <button class="btn-buy">Beli</button>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <!-- 
-            Navigasi Bawah
-            Struktur yang sama dengan halaman lain (DRY)
-        -->
+        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="nav-item" id="navHome">
                 <i class="fas fa-home"></i>
@@ -129,38 +181,21 @@
         </nav>
     </div>
 
-    <!-- 
-        Modal-modal
-        Catatan: Struktur modal yang berulang seharusnya bisa dibuat
-        secara dinamis dengan JavaScript (DRY)
-    -->
-    
-    <!-- 
-        Template Modal
-        Semua modal mengikuti pola dasar yang sama:
-        - Header dengan judul dan tombol tutup
-        - Body dengan pesan dan ikon
-        - Footer dengan tombol aksi
-    -->
-    
     <!-- Modal Logout -->
     <div id="logoutModal" class="feature-modal">
         <div class="feature-content">
-            <!-- Header Modal -->
             <div class="feature-header">
                 <h2 class="feature-title">Konfirmasi Keluar</h2>
                 <button class="close-feature" id="closeLogout">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <!-- Body Modal -->
             <div class="feature-body">
                 <div class="feature-message">
                     <i class="fas fa-sign-out-alt feature-icon"></i>
                     <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
                 </div>
             </div>
-            <!-- Footer Modal -->
             <div class="feature-footer">
                 <button class="btn-cancel" id="cancelLogoutBtn">
                     <i class="fas fa-times"></i> Batal
@@ -172,9 +207,34 @@
         </div>
     </div>
 
-    <!-- Grup Modal Pembelian -->
-    
-    <!-- Modal Konfirmasi Pembelian -->
+    <!-- Modal Reset Data -->
+    <div id="resetModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Hapus Data</h2>
+                <button class="close-feature" id="closeReset">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-exclamation-triangle feature-icon"></i>
+                    <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
+                    <p class="feature-description">Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelResetBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-danger" id="confirmResetBtn">
+                    <i class="fas fa-trash"></i> Ya, Hapus Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Confirmation Modal -->
     <div id="purchaseModal" class="feature-modal">
         <div class="feature-content">
             <div class="feature-header">
@@ -211,12 +271,7 @@
         </div>
     </div>
 
-    <!-- 
-        Modal Hasil Pembelian
-        Menggunakan template modal dengan variasi warna
-    -->
-    
-    <!-- Modal Pembelian Berhasil -->
+    <!-- Success Purchase Modal -->
     <div id="successModal" class="feature-modal">
         <div class="feature-content">
             <div class="feature-header" style="background-color: #2ecc71;">
@@ -240,7 +295,7 @@
         </div>
     </div>
 
-    <!-- Modal Koin Tidak Cukup -->
+    <!-- Insufficient Funds Modal -->
     <div id="insufficientModal" class="feature-modal">
         <div class="feature-content">
             <div class="feature-header" style="background-color: #e74c3c;">
@@ -264,10 +319,7 @@
         </div>
     </div>
 
-    <!-- 
-        Script JavaScript
-        Memisahkan logika toko ke file terpisah (DRY)
-    -->
+    <script src="assets/js/login.js"></script>
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/shop.js"></script>

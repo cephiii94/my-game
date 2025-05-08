@@ -4,18 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game - Levels</title>
-    <!-- File CSS utama dan responsif -->
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <!-- Library ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- 
-            Header
-            Berisi: tombol kembali, judul kategori, dan indikator koin
-        -->
+        <!-- Header -->
         <header class="main-header">
             <div class="back-button" id="backToCategories">
                 <i class="fas fa-arrow-left"></i>
@@ -27,28 +22,15 @@
             </div>
         </header>
 
-        <!-- 
-            Konten Utama
-            Berisi: daftar level yang akan diisi dinamis oleh JavaScript 
-        -->
+        <!-- Main Content -->
         <main class="level-content">
             <div class="levels-container" id="levelsContainer">
-                <!-- 
-                    Level-level akan dihasilkan secara dinamis menggunakan JavaScript
-                    Memanfaatkan prinsip DRY dengan membuat template sekali di JS
-                    dan menggunakannya untuk semua level
-                -->
+                <!-- Levels will be dynamically added here via JavaScript -->
             </div>
         </main>
 
-        <!-- 
-            Navigasi Bawah
-            Catatan: Untuk implementasi DRY yang lebih baik, navigasi ini sebaiknya:
-            1. Dibuat sebagai komponen terpisah
-            2. Dirender menggunakan perulangan dari array data menu
-        -->
+        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <!-- Template item navigasi: ikon + teks -->
             <div class="nav-item active">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
@@ -68,15 +50,7 @@
         </nav>
     </div>
 
-    <!-- 
-        Script JavaScript
-        Catatan: Pemisahan data (data.js) dan logika (main.js) sudah menerapkan prinsip DRY
-    -->
     <script src="assets/js/data.js"></script>
     <script src="assets/js/main.js"></script>
-    <!-- 
-        Rekomendasi: Tambahkan file JS terpisah untuk komponen yang bisa digunakan kembali
-        <script src="assets/js/components.js"></script> 
-    -->
 </body>
 </html>

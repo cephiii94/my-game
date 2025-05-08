@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="profile-container">
+                <div class="profile-icon">
+                    <!-- Gunakan class dinamis untuk icon profile yang tersimpan -->
+                    <i id="userProfileIcon" class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <p class="username">User</p>
+                    <p class="level">Level 1</p>
+                </div>
+                <!-- Logout button will be dynamically added here -->
+            </div>
+            <div class="coin-container">
+                <i class="fas fa-coins"></i>
+                <span class="coin-count">500</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="character-container">
+                <img src="assets/images/char1.png" alt="Game Character" class="character" >
+            </div>
+            <button class="play-button" id="playButton">
+                <i class="fas fa-play"></i> PLAY
+            </button>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" id="navHome">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" id="navInventory">
+                <i class="fas fa-box"></i>
+                <span>Inventory</span>
+            </div>
+            <div class="nav-item" id="navShop">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Shop</span>
+            </div>
+            <div class="nav-item" id="navAchievement">
+                <i class="fas fa-trophy"></i>
+                <span>Achievement</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div class="feature-modal" id="inventoryModal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Inventory</h2>
+                <button class="close-feature" id="closeInventory">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-box feature-icon"></i>
+                    <p>Fitur Inventory akan segera hadir!</p>
+                    <p class="feature-description">Di sini Anda akan dapat melihat dan menggunakan item-item yang sudah Anda beli atau dapatkan dari hadiah.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-ok" id="okInventoryBtn">
+                    <i class="fas fa-check"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div class="feature-modal" id="shopModal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Shop</h2>
+                <button class="close-feature" id="closeShop">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-shopping-cart feature-icon"></i>
+                    <p>Fitur Shop akan segera hadir!</p>
+                    <p class="feature-description">Di sini Anda akan dapat membeli berbagai item dan power-up menggunakan koin yang telah Anda kumpulkan.</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-ok" id="okShopBtn">
+                    <i class="fas fa-check"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Logout -->
+    <div id="logoutModal" class="feature-modal">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h2 class="feature-title">Konfirmasi Keluar</h2>
+                <button class="close-feature" id="closeLogout">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="feature-body">
+                <div class="feature-message">
+                    <i class="fas fa-sign-out-alt feature-icon"></i>
+                    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+                </div>
+            </div>
+            <div class="feature-footer">
+                <button class="btn-cancel" id="cancelLogoutBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn-ok" id="confirmLogoutBtn">
+                    <i class="fas fa-check"></i> Ya, Keluar
+                </button>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal Reset Data -->
+<div id="resetModal" class="feature-modal">
+    <div class="feature-content">
+        <div class="feature-header">
+            <h2 class="feature-title">Hapus Data</h2>
+            <button class="close-feature" id="closeReset">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="feature-body">
+            <div class="feature-message">
+                <i class="fas fa-exclamation-triangle feature-icon"></i>
+                <p>PERHATIAN: Ini akan menghapus semua progres Anda!</p>
+                <p class="feature-description">Semua level yang telah diselesaikan, koin, dan pencapaian akan hilang secara permanen.</p>
+            </div>
+        </div>
+        <div class="feature-footer">
+            <button class="btn-cancel" id="cancelResetBtn">
+                <i class="fas fa-times"></i> Batal
+            </button>
+            <button class="btn-danger" id="confirmResetBtn">
+                <i class="fas fa-trash"></i> Ya, Hapus Data
+            </button>
+        </div>
+    </div>
+</div>
+
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
