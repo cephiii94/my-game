@@ -1,82 +1,1157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Idle Clicker Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9);
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 0 0 15px 15px;
+            flex-shrink: 0;
+        }
+
+        .game-title {
+            color: #1565c0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .sound-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Main Game Area */
+        .game-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 300px 1fr;
+            gap: 20px;
+            padding: 20px;
+            align-items: start;
+            overflow-y: auto;
+        }
+
+        /* Character Area */
+        .character-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .character-container {
+            position: relative;
+            width: 200px;
+            height: 250px;
+            margin-bottom: 20px;
+        }
+
+        .character {
+            width: 100px;
+            height: 150px;
+            background: #64b5f6;
+            border-radius: 50px 50px 20px 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: idle 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .character:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .character:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        @keyframes idle {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-5px); }
+        }
+
+        /* Equipment Slots */
+        .equipment {
+            position: absolute;
+        }
+
+        .hat {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            background: #f44336;
+            border-radius: 30px 30px 0 0;
+            display: none;
+        }
+
+        .glasses {
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 20px;
+            background: #424242;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .vehicle {
+            top: 100px;
+            right: -80px;
+            width: 80px;
+            height: 40px;
+            background: #ff9800;
+            border-radius: 10px;
+            display: none;
+        }
+
+        /* Stats */
+        .stats {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            margin: 8px 0;
+            color: #1565c0;
+            font-weight: bold;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .click-button {
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .click-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        .click-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Upgrades */
+        .upgrades {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .upgrade-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #42a5f5;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .upgrade-btn:hover {
+            background: #42a5f5;
+            color: white;
+        }
+
+        .upgrade-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Upgrade Available Indicator */
+        .upgrade-btn.available {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .upgrade-btn.available::after {
+            content: '✨';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff9800;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        /* Shop Button */
+        .shop-btn {
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Popups */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 10px;
+        }
+
+        .popup-title {
+            color: #1565c0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Shop Tabs */
+        .shop-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: #e3f2fd;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #1565c0;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #42a5f5;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Shop Items */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .shop-item {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .shop-item:hover {
+            border-color: #42a5f5;
+            transform: translateY(-2px);
+        }
+
+        .item-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .buy-btn:hover {
+            background: #1976d2;
+        }
+
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .buy-btn.owned {
+            background: #4caf50;
+            cursor: default;
+        }
+
+        .buy-btn.owned:hover {
+            background: #4caf50;
+        }
+
+        /* Inventory */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .inventory-item {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .equip-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .equip-btn.equipped {
+            background: #f44336;
+        }
+
+        /* Notification Popup */
+        .notification-popup {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .notification-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .notification-title {
+            color: #1565c0;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .notification-message {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .notification-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .notification-btn {
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .notification-btn:hover {
+            background: #1976d2;
+        }
+
+        .notification-btn.secondary {
+            background: #66bb6a;
+        }
+
+        .notification-btn.secondary:hover {
+            background: #388e3c;
+        }
+
+        /* ==================== MOBILE RESPONSIVE DESIGN ==================== */
+        @media (max-width: 768px) {
+            /* 🔧 CONTAINER LAYOUT - Atur layout utama */
+            .game-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto; /* Character area flexible, control fixed */
+                gap: 0;
+                padding: 10px 10px 0 10px;
+                height: calc(100dvh - 60px); /* Kurangi tinggi header */
+            }
+
+            /* 🔧 CHARACTER SECTION - Area karakter di tengah */
+            .character-section {
+                order: 1;
+                justify-content: center;
+                min-height: 0; /* Allow shrinking */
+                padding: 10px 0;
+            }
+
+            .character-container {
+                width: 150px;  /* 🔧 Ukuran karakter diperkecil */
+                height: 180px; /* 🔧 Tinggi container diperkecil */
+                margin-bottom: 15px;
+            }
+
+            .character {
+                width: 80px;   /* 🔧 Karakter lebih kecil */
+                height: 120px; /* 🔧 Tinggi karakter diperkecil */
+            }
+
+            /* 🔧 STATS - Statistik lebih compact */
+            .stats {
+                padding: 8px 12px; /* 🔧 Padding diperkecil */
+                font-size: 0.85rem; /* 🔧 Font diperkecil */
+            }
+
+            .stat-item {
+                margin: 4px 0; /* 🔧 Margin diperkecil */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            /* 🔧 MOBILE NAVBAR - Control panel seperti navbar */
+            .control-panel {
+                order: 2;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 8px 10px 8px 10px; /* 🔧 Padding navbar diperkecil */
+                border-radius: 15px 15px 0 0;
+                box-shadow: 0 -3px 15px rgba(0,0,0,0.15);
+                backdrop-filter: blur(10px);
+                z-index: 100;
+                max-height: 45vh; /* 🔧 Maksimal tinggi navbar */
+                overflow-y: auto;
+            }
+
+            /* 🔧 CLICK BUTTON - Tombol utama diperkecil */
+            .click-button {
+                padding: 12px 16px; /* 🔧 Padding diperkecil */
+                font-size: 0.95rem; /* 🔧 Font diperkecil */
+                margin-bottom: 8px;  /* 🔧 Margin diperkecil */
+                border-radius: 25px; /* 🔧 Border radius diperkecil */
+            }
+
+            /* 🔧 UPGRADES - Tombol upgrade dalam 1 baris */
+            .upgrades {
+                grid-template-columns: 1fr 1fr; /* 🔧 Tetap 2 kolom tapi lebih kecil */
+                gap: 6px;        /* 🔧 Gap diperkecil */
+                margin-bottom: 8px; /* 🔧 Margin diperkecil */
+            }
+
+            .upgrade-btn {
+                padding: 6px 8px;    /* 🔧 Padding sangat diperkecil */
+                font-size: 0.75rem;  /* 🔧 Font sangat diperkecil */
+                border-radius: 8px;   /* 🔧 Border radius diperkecil */
+                min-height: 60px;     /* 🔧 Tinggi minimum */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .upgrade-btn small {
+                font-size: 0.65rem; /* 🔧 Text kecil dalam tombol */
+                line-height: 1.2;
+            }
+
+            /* 🔧 SHOP BUTTONS - Tombol toko dan inventory horizontal */
+            .shop-buttons {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 🔧 2 kolom horizontal */
+                gap: 6px;
+            }
+
+            .shop-btn {
+                padding: 8px 12px;   /* 🔧 Padding diperkecil */
+                font-size: 0.85rem;  /* 🔧 Font diperkecil */
+                border-radius: 15px;  /* 🔧 Border radius diperkecil */
+                margin-bottom: 0;     /* 🔧 Hilangkan margin bawah */
+            }
+
+            /* 🔧 HEADER - Header diperkecil */
+            .header {
+                padding: 6px 15px; /* 🔧 Padding header diperkecil */
+            }
+
+            .game-title {
+                font-size: 1.1rem; /* 🔧 Title diperkecil */
+            }
+
+            .sound-toggle {
+                padding: 4px 8px;   /* 🔧 Tombol sound diperkecil */
+                font-size: 0.8rem;  /* 🔧 Font diperkecil */
+                top: 8px;           /* 🔧 Posisi disesuaikan */
+                right: 15px;
+            }
+
+            /* 🔧 POPUP - Popup fullscreen di mobile */
+            .popup {
+                width: 95%;
+                max-height: 85vh;
+                border-radius: 15px;
+            }
+
+            .popup-title {
+                font-size: 1.2rem; /* 🔧 Title popup diperkecil */
+            }
+
+            .shop-tabs {
+                flex-direction: row; /* 🔧 Tab horizontal di mobile */
+            }
+
+            .tab-btn {
+                padding: 8px 6px;   /* 🔧 Tab button diperkecil */
+                font-size: 0.8rem;  /* 🔧 Font tab diperkecil */
+            }
+
+            .shop-grid, .inventory-grid {
+                grid-template-columns: 1fr; /* 🔧 Grid 1 kolom di mobile */
+                gap: 10px;
+            }
+
+            .shop-item, .inventory-item {
+                padding: 10px; /* 🔧 Padding item diperkecil */
+            }
+
+            .item-icon {
+                font-size: 1.5rem; /* 🔧 Icon diperkecil */
+            }
+
+            .notification-popup {
+                padding: 20px;     /* 🔧 Padding notifikasi diperkecil */
+                max-width: 350px;  /* 🔧 Lebar maksimal diperkecil */
+            }
+
+            .notification-icon {
+                font-size: 2rem;   /* 🔧 Icon notifikasi diperkecil */
+            }
+
+            .notification-title {
+                font-size: 1.1rem; /* 🔧 Title notifikasi diperkecil */
+            }
+
+            .notification-btn {
+                padding: 8px 15px;  /* 🔧 Tombol notifikasi diperkecil */
+                font-size: 0.85rem; /* 🔧 Font diperkecil */
+            }
+        }
+
+        /* 🔧 EXTRA SMALL MOBILE - Untuk layar sangat kecil */
+        @media (max-width: 480px) {
+            .character {
+                width: 70px;   /* 🔧 Karakter lebih kecil lagi */
+                height: 100px; /* 🔧 Tinggi diperkecil lagi */
+            }
+
+            .character-container {
+                width: 130px;  /* 🔧 Container lebih kecil */
+                height: 150px; /* 🔧 Tinggi diperkecil */
+            }
+
+            .stats {
+                padding: 6px 10px; /* 🔧 Stats lebih compact */
+                font-size: 0.8rem;
+            }
+
+            .upgrade-btn {
+                padding: 4px 6px;   /* 🔧 Tombol upgrade sangat kecil */
+                font-size: 0.7rem;  /* 🔧 Font sangat kecil */
+                min-height: 50px;    /* 🔧 Tinggi minimum diperkecil */
+            }
+
+            .click-button {
+                padding: 10px 14px; /* 🔧 Click button lebih kecil */
+                font-size: 0.9rem;
+            }
+
+            .control-panel {
+                padding: 6px 8px 6px 8px; /* 🔧 Navbar lebih compact */
+            }
+        }
+    </style>
 </head>
 <body>
-    <!--layout-->
-    <button id="sound-toggle" class="sound-button">🔊 Suara: Aktif</button>
+    <!-- Audio Elements -->
+    <audio id="clickSound" preload="auto">
+        <source src="sounds/click.mp3" type="audio/mpeg">
+        <source src="sounds/click.wav" type="audio/wav">
+        <source src="sounds/click.ogg" type="audio/ogg">
+    </audio>
     
-    <!--body-->
+    <audio id="buySound" preload="auto">
+        <source src="sounds/buy.mp3" type="audio/mpeg">
+        <source src="sounds/buy.wav" type="audio/wav">
+        <source src="sounds/buy.ogg" type="audio/ogg">
+    </audio>
+    
+    <audio id="openSound" preload="auto">
+        <source src="sounds/open.mp3" type="audio/mpeg">
+        <source src="sounds/open.wav" type="audio/wav">
+        <source src="sounds/open.ogg" type="audio/ogg">
+    </audio>
+    
+    <audio id="closeSound" preload="auto">
+        <source src="sounds/close.mp3" type="audio/mpeg">
+        <source src="sounds/close.wav" type="audio/wav">
+        <source src="sounds/close.ogg" type="audio/ogg">
+    </audio>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 class="game-title">🎮 Idle Clicker Game</h1>
+        <button class="sound-toggle" onclick="toggleSound()">🔊 <span id="soundStatus">On</span></button>
+    </div>
+
+    <!-- Main Game Area -->
     <div class="game-container">
-        <h1>Idle Clicker</h1>
-        
-        <div class="score-container">
-            <p id="score">Poin: 0</p>
-            <p id="score-per-second">Poin per detik: 0</p>
-        </div>
-        
-        <div class="character-container" style="position: relative;">
-            <img id="character" src="img/char1.png" alt="Karakter">
-            <!-- Aksesoris akan muncul di sini -->
-        </div>
-
-
-        <button id="click-button">Klik Saya!</button>
-        
-        <div class="upgrades">
-            <h2>Upgrade</h2>
-            <div class="upgrade-item">
-                <button id="upgrade-auto-click">Auto Clicker (10 poin)</button>
-                <span id="auto-click-count">0</span>
+        <!-- Character Section -->
+        <div class="character-section">
+            <div class="character-container">
+                <div class="character" onclick="clickCharacter()"></div>
+                <!-- Equipment Slots -->
+                <div class="equipment hat" id="hat"></div>
+                <div class="equipment glasses" id="glasses"></div>
+                <div class="equipment vehicle" id="vehicle"></div>
             </div>
-            <div class="upgrade-item">
-                <button id="upgrade-click-power">Kekuatan Klik (50 poin)</button>
-                <span id="click-power">1</span>
+            
+            <div class="stats">
+                <div class="stat-item">💰 <span id="points">0</span></div>
+                <div class="stat-item">⚡ <span id="pointsPerSecond">0</span>/s</div>
+                <div class="stat-item">🔥 Lv.<span id="level">1</span></div>
+                <div class="stat-item">🎯 <span id="totalClicks">0</span></div>
+                <div class="stat-item">⏰ <span id="playTime">0</span>s</div>
+                <div class="stat-item">💎 <span id="ownedItems">0</span></div>
             </div>
         </div>
 
-        <!-- Tambahkan tombol toko -->
-        <button id="shop-button" class="shop-button">Buka Toko</button>
-        <!-- Popup toko -->
-        <div id="shop-popup" class="shop-popup">
-            <div class="shop-content">
-                <span class="close-shop">&times;</span>
-                <h2>Toko Aksesoris</h2>
-                <div class="shop-items">
-                <div class="shop-item" data-id="hat" data-cost="1">
-                    <img src="img/hat.png" alt="Topi" width="45px" height="35px">
-                <p>Topi Keren (100 poin)</p>
-                <button class="buy-btn">Beli</button>
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <button class="click-button" onclick="clickCharacter()">🖱️ Klik Saya!</button>
+            
+            <div class="upgrades">
+                <button class="upgrade-btn" onclick="buyUpgrade('autoClicker')" id="autoClickerBtn">
+                    🤖 Auto<br>
+                    <small>💰 <span id="autoClickerCost">10</span></small><br>
+                    <small>Lv: <span id="autoClickerLevel">0</span></small>
+                </button>
+                
+                <button class="upgrade-btn" onclick="buyUpgrade('clickPower')" id="clickPowerBtn">
+                    💪 Power<br>
+                    <small>💰 <span id="clickPowerCost">50</span></small><br>
+                    <small>Lv: <span id="clickPowerLevel">1</span></small>
+                </button>
             </div>
-            <!-- Tambahkan item lainnya -->
-        </div>
-        
-        <!-- Tombol untuk membuka inventory -->
-        <button id="inventory-button" class="inventory-button">Inventory</button>
-        <!-- Popup inventory -->
-        <div id="inventory-popup" class="inventory-popup">
-             <div class="inventory-content">
-                <span class="close-inventory">&times;</span>
-                <h2>Inventory</h2>
-                <div class="inventory-items">
-                 <!-- Item akan diisi dinamis oleh JavaScript -->
-                </div>
-             </div>
+            
+            <div class="shop-buttons">
+                <button class="shop-btn" onclick="openShop()">🛍️ Toko</button>
+                <button class="shop-btn" onclick="openInventory()" style="background: linear-gradient(135deg, #ab47bc, #7b1fa2);">🎒 Items</button>
+            </div>
         </div>
     </div>
-</div>
 
-    <audio id="click-sound" src="sound/click.wav" preload="auto"></audio>
-    <audio id="upgrade-sound" src="sound/upgrade.wav" preload="auto"></audio>
-    <audio id="buy-sound" src="sound/buy.wav" preload="auto"></audio>
-    <audio id="shop-open-sound" src="sound/open.wav" preload="auto"></audio>
-    <audio id="shop-close-sound" src="sound/close.wav" preload="auto"></audio>
+    <!-- Shop Popup -->
+    <div class="popup-overlay" id="shopPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">🛍️ Toko</h2>
+                <button class="close-btn" onclick="closeShop()">×</button>
+            </div>
+            
+            <div class="shop-tabs">
+                <button class="tab-btn active" onclick="switchTab('accessories')">🎭 Aksesoris</button>
+                <button class="tab-btn" onclick="switchTab('characters')">👤 Karakter</button>
+                <button class="tab-btn" onclick="switchTab('themes')">🎨 Tema</button>
+            </div>
+            
+            <div class="tab-content active" id="accessories">
+                <div class="shop-grid" id="accessoriesGrid"></div>
+            </div>
+            
+            <div class="tab-content" id="characters">
+                <div class="shop-grid" id="charactersGrid"></div>
+            </div>
+            
+            <div class="tab-content" id="themes">
+                <div class="shop-grid" id="themesGrid"></div>
+            </div>
+        </div>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- Inventory Popup -->
+    <div class="popup-overlay" id="inventoryPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">🎒 Inventory</h2>
+                <button class="close-btn" onclick="closeInventory()">×</button>
+            </div>
+            <div class="inventory-grid" id="inventoryGrid">
+                <div style="text-align: center; color: #666; grid-column: 1 / -1; padding: 50px;">
+                    Belum ada item yang dimiliki
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Popup -->
+    <div class="popup-overlay" id="notificationPopup">
+        <div class="notification-popup">
+            <div class="notification-icon" id="notificationIcon">🎉</div>
+            <div class="notification-title" id="notificationTitle">Item Berhasil Dibeli!</div>
+            <div class="notification-message" id="notificationMessage">Item telah ditambahkan ke inventory Anda.</div>
+            <div class="notification-buttons">
+                <button class="notification-btn" onclick="closeNotification(); openInventory();">Lihat Inventory</button>
+                <button class="notification-btn secondary" onclick="closeNotification()">Lanjut Belanja</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            points: 0,
+            pointsPerSecond: 0,
+            clickPower: 1,
+            autoClickerLevel: 0,
+            clickPowerLevel: 1,
+            totalClicks: 0,
+            playTime: 0,
+            ownedItems: [],
+            equippedItems: {},
+            soundEnabled: true
+        };
+
+        // Shop Items Data
+        const shopItems = {
+            accessories: [
+                { id: 'hat', name: 'Topi Keren', icon: '🎩', price: 100 },
+                { id: 'glasses', name: 'Kacamata Hitam', icon: '🕶️', price: 200 },
+                { id: 'motorcycle', name: 'Motor Sport', icon: '🏍️', price: 500 },
+                { id: 'car', name: 'Mobil Mewah', icon: '🚗', price: 1000 }
+            ],
+            characters: [
+                { id: 'wizard', name: 'Wizard', icon: '🧙‍♂️', price: 300 },
+                { id: 'superhero', name: 'Superhero', icon: '🦸‍♂️', price: 800 }
+            ],
+            themes: [
+                { id: 'darkTheme', name: 'Tema Malam', icon: '🌙', price: 150 },
+                { id: 'rainbowTheme', name: 'Tema Pelangi', icon: '🌈', price: 250 }
+            ]
+        };
+
+        // Sound Functions
+        function playSound(soundId) {
+            if (!gameState.soundEnabled) return;
+            
+            try {
+                const audio = document.getElementById(soundId);
+                if (audio) {
+                    audio.currentTime = 0;
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log('Audio play failed:', error);
+                            try {
+                                audio.play();
+                            } catch(e) {
+                                console.log('Audio fallback failed:', e);
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.log('Sound error:', error);
+            }
+        }
+
+        function preloadAudio() {
+            const audioIds = ['clickSound', 'buySound', 'openSound', 'closeSound'];
+            audioIds.forEach(id => {
+                const audio = document.getElementById(id);
+                if (audio) {
+                    audio.load();
+                }
+            });
+        }
+
+        // Game Logic
+        function clickCharacter() {
+            playSound('clickSound');
+            
+            gameState.points += gameState.clickPower;
+            gameState.totalClicks++;
+            updateDisplay();
+            
+            // Click animation
+            const character = document.querySelector('.character');
+            character.style.animation = 'none';
+            setTimeout(() => {
+                character.style.animation = 'idle 2s ease-in-out infinite';
+            }, 100);
+        }
+
+        function buyUpgrade(type) {
+            let purchased = false;
+            
+            if (type === 'autoClicker') {
+                const cost = Math.floor(10 * Math.pow(1.15, gameState.autoClickerLevel));
+                if (gameState.points >= cost) {
+                    gameState.points -= cost;
+                    gameState.autoClickerLevel++;
+                    gameState.pointsPerSecond = gameState.autoClickerLevel;
+                    purchased = true;
+                }
+            } else if (type === 'clickPower') {
+                const cost = Math.floor(50 * Math.pow(1.2, gameState.clickPowerLevel - 1));
+                if (gameState.points >= cost) {
+                    gameState.points -= cost;
+                    gameState.clickPowerLevel++;
+                    gameState.clickPower = gameState.clickPowerLevel;
+                    purchased = true;
+                }
+            }
+            
+            if (purchased) {
+                playSound('buySound');
+            }
+            
+            updateDisplay();
+        }
+
+        function buyItem(itemId, cost) {
+            if (gameState.points >= cost && !gameState.ownedItems.includes(itemId)) {
+                gameState.points -= cost;
+                gameState.ownedItems.push(itemId);
+                
+                playSound('buySound');
+                
+                updateDisplay();
+                updateShop();
+                showNotification(`Item ${getItemName(itemId)} berhasil dibeli!`);
+            }
+        }
+
+        function equipItem(itemId) {
+            if (gameState.equippedItems[itemId]) {
+                gameState.equippedItems[itemId] = false;
+            } else {
+                gameState.equippedItems[itemId] = true;
+            }
+            updateEquipment();
+            updateInventory();
+        }
+
+        function getItemName(itemId) {
+            for (let category in shopItems) {
+                const item = shopItems[category].find(item => item.id === itemId);
+                if (item) return item.name;
+            }
+            return itemId;
+        }
+
+        function updateEquipment() {
+            document.getElementById('hat').style.display = gameState.equippedItems.hat ? 'block' : 'none';
+            document.getElementById('glasses').style.display = gameState.equippedItems.glasses ? 'block' : 'none';
+            document.getElementById('vehicle').style.display = (gameState.equippedItems.motorcycle || gameState.equippedItems.car) ? 'block' : 'none';
+        }
+
+        function updateDisplay() {
+            document.getElementById('points').textContent = Math.floor(gameState.points);
+            document.getElementById('pointsPerSecond').textContent = gameState.pointsPerSecond;
+            document.getElementById('totalClicks').textContent = gameState.totalClicks;
+            document.getElementById('ownedItems').textContent = gameState.ownedItems.length;
+            document.getElementById('level').textContent = Math.floor(gameState.totalClicks / 10) + 1;
+            
+            const autoClickerCost = Math.floor(10 * Math.pow(1.15, gameState.autoClickerLevel));
+            const clickPowerCost = Math.floor(50 * Math.pow(1.2, gameState.clickPowerLevel - 1));
+            
+            document.getElementById('autoClickerCost').textContent = autoClickerCost;
+            document.getElementById('clickPowerCost').textContent = clickPowerCost;
+            document.getElementById('autoClickerLevel').textContent = gameState.autoClickerLevel;
+            document.getElementById('clickPowerLevel').textContent = gameState.clickPowerLevel;
+            
+            const autoClickerBtn = document.getElementById('autoClickerBtn');
+            const clickPowerBtn = document.getElementById('clickPowerBtn');
+            
+            if (gameState.points >= autoClickerCost) {
+                autoClickerBtn.classList.add('available');
+                autoClickerBtn.disabled = false;
+            } else {
+                autoClickerBtn.classList.remove('available');
+                autoClickerBtn.disabled = false;
+            }
+            
+            if (gameState.points >= clickPowerCost) {
+                clickPowerBtn.classList.add('available');
+                clickPowerBtn.disabled = false;
+            } else {
+                clickPowerBtn.classList.remove('available');
+                clickPowerBtn.disabled = false;
+            }
+        }
+
+        function updateShop() {
+            updateShopGrid('accessories', 'accessoriesGrid');
+            updateShopGrid('characters', 'charactersGrid');
+            updateShopGrid('themes', 'themesGrid');
+        }
+
+        function updateShopGrid(category, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+            
+            shopItems[category].forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'shop-item';
+                
+                const isOwned = gameState.ownedItems.includes(item.id);
+                const canAfford = gameState.points >= item.price;
+                
+                itemDiv.innerHTML = `
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">💰 ${item.price} poin</div>
+                    <button class="buy-btn ${isOwned ? 'owned' : ''}" 
+                            onclick="${isOwned ? '' : `buyItem('${item.id}', ${item.price})`}"
+                            ${!canAfford && !isOwned ? 'disabled' : ''}>
+                        ${isOwned ? '✓ Terbeli' : 'Beli'}
+                    </button>
+                `;
+                
+                grid.appendChild(itemDiv);
+            });
+        }
+
+        function updateInventory() {
+            const inventoryGrid = document.getElementById('inventoryGrid');
+            inventoryGrid.innerHTML = '';
+            
+            if (gameState.ownedItems.length === 0) {
+                inventoryGrid.innerHTML = '<div style="text-align: center; color: #666; grid-column: 1 / -1; padding: 50px;">Belum ada item yang dimiliki</div>';
+                return;
+            }
+            
+            gameState.ownedItems.forEach(itemId => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'inventory-item';
+                
+                const icons = {
+                    hat: '🎩', glasses: '🕶️', motorcycle: '🏍️', car: '🚗',
+                    wizard: '🧙‍♂️', superhero: '🦸‍♂️', darkTheme: '🌙', rainbowTheme: '🌈'
+                };
+                
+                const isEquipped = gameState.equippedItems[itemId];
+                
+                itemDiv.innerHTML = `
+                    <div class="item-icon">${icons[itemId] || '❓'}</div>
+                    <div class="item-name">${getItemName(itemId)}</div>
+                    <button class="equip-btn ${isEquipped ? 'equipped' : ''}" onclick="equipItem('${itemId}')">
+                        ${isEquipped ? 'Lepas' : 'Pasang'}
+                    </button>
+                `;
+                
+                inventoryGrid.appendChild(itemDiv);
+            });
+        }
+
+        // UI Functions
+        function openShop() {
+            playSound('openSound');
+            updateShop();
+            document.getElementById('shopPopup').style.display = 'flex';
+        }
+
+        function closeShop() {
+            playSound('closeSound');
+            document.getElementById('shopPopup').style.display = 'none';
+        }
+
+        function openInventory() {
+            playSound('openSound');
+            updateInventory();
+            document.getElementById('inventoryPopup').style.display = 'flex';
+        }
+
+        function closeInventory() {
+            playSound('closeSound');
+            document.getElementById('inventoryPopup').style.display = 'none';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showNotification(message) {
+            document.getElementById('notificationMessage').textContent = message;
+            document.getElementById('notificationPopup').style.display = 'flex';
+        }
+
+        function closeNotification() {
+            playSound('closeSound');
+            document.getElementById('notificationPopup').style.display = 'none';
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            document.getElementById('soundStatus').textContent = gameState.soundEnabled ? 'On' : 'Off';
+            
+            if (gameState.soundEnabled) {
+                playSound('clickSound');
+            }
+        }
+
+        // Game Loop
+        setInterval(() => {
+            gameState.points += gameState.pointsPerSecond;
+            gameState.playTime++;
+            document.getElementById('playTime').textContent = gameState.playTime;
+            updateDisplay();
+        }, 1000);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            preloadAudio();
+            updateDisplay();
+            updateEquipment();
+            updateShop();
+        });
+    </script>
 </body>
 </html>
