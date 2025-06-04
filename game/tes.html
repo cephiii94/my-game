@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Clicker Game</title>
+    <style>
+        /* CSS tetap sama seperti sebelumnya - tidak berubah */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9);
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 0 0 15px 15px;
+            flex-shrink: 0;
+        }
+
+        .game-title {
+            color: #1565c0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .sound-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Main Game Area */
+        .game-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 300px 1fr;
+            gap: 20px;
+            padding: 20px;
+            align-items: start;
+            overflow-y: auto;
+        }
+
+        /* Character Area */
+        .character-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .character-container {
+            position: relative;
+            width: 200px;
+            height: 250px;
+            margin-bottom: 20px;
+        }
+
+        .character {
+            width: 100px;
+            height: 150px;
+            background: #64b5f6;
+            border-radius: 50px 50px 20px 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: idle 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .character:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .character:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        @keyframes idle {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-5px); }
+        }
+
+        /* Equipment Slots */
+        .equipment {
+            position: absolute;
+        }
+
+        .hat {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            background: #f44336;
+            border-radius: 30px 30px 0 0;
+            display: none;
+        }
+
+        .glasses {
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 20px;
+            background: #424242;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .vehicle {
+            top: 100px;
+            right: -80px;
+            width: 80px;
+            height: 40px;
+            background: #ff9800;
+            border-radius: 10px;
+            display: none;
+        }
+
+        /* Stats */
+        .stats {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            margin: 8px 0;
+            color: #1565c0;
+            font-weight: bold;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .click-button {
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .click-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        .click-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Upgrades */
+        .upgrades {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .upgrade-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #42a5f5;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .upgrade-btn:hover {
+            background: #42a5f5;
+            color: white;
+        }
+
+        .upgrade-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Upgrade Available Indicator */
+        .upgrade-btn.available {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .upgrade-btn.available::after {
+            content: '✨';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff9800;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        /* Shop Button */
+        .shop-btn {
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            transform: translateY(-1px);
+        }
+
+        /* Save Status Indicator */
+        .save-status {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1001;
+        }
+
+        .save-status.show {
+            opacity: 1;
+        }
+
+        .save-status.error {
+            background: rgba(244, 67, 54, 0.9);
+        }
+
+        /* Popups */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 10px;
+        }
+
+        .popup-title {
+            color: #1565c0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Shop Tabs */
+        .shop-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: #e3f2fd;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #1565c0;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #42a5f5;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Shop Items */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .shop-item {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .shop-item:hover {
+            border-color: #42a5f5;
+            transform: translateY(-2px);
+        }
+
+        .item-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .buy-btn:hover {
+            background: #1976d2;
+        }
+
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .buy-btn.owned {
+            background: #4caf50;
+            cursor: default;
+        }
+
+        .buy-btn.owned:hover {
+            background: #4caf50;
+        }
+
+        /* Inventory */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .inventory-item {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .equip-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .equip-btn.equipped {
+            background: #f44336;
+        }
+
+        /* Notification Popup */
+        .notification-popup {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .notification-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .notification-title {
+            color: #1565c0;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .notification-message {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .notification-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .notification-btn {
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .notification-btn:hover {
+            background: #1976d2;
+        }
+
+        .notification-btn.secondary {
+            background: #66bb6a;
+        }
+
+        .notification-btn.secondary:hover {
+            background: #388e3c;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+                gap: 0;
+                padding: 10px 10px 0 10px;
+                height: calc(100dvh - 60px);
+            }
+
+            .character-section {
+                order: 1;
+                justify-content: center;
+                min-height: 0;
+                padding: 10px 0;
+            }
+
+            .character-container {
+                width: 150px;
+                height: 180px;
+                margin-bottom: 15px;
+            }
+
+            .character {
+                width: 80px;
+                height: 120px;
+            }
+
+            .stats {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+
+            .stat-item {
+                margin: 4px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .control-panel {
+                order: 2;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 8px 10px 8px 10px;
+                border-radius: 15px 15px 0 0;
+                box-shadow: 0 -3px 15px rgba(0,0,0,0.15);
+                backdrop-filter: blur(10px);
+                z-index: 100;
+                max-height: 45vh;
+                overflow-y: auto;
+            }
+
+            .click-button {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+                border-radius: 25px;
+            }
+
+            .upgrades {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+                margin-bottom: 8px;
+            }
+
+            .upgrade-btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                border-radius: 8px;
+                min-height: 60px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .upgrade-btn small {
+                font-size: 0.65rem;
+                line-height: 1.2;
+            }
+
+            .shop-buttons {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+                margin-bottom: 8px;
+            }
+
+            .shop-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                border-radius: 15px;
+                margin-bottom: 0;
+            }
+
+            .reset-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                margin-top: 8px;
+            }
+
+            .header {
+                padding: 6px 15px;
+            }
+
+            .game-title {
+                font-size: 1.1rem;
+            }
+
+            .sound-toggle {
+                padding: 4px 8px;
+                font-size: 0.8rem;
+                top: 8px;
+                right: 15px;
+            }
+
+            .save-status {
+                top: 50px;
+                right: 15px;
+                font-size: 0.7rem;
+                padding: 3px 8px;
+            }
+
+            .popup {
+                width: 95%;
+                max-height: 85vh;
+                border-radius: 15px;
+            }
+
+            .popup-title {
+                font-size: 1.2rem;
+            }
+
+            .shop-tabs {
+                flex-direction: row;
+            }
+
+            .tab-btn {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+            }
+
+            .shop-grid, .inventory-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .shop-item, .inventory-item {
+                padding: 10px;
+            }
+
+            .item-icon {
+                font-size: 1.5rem;
+            }
+
+            .notification-popup {
+                padding: 20px;
+                max-width: 350px;
+            }
+
+            .notification-icon {
+                font-size: 2rem;
+            }
+
+            .notification-title {
+                font-size: 1.1rem;
+            }
+
+            .notification-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character {
+                width: 70px;
+                height: 100px;
+            }
+
+            .character-container {
+                width: 130px;
+                height: 150px;
+            }
+
+            .stats {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+
+            .upgrade-btn {
+                padding: 4px 6px;
+                font-size: 0.7rem;
+                min-height: 50px;
+            }
+
+            .click-button {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+
+            .control-panel {
+                padding: 6px 8px 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Audio Elements -->
+    <audio id="clickSound" preload="auto">
+        <source src="sounds/click.mp3" type="audio/mpeg">
+        <source src="sounds/click.wav" type="audio/wav">
+        <source src="sounds/click.ogg" type="audio/ogg">
+    </audio>
+    
+    <audio id="buySound" preload="auto">
+        <source src="sounds/buy.mp3" type="audio/mpeg">
+        <source src="sounds/buy.wav" type="audio/wav">
+        <source src="sounds/buy.ogg" type="audio/ogg">
+    </audio>
+    
+    <audio id="openSound" preload="auto">
+        <source src="sounds/open.mp3" type="audio/mpeg">
+        <source src="sounds/open.wav" type="audio/wav">
+        <source src="sounds/open.ogg" type="audio/ogg">
+    </audio>
+    
+    <audio id="closeSound" preload="auto">
+        <source src="sounds/close.mp3" type="audio/mpeg">
+        <source src="sounds/close.wav" type="audio/wav">
+        <source src="sounds/close.ogg" type="audio/ogg">
+    </audio>
+
+    <!-- Save Status Indicator -->
+    <div class="save-status" id="saveStatus">💾 Game Saved!</div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 class="game-title">🎮 Idle Clicker Game</h1>
+        <button class="sound-toggle" onclick="toggleSound()">🔊 <span id="soundStatus">On</span></button>
+    </div>
+
+    <!-- Main Game Area -->
+    <div class="game-container">
+        <!-- Character Section -->
+        <div class="character-section">
+            <div class="character-container">
+                <div class="character" onclick="clickCharacter()"></div>
+                <!-- Equipment Slots -->
+                <div class="equipment hat" id="hat"></div>
+                <div class="equipment glasses" id="glasses"></div>
+                <div class="equipment vehicle" id="vehicle"></div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">💰 <span id="points">0</span></div>
+                <div class="stat-item">⚡ <span id="pointsPerSecond">0</span>/s</div>
+                <div class="stat-item">🔥 Lv.<span id="level">1</span></div>
+                <div class="stat-item">🎯 <span id="totalClicks">0</span></div>
+                <div class="stat-item">⏰ <span id="playTime">0</span>s</div>
+                <div class="stat-item">💎 <span id="ownedItems">0</span></div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <button class="click-button" onclick="clickCharacter()">🖱️ Klik Saya!</button>
+            
+            <div class="upgrades">
+                <button class="upgrade-btn" onclick="buyUpgrade('autoClicker')" id="autoClickerBtn">
+                    🤖 Auto<br>
+                    <small>💰 <span id="autoClickerCost">10</span></small><br>
+                    <small>Lv: <span id="autoClickerLevel">0</span></small>
+                </button>
+                
+                <button class="upgrade-btn" onclick="buyUpgrade('clickPower')" id="clickPowerBtn">
+                    💪 Power<br>
+                    <small>💰 <span id="clickPowerCost">50</span></small><br>
+                    <small>Lv: <span id="clickPowerLevel">1</span></small>
+                </button>
+            </div>
+            
+            <div class="shop-buttons">
+                <button class="shop-btn" onclick="openShop()">🛍️ Toko</button>
+                <button class="shop-btn" onclick="openInventory()" style="background: linear-gradient(135deg, #ab47bc, #7b1fa2);">🎒 Items</button>
+            </div>
+
+            <button class="reset-btn" onclick="confirmReset()">🔄 Reset Game</button>
+        </div>
+    </div>
+
+    <!-- Shop Popup -->
+    <div class="popup-overlay" id="shopPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">🛍️ Toko</h2>
+                <button class="close-btn" onclick="closeShop()">×</button>
+            </div>
+            
+            <div class="shop-tabs">
+                <button class="tab-btn active" onclick="switchTab('accessories')">🎭 Aksesoris</button>
+                <button class="tab-btn" onclick="switchTab('characters')">👤 Karakter</button>
+                <button class="tab-btn" onclick="switchTab('themes')">🎨 Tema</button>
+            </div>
+            
+            <div class="tab-content active" id="accessories">
+                <div class="shop-grid" id="accessoriesGrid"></div>
+            </div>
+            
+            <div class="tab-content" id="characters">
+                <div class="shop-grid" id="charactersGrid"></div>
+            </div>
+            
+            <div class="tab-content" id="themes">
+                <div class="shop-grid" id="themesGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Popup -->
+    <div class="popup-overlay" id="inventoryPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">🎒 Inventory</h2>
+                <button class="close-btn" onclick="closeInventory()">×</button>
+            </div>
+            <div class="inventory-grid" id="inventoryGrid">
+                <div style="text-align: center; color: #666; grid-column: 1 / -1; padding: 50px;">
+                    Belum ada item yang dimiliki
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Popup -->
+    <div class="popup-overlay" id="resetPopup">
+        <div class="notification-popup">
+            <div class="notification-icon">⚠️</div>
+            <div class="notification-title">Reset Game</div>
+            <div class="notification-message">Apakah Anda yakin ingin mereset semua progress? Data tidak dapat dikembalikan!</div>
+            <div class="notification-buttons">
+                <button class="notification-btn" onclick="resetGame(); closeResetPopup();">Ya, Reset</button>
+                <button class="notification-btn secondary" onclick="closeResetPopup()">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Popup -->
+    <div class="popup-overlay" id="notificationPopup">
+        <div class="notification-popup">
+            <div class="notification-icon" id="notificationIcon">🎉</div>
+            <div class="notification-title" id="notificationTitle">Item Berhasil Dibeli!</div>
+            <div class="notification-message" id="notificationMessage">Item telah ditambahkan ke inventory Anda.</div>
+            <div class="notification-buttons">
+                <button class="notification-btn" onclick="closeNotification(); openInventory();">Lihat Inventory</button>
+                <button class="notification-btn secondary" onclick="closeNotification()">Lanjut Belanja</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== LOCAL STORAGE SYSTEM ====================
+        const SAVE_KEY = 'idleClickerGameData';
+        const SAVE_VERSION = '1.0';
+
+        // Default Game State
+        const defaultGameState = {
+            version: SAVE_VERSION,
+            points: 0,
+            pointsPerSecond: 0,
+            clickPower: 1,
+            autoClickerLevel: 0,
+            clickPowerLevel: 1,
+            totalClicks: 0,
+            playTime: 0,
+            ownedItems: [],
+            equippedItems: {},
+            soundEnabled: true,
+            lastSaved: Date.now(),
+            totalPlaytime: 0
+        };
+
+        // Game State
+        let gameState = { ...defaultGameState };
+
+        // 💾 SAVE GAME FUNCTION
+        function saveGame() {
+            try {
+                gameState.lastSaved = Date.now();
+                const saveData = JSON.stringify(gameState);
+                localStorage.setItem(SAVE_KEY, saveData);
+                
+                // Show save indicator
+                showSaveStatus('💾 Game Saved!', false);
+                return true;
+            } catch (error) {
+                console.error('Save failed:', error);
+                showSaveStatus('❌ Save Failed!', true);
+                return false;
+            }
+        }
+
+        // 📂 LOAD GAME FUNCTION
+        function loadGame() {
+            try {
+                const savedData = localStorage.getItem(SAVE_KEY);
+                if (savedData) {
+                    const loadedState = JSON.parse(savedData);
+                    
+                    // Check version compatibility
+                    if (loadedState.version === SAVE_VERSION) {
+                        // Merge with default state to handle new properties
+                        gameState = { ...defaultGameState, ...loadedState };
+                        
+                        console.log('Game loaded successfully!');
+                        showSaveStatus('📂 Game Loaded!', false);
+                        return true;
+                    } else {
+                        console.log('Save version mismatch, starting fresh');
+                        return false;
+                    }
+                } else {
+                    console.log('No save data found, starting new game');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Load failed:', error);
+                showSaveStatus('❌ Load Failed!', true);
+                return false;
+            }
+        }
+
+        // 🔄 RESET GAME FUNCTION
+        function resetGame() {
+            try {
+                localStorage.removeItem(SAVE_KEY);
+                gameState = { ...defaultGameState };
+                
+                // Reset display
+                updateDisplay();
+                updateEquipment();
+                updateShop();
+                updateInventory();
+                
+                console.log('Game reset successfully!');
+                showSaveStatus('🔄 Game Reset!', false);
+            } catch (error) {
+                console.error('Reset failed:', error);
+                showSaveStatus('❌ Reset Failed!', true);
+            }
+        }
+
+        // 💫 AUTO SAVE SYSTEM
+        function initAutoSave() {
+            // Auto save every 30 seconds
+            setInterval(() => {
+                saveGame();
+            }, 30000);
+
+            // Save on page unload
+            window.addEventListener('beforeunload', () => {
+                saveGame();
+            });
+
+            // Save on visibility change (tab switch/minimize)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    saveGame();
+                }
+            });
+        }
+
+        // 📊 SHOW SAVE STATUS
+        function showSaveStatus(message, isError = false) {
+            const saveStatus = document.getElementById('saveStatus');
+            saveStatus.textContent = message;
+            saveStatus.classList.toggle('error', isError);
+            saveStatus.classList.add('show');
+            
+            setTimeout(() => {
+                saveStatus.classList.remove('show');
+            }, 2000);
+        }
+
+        // 🔄 CONFIRM RESET
+        function confirmReset() {
+            document.getElementById('resetPopup').style.display = 'flex';
+        }
+
+        function closeResetPopup() {
+            document.getElementById('resetPopup').style.display = 'none';
+        }
+
+        // ==================== SHOP ITEMS DATA ====================
+        const shopItems = {
+            accessories: [
+                { id: 'hat', name: 'Topi Keren', icon: '🎩', price: 100 },
+                { id: 'glasses', name: 'Kacamata Hitam', icon: '🕶️', price: 200 },
+                { id: 'motorcycle', name: 'Motor Sport', icon: '🏍️', price: 500 },
+                { id: 'car', name: 'Mobil Mewah', icon: '🚗', price: 1000 }
+            ],
+            characters: [
+                { id: 'wizard', name: 'Wizard', icon: '🧙‍♂️', price: 300 },
+                { id: 'superhero', name: 'Superhero', icon: '🦸‍♂️', price: 800 }
+            ],
+            themes: [
+                { id: 'darkTheme', name: 'Tema Malam', icon: '🌙', price: 150 },
+                { id: 'rainbowTheme', name: 'Tema Pelangi', icon: '🌈', price: 250 }
+            ]
+        };
+
+        // ==================== SOUND FUNCTIONS ====================
+        function playSound(soundId) {
+            if (!gameState.soundEnabled) return;
+            
+            try {
+                const audio = document.getElementById(soundId);
+                if (audio) {
+                    audio.currentTime = 0;
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log('Audio play failed:', error);
+                            try {
+                                audio.play();
+                            } catch(e) {
+                                console.log('Audio fallback failed:', e);
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.log('Sound error:', error);
+            }
+        }
+
+        function preloadAudio() {
+            const audioIds = ['clickSound', 'buySound', 'openSound', 'closeSound'];
+            audioIds.forEach(id => {
+                const audio = document.getElementById(id);
+                if (audio) {
+                    audio.load();
+                }
+            });
+        }
+
+        // ==================== GAME LOGIC ====================
+        function clickCharacter() {
+            playSound('clickSound');
+            
+            gameState.points += gameState.clickPower;
+            gameState.totalClicks++;
+            updateDisplay();
+            
+            // Click animation
+            const character = document.querySelector('.character');
+            character.style.animation = 'none';
+            setTimeout(() => {
+                character.style.animation = 'idle 2s ease-in-out infinite';
+            }, 100);
+
+            // Save progress after significant actions
+            if (gameState.totalClicks % 10 === 0) {
+                saveGame();
+            }
+        }
+
+        function buyUpgrade(type) {
+            let purchased = false;
+            
+            if (type === 'autoClicker') {
+                const cost = Math.floor(10 * Math.pow(1.15, gameState.autoClickerLevel));
+                if (gameState.points >= cost) {
+                    gameState.points -= cost;
+                    gameState.autoClickerLevel++;
+                    gameState.pointsPerSecond = gameState.autoClickerLevel;
+                    purchased = true;
+                }
+            } else if (type === 'clickPower') {
+                const cost = Math.floor(50 * Math.pow(1.2, gameState.clickPowerLevel - 1));
+                if (gameState.points >= cost) {
+                    gameState.points -= cost;
+                    gameState.clickPowerLevel++;
+                    gameState.clickPower = gameState.clickPowerLevel;
+                    purchased = true;
+                }
+            }
+            
+            if (purchased) {
+                playSound('buySound');
+                saveGame(); // Save after purchase
+            }
+            
+            updateDisplay();
+        }
+
+        function buyItem(itemId, cost) {
+            if (gameState.points >= cost && !gameState.ownedItems.includes(itemId)) {
+                gameState.points -= cost;
+                gameState.ownedItems.push(itemId);
+                
+                playSound('buySound');
+                
+                updateDisplay();
+                updateShop();
+                showNotification(`Item ${getItemName(itemId)} berhasil dibeli!`);
+                
+                saveGame(); // Save after purchase
+            }
+        }
+
+        function equipItem(itemId) {
+            if (gameState.equippedItems[itemId]) {
+                gameState.equippedItems[itemId] = false;
+            } else {
+                gameState.equippedItems[itemId] = true;
+            }
+            updateEquipment();
+            updateInventory();
+            saveGame(); // Save equipment changes
+        }
+
+        function getItemName(itemId) {
+            for (let category in shopItems) {
+                const item = shopItems[category].find(item => item.id === itemId);
+                if (item) return item.name;
+            }
+            return itemId;
+        }
+
+        function updateEquipment() {
+            document.getElementById('hat').style.display = gameState.equippedItems.hat ? 'block' : 'none';
+            document.getElementById('glasses').style.display = gameState.equippedItems.glasses ? 'block' : 'none';
+            document.getElementById('vehicle').style.display = (gameState.equippedItems.motorcycle || gameState.equippedItems.car) ? 'block' : 'none';
+        }
+
+        function updateDisplay() {
+            document.getElementById('points').textContent = Math.floor(gameState.points);
+            document.getElementById('pointsPerSecond').textContent = gameState.pointsPerSecond;
+            document.getElementById('totalClicks').textContent = gameState.totalClicks;
+            document.getElementById('ownedItems').textContent = gameState.ownedItems.length;
+            document.getElementById('level').textContent = Math.floor(gameState.totalClicks / 10) + 1;
+            
+            const autoClickerCost = Math.floor(10 * Math.pow(1.15, gameState.autoClickerLevel));
+            const clickPowerCost = Math.floor(50 * Math.pow(1.2, gameState.clickPowerLevel - 1));
+            
+            document.getElementById('autoClickerCost').textContent = autoClickerCost;
+            document.getElementById('clickPowerCost').textContent = clickPowerCost;
+            document.getElementById('autoClickerLevel').textContent = gameState.autoClickerLevel;
+            document.getElementById('clickPowerLevel').textContent = gameState.clickPowerLevel;
+            
+            const autoClickerBtn = document.getElementById('autoClickerBtn');
+            const clickPowerBtn = document.getElementById('clickPowerBtn');
+            
+            if (gameState.points >= autoClickerCost) {
+                autoClickerBtn.classList.add('available');
+                autoClickerBtn.disabled = false;
+            } else {
+                autoClickerBtn.classList.remove('available');
+                autoClickerBtn.disabled = false;
+            }
+            
+            if (gameState.points >= clickPowerCost) {
+                clickPowerBtn.classList.add('available');
+                clickPowerBtn.disabled = false;
+            } else {
+                clickPowerBtn.classList.remove('available');
+                clickPowerBtn.disabled = false;
+            }
+        }
+
+        function updateShop() {
+            updateShopGrid('accessories', 'accessoriesGrid');
+            updateShopGrid('characters', 'charactersGrid');
+            updateShopGrid('themes', 'themesGrid');
+        }
+
+        function updateShopGrid(category, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+            
+            shopItems[category].forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'shop-item';
+                
+                const isOwned = gameState.ownedItems.includes(item.id);
+                const canAfford = gameState.points >= item.price;
+                
+                itemDiv.innerHTML = `
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">💰 ${item.price} poin</div>
+                    <button class="buy-btn ${isOwned ? 'owned' : ''}" 
+                            onclick="${isOwned ? '' : `buyItem('${item.id}', ${item.price})`}"
+                            ${!canAfford && !isOwned ? 'disabled' : ''}>
+                        ${isOwned ? '✓ Terbeli' : 'Beli'}
+                    </button>
+                `;
+                
+                grid.appendChild(itemDiv);
+            });
+        }
+
+        function updateInventory() {
+            const inventoryGrid = document.getElementById('inventoryGrid');
+            inventoryGrid.innerHTML = '';
+            
+            if (gameState.ownedItems.length === 0) {
+                inventoryGrid.innerHTML = '<div style="text-align: center; color: #666; grid-column: 1 / -1; padding: 50px;">Belum ada item yang dimiliki</div>';
+                return;
+            }
+            
+            gameState.ownedItems.forEach(itemId => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'inventory-item';
+                
+                const icons = {
+                    hat: '🎩', glasses: '🕶️', motorcycle: '🏍️', car: '🚗',
+                    wizard: '🧙‍♂️', superhero: '🦸‍♂️', darkTheme: '🌙', rainbowTheme: '🌈'
+                };
+                
+                const isEquipped = gameState.equippedItems[itemId];
+                
+                itemDiv.innerHTML = `
+                    <div class="item-icon">${icons[itemId] || '❓'}</div>
+                    <div class="item-name">${getItemName(itemId)}</div>
+                    <button class="equip-btn ${isEquipped ? 'equipped' : ''}" onclick="equipItem('${itemId}')">
+                        ${isEquipped ? 'Lepas' : 'Pasang'}
+                    </button>
+                `;
+                
+                inventoryGrid.appendChild(itemDiv);
+            });
+        }
+
+        // ==================== UI FUNCTIONS ====================
+        function openShop() {
+            playSound('openSound');
+            updateShop();
+            document.getElementById('shopPopup').style.display = 'flex';
+        }
+
+        function closeShop() {
+            playSound('closeSound');
+            document.getElementById('shopPopup').style.display = 'none';
+        }
+
+        function openInventory() {
+            playSound('openSound');
+            updateInventory();
+            document.getElementById('inventoryPopup').style.display = 'flex';
+        }
+
+        function closeInventory() {
+            playSound('closeSound');
+            document.getElementById('inventoryPopup').style.display = 'none';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showNotification(message) {
+            document.getElementById('notificationMessage').textContent = message;
+            document.getElementById('notificationPopup').style.display = 'flex';
+        }
+
+        function closeNotification() {
+            playSound('closeSound');
+            document.getElementById('notificationPopup').style.display = 'none';
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            document.getElementById('soundStatus').textContent = gameState.soundEnabled ? 'On' : 'Off';
+            
+            if (gameState.soundEnabled) {
+                playSound('clickSound');
+            }
+            
+            saveGame(); // Save sound preference
+        }
+
+        // ==================== GAME LOOP ====================
+        setInterval(() => {
+            gameState.points += gameState.pointsPerSecond;
+            gameState.playTime++;
+            gameState.totalPlaytime++;
+            document.getElementById('playTime').textContent = gameState.playTime;
+            updateDisplay();
+        }, 1000);
+
+        // ==================== INITIALIZE GAME ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved game data
+            const loaded = loadGame();
+            
+            // Initialize audio
+            preloadAudio();
+            
+            // Initialize auto save system
+            initAutoSave();
+            
+            // Update display 
+            updateDisplay();
+            updateEquipment();
+            updateShop();
+            updateInventory();
+            
+            // Update sound status
+            document.getElementById('soundStatus').textContent = gameState.soundEnabled ? 'On' : 'Off';
+            
+            console.log('Game initialized!', loaded ? 'Saved data loaded.' : 'Starting fresh.');
+        });
+    </script>
+</body>
+</html>
