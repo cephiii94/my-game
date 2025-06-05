@@ -4,507 +4,215 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Games</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f0f2f5;
-        }
-        
-        header {
-            background-color: #4a6fa5;
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-        
-        .user-section {
-            position: absolute;
-            right: 1.5rem;
-            top: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        
-        .username-display {
-            font-weight: 600;
-        }
-        
-        .logout-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .logout-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .login-btn {
-            background-color: white;
-            color: #4a6fa5;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        
-        .login-btn:hover {
-            background-color: #f0f0f0;
-        }
-        
-        main {
-            flex: 1;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        
-        .welcome-section {
-            margin-bottom: 2rem;
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .welcome-message {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        
-        .progress-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .progress-card {
-            background-color: #f9f9f9;
-            border-radius: 6px;
-            padding: 1rem;
-            border-left: 4px solid #4a6fa5;
-        }
-        
-        .progress-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        
-        .progress-value {
-            font-size: 1.2rem;
-            color: #4a6fa5;
-        }
-        
-        .games-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .game-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-        
-        .game-image {
-            height: 180px;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-        
-        .clicker-game {
-            background-color: #ff7e5f;
-            background-image: linear-gradient(120deg, #ff7e5f 0%, #feb47b 100%);
-        }
-        
-        .quiz-game {
-            background-color: #76b852;
-            background-image: linear-gradient(120deg, #76b852 0%, #8DC26F 100%);
-        }
-        
-        .game-content {
-            padding: 1.5rem;
-        }
-        
-        .game-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .game-progress-badge {
-            font-size: 0.8rem;
-            padding: 0.3rem 0.6rem;
-            background-color: #e6f4ff;
-            color: #0072c6;
-            border-radius: 20px;
-        }
-        
-        .game-description {
-            color: #666;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        
-        .play-btn {
-            display: inline-block;
-            background-color: #4a6fa5;
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-        
-        .play-btn:hover {
-            background-color: #3a5982;
-        }
-        
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: auto;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-text {
-            margin-bottom: 0.5rem;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #4a6fa5;
-            color: white;
-            text-decoration: none;
-            transition: background-color 0.2s ease;
-        }
-        
-        .social-icon:hover {
-            background-color: #3a5982;
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .user-section {
-                position: static;
-                margin-top: 1rem;
-                justify-content: center;
-            }
-            
-            main {
-                padding: 1rem;
-            }
-            
-            .games-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .game-image {
-                height: 150px;
-            }
-        }
-        
-        /* Link Keren dengan Efek Underline Animasi */
-        .cool-link {
-            font-size: medium;
-            position: relative;
-            color: #4a90e2;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 4px 4px;
-            transition: all 0.3s ease;
-        }
-        
-        .cool-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #4a90e2;
-            transition: width 0.3s ease;
-        }
-        
-        .cool-link:hover {
-            color: #1c57a5;
-        }
-        
-        .cool-link:hover::after {
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <div class="container">
         <h1>My Games</h1>
         <p class="subtitle">Koleksi game-game seru buatan saya</p>
-        <div class="user-section" id="user-section">
-            <!-- Konten akan diisi oleh JavaScript -->
-        </div>
-    </header>
-    
-    <main>
-        <section class="welcome-section" id="welcome-section">
-            <!-- Konten akan diisi oleh JavaScript -->
-        </section>
         
-        <h2>Game Yang Sudah Saya Buat</h2>
-        <div class="games-container">
+        <div class="games-grid">
+            <!-- Clicker Game Card -->
             <div class="game-card">
-                <div class="game-image clicker-game"></div>
-                <div class="game-content">
-                    <h3 class="game-title">
-                        Clicker Game
-                        <span class="game-progress-badge" id="clicker-progress">Level 0</span>
-                    </h3>
-                    <p class="game-description">Game sederhana dengan konsep klik untuk mendapatkan poin. Kumpulkan poin sebanyak mungkin!</p>
-                    <a href="/game/clickme/index.html" class="play-btn">Main Sekarang</a>
+                <h2 class="game-title">Clicker Game</h2>
+                <p class="game-description">
+                    Game sederhana dengan konsep klik untuk mendapatkan poin. 
+                    Kumpulkan poin sebanyak mungkin dan buka upgrade menarik!
+                </p>
+                <div class="game-buttons">
+                    <a href="#" class="btn btn-primary">Main Sekarang</a>
+                    <button class="btn btn-secondary" onclick="showVersionModal('clicker')">Version</button>
                 </div>
             </div>
-            
-            <div class="game-card">
-                <div class="game-image quiz-game"></div>
-                <div class="game-content">
-                    <h3 class="game-title">
-                        Game Quiz
-                        <span class="game-progress-badge" id="quiz-progress">0%</span>
-                    </h3>
-                    <p class="game-description">Uji pengetahuan Anda dengan berbagai pertanyaan menarik dalam game quiz interaktif ini.</p>
-                    <a href="/game/quiz/index.html" class="play-btn">Main Sekarang</a>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-    <footer>
-        <div class="footer-content">
-            <p class="footer-text">© 2025 My Games. Semua hak cipta dilindungi.</p>
-            <p>Dibuat dengan ❤️</p>
-            <p><a href="https://enoted.netlify.app" target="_blank" class="cool-link">Enoted</a></p>
-            <div class="social-links">
-                <a href="https://facebook.com" class="social-icon">FB</a>
-                <a href="https://instagram.com" class="social-icon">IG</a>
-                <a href="https://x.com" class="social-icon">TW</a>
-            </div>
-        </div>
-    </footer>
 
-    <script type="module">
-        import { checkAuthStatus, logoutUser } from './assets/js/auth.js';
-        import { getUserStats, getGameProgress } from './assets/js/progress.js';
-        
-        // Elemen-elemen DOM
-        const userSection = document.getElementById('user-section');
-        const welcomeSection = document.getElementById('welcome-section');
-        const clickerProgressBadge = document.getElementById('clicker-progress');
-        const quizProgressBadge = document.getElementById('quiz-progress');
-        
-        // Load user data dan game progress
-        async function loadUserData() {
-            const user = await checkAuthStatus();
-            
-            if (user) {
-                // Tampilkan informasi user
-                userSection.innerHTML = `
-                    <span class="username-display">Halo, ${user.username || 'Pemain'}</span>
-                    <button class="logout-btn" id="logout-btn">Logout</button>
-                `;
-                
-                // Tambahkan event listener untuk tombol logout
-                document.getElementById('logout-btn').addEventListener('click', logoutUser);
-                
-                // Tampilkan welcome message dan game progress
-                welcomeSection.innerHTML = `
-                    <h2 class="welcome-message">Selamat datang kembali, ${user.username || 'Pemain'}!</h2>
-                    <p>Lanjutkan progress permainanmu atau coba game baru!</p>
-                    <div class="progress-cards" id="progress-cards">
-                        <div class="progress-card">
-                            <p class="progress-title">Memuat progress...</p>
+            <!-- Game Quiz Card -->
+            <div class="game-card">
+                <h2 class="game-title">Game Quiz</h2>
+                <p class="game-description">
+                    Uji pengetahuan Anda dengan berbagai pertanyaan menarik dalam game quiz interaktif ini. 
+                    Tantang diri Anda!
+                </p>
+                <div class="game-buttons">
+                    <a href="#" class="btn btn-primary">Main Sekarang</a>
+                    <button class="btn btn-secondary" onclick="showVersionModal('quiz')">Version</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 My Games. Semua hak cipta dilindungi.</p>
+            <p>Dibuat dengan ❤️</p>
+        </footer>
+    </div>
+
+    <!-- Modal untuk Clicker Game Versions -->
+    <div id="clickerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Clicker Game - Versi</h2>
+                <button class="close" onclick="closeModal('clickerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v1.45</span>
+                            <span class="version-badge badge-latest">Latest</span>
                         </div>
                     </div>
-                `;
-                
-                // Load statistik user dan progress game
-                loadGameProgress(user.id);
-            } else {
-                // Tampilkan tombol login
-                userSection.innerHTML = `
-                    <a href="/login.html" class="login-btn">Login</a>
-                `;
-                
-                // Tampilkan welcome message untuk user yang belum login
-                welcomeSection.innerHTML = `
-                    <h2 class="welcome-message">Selamat datang di My Games!</h2>
-                    <p>Silakan login untuk menyimpan progres permainanmu.</p>
-                    <div class="progress-cards">
-                        <div class="progress-card">
-                            <p class="progress-title">Fitur Permainan</p>
-                            <p>Login untuk akses fitur progres, achievement, dan skor tertinggi.</p>
+                    <div class="version-date">05 Juni 2025</div>
+                    <ul class="version-features">
+                        <li>Tambahan sistem prestige</li>
+                        <li>10 upgrade baru</li>
+                        <li>Perbaikan bug auto-clicker</li>
+                        <li>Peningkatan performa</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="#" class="version-link link-download">Download</a>
+                        <a href="/game/clickme/version/1.45/index.html" class="version-link link-demo">Play</a>
+                        <a href="/changelog/clicker-v2.1.0" class="version-link link-changelog">Changelog</a>
+                        <a href="https://github.com/user/clicker-game/releases/tag/v2.1.0" class="version-link link-github">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v2.0.0</span>
+                            <span class="version-badge badge-stable">Stable</span>
                         </div>
                     </div>
-                `;
-                
-                // Set badge default
-                clickerProgressBadge.textContent = 'Login untuk menyimpan progres';
-                quizProgressBadge.textContent = 'Login untuk menyimpan progres';
-            }
-        }
-        
-        // Load game progress
-        async function loadGameProgress(userId) {
-            try {
-                // Ambil statistik user
-                const { stats, error } = await getUserStats(userId);
-                
-                if (error) throw error;
-                
-                // Perbarui progress badge
-                if (stats && stats.gameProgress) {
-                    // Clicker game progress
-                    if (stats.gameProgress.clicker) {
-                        const clickerData = stats.gameProgress.clicker;
-                        clickerProgressBadge.textContent = `Level ${clickerData.level || 0}`;
-                    }
-                    
-                    // Quiz game progress
-                    if (stats.gameProgress.quiz) {
-                        const quizData = stats.gameProgress.quiz;
-                        const completionPercent = quizData.completedQuizzes 
-                            ? Math.round((quizData.completedQuizzes / quizData.totalQuizzes) * 100) 
-                            : 0;
-                        quizProgressBadge.textContent = `${completionPercent}%`;
-                    }
-                }
-                
-                // Tampilkan progress cards
-                const progressCards = document.getElementById('progress-cards');
-                if (progressCards) {
-                    let cardsHTML = '';
-                    
-                    if (stats.highScores.clicker) {
-                        cardsHTML += `
-                            <div class="progress-card">
-                                <p class="progress-title">Skor Tertinggi Clicker</p>
-                                <p class="progress-value">${stats.highScores.clicker}</p>
-                            </div>
-                        `;
-                    }
-                    
-                    if (stats.highScores.quiz) {
-                        cardsHTML += `
-                            <div class="progress-card">
-                                <p class="progress-title">Skor Tertinggi Quiz</p>
-                                <p class="progress-value">${stats.highScores.quiz}</p>
-                            </div>
-                        `;
-                    }
-                    
-                    cardsHTML += `
-                        <div class="progress-card">
-                            <p class="progress-title">Total Game Dimainkan</p>
-                            <p class="progress-value">${stats.totalGamesPlayed}</p>
+                    <div class="version-date">1 Januari 2025</div>
+                    <ul class="version-features">
+                        <li>Major update dengan UI baru</li>
+                        <li>Sistem achievement</li>
+                        <li>Save game otomatis</li>
+                        <li>Mode offline progress</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="/downloads/clicker-v2.0.0.zip" class="version-link link-download">Download</a>
+                        <a href="/demo/clicker-v2.0.0" class="version-link link-demo">Demo</a>
+                        <a href="/changelog/clicker-v2.0.0" class="version-link link-changelog">Changelog</a>
+                        <a href="https://github.com/user/clicker-game/releases/tag/v2.0.0" class="version-link link-github">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v1.5.2</span>
+                            <span class="version-badge badge-stable">Stable</span>
                         </div>
-                    `;
-                    
-                    if (stats.lastPlayed) {
-                        cardsHTML += `
-                            <div class="progress-card">
-                                <p class="progress-title">Terakhir Bermain</p>
-                                <p class="progress-value">${new Date(stats.lastPlayed).toLocaleDateString()}</p>
-                            </div>
-                        `;
-                    }
-                    
-                    progressCards.innerHTML = cardsHTML || `
-                        <div class="progress-card">
-                            <p class="progress-title">Belum Ada Progress</p>
-                            <p>Mainkan game untuk melihat statistik!</p>
+                    </div>
+                    <div class="version-date">20 Desember 2024</div>
+                    <ul class="version-features">
+                        <li>Perbaikan bug kecil</li>
+                        <li>Optimasi kecepatan game</li>
+                        <li>Tambahan sound effects</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="/downloads/clicker-v1.5.2.zip" class="version-link link-download">Download</a>
+                        <a href="/demo/clicker-v1.5.2" class="version-link link-demo">Demo</a>
+                        <a href="/changelog/clicker-v1.5.2" class="version-link link-changelog">Changelog</a>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v1.0.0</span>
+                            <span class="version-badge badge-stable">Stable</span>
                         </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading game progress:', error);
-                welcomeSection.innerHTML = `
-                    <h2 class="welcome-message">Selamat datang!</h2>
-                    <p>Terjadi kesalahan saat memuat data. Silakan coba lagi nanti.</p>
-                `;
-            }
-        }
-        
-        // Jalankan saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', loadUserData);
-    </script>
+                    </div>
+                    <div class="version-date">1 Desember 2024</div>
+                    <ul class="version-features">
+                        <li>Rilis pertama</li>
+                        <li>Fitur dasar clicker</li>
+                        <li>5 upgrade tersedia</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="/downloads/clicker-v1.0.0.zip" class="version-link link-download">Download</a>
+                        <a href="/demo/clicker-v1.0.0" class="version-link link-demo">Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Game Quiz Versions -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Game Quiz - Versi</h2>
+                <button class="close" onclick="closeModal('quizModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v1.2.0</span>
+                            <span class="version-badge badge-latest">Latest</span>
+                        </div>
+                    </div>
+                    <div class="version-date">10 Januari 2025</div>
+                    <ul class="version-features">
+                        <li>50+ pertanyaan baru</li>
+                        <li>Kategori Sains dan Teknologi</li>
+                        <li>Mode multiplayer</li>
+                        <li>Leaderboard global</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="/downloads/quiz-v1.2.0.zip" class="version-link link-download">Download</a>
+                        <a href="/game/quiz/index.html" class="version-link link-demo">Play</a>
+                        <a href="/changelog/quiz-v1.2.0" class="version-link link-changelog">Changelog</a>
+                        <a href="https://github.com/user/quiz-game/releases/tag/v1.2.0" class="version-link link-github">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v1.1.0</span>
+                            <span class="version-badge badge-stable">Stable</span>
+                        </div>
+                    </div>
+                    <div class="version-date">25 Desember 2024</div>
+                    <ul class="version-features">
+                        <li>Tambahan kategori Sejarah</li>
+                        <li>Timer yang lebih akurat</li>
+                        <li>Perbaikan tampilan mobile</li>
+                        <li>Sistem hint</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="/downloads/quiz-v1.1.0.zip" class="version-link link-download">Download</a>
+                        <a href="/demo/quiz-v1.1.0" class="version-link link-demo">Demo</a>
+                        <a href="/changelog/quiz-v1.1.0" class="version-link link-changelog">Changelog</a>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-header">
+                        <div class="version-info">
+                            <span class="version-number">v1.0.0</span>
+                            <span class="version-badge badge-beta">Beta</span>
+                        </div>
+                    </div>
+                    <div class="version-date">15 Desember 2024</div>
+                    <ul class="version-features">
+                        <li>Rilis beta pertama</li>
+                        <li>100 pertanyaan umum</li>
+                        <li>Mode single player</li>
+                        <li>Sistem scoring dasar</li>
+                    </ul>
+                    <div class="version-links">
+                        <a href="/downloads/quiz-v1.0.0.zip" class="version-link link-download">Download</a>
+                        <a href="/demo/quiz-v1.0.0" class="version-link link-demo">Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
