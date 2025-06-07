@@ -433,7 +433,7 @@
             const notification = document.getElementById('achievementNotification');
             notification.textContent = `🏆 ${achievement.name} (+${achievement.reward} poin)`;
             notification.classList.add('show');
-                        setTimeout(() => {
+            setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
         }
@@ -504,6 +504,8 @@
 
         function updateDailyCalendar() {
             const calendar = document.getElementById('dailyCalendar');
+            if (!calendar) return;
+            
             calendar.innerHTML = '';
             
             const today = new Date();
@@ -535,12 +537,14 @@
             
             // Update claim button
             const claimBtn = document.getElementById('claimDailyBtn');
-            if (checkDailyReward()) {
-                claimBtn.disabled = false;
-                claimBtn.textContent = '🎁 Klaim Reward Harian';
-            } else {
-                claimBtn.disabled = true;
-                claimBtn.textContent = '🎁 Sudah Diklaim Hari Ini';
+            if (claimBtn) {
+                if (checkDailyReward()) {
+                    claimBtn.disabled = false;
+                    claimBtn.textContent = '🎁 Klaim Reward Harian';
+                } else {
+                    claimBtn.disabled = true;
+                    claimBtn.textContent = '🎁 Sudah Diklaim Hari Ini';
+                }
             }
         }
 
@@ -581,83 +585,224 @@
                 timeText = `${minutes} menit`;
             }
             
-            document.getElementById('offlineMessage').textContent = 
-                `Kamu offline selama ${timeText} dan mendapat ${earnings} poin!`;
+            const offlineMessage = document.getElementById('offlineMessage');
+            if (offlineMessage) {
+                offlineMessage.textContent = `Kamu offline selama ${timeText} dan mendapat ${earnings} poin!`;
+            }
             
             gameState.points += earnings;
             updateDisplay();
             
-            document.getElementById('offlinePopup').style.display = 'flex';
+            const offlinePopup = document.getElementById('offlinePopup');
+            if (offlinePopup) {
+                offlinePopup.style.display = 'flex';
+            }
         }
 
         function closeOfflinePopup() {
-            document.getElementById('offlinePopup').style.display = 'none';
+            const offlinePopup = document.getElementById('offlinePopup');
+            if (offlinePopup) {
+                offlinePopup.style.display = 'none';
+            }
             saveGame();
+        }
+
+        // ==================== MOBILE FUNCTIONS ====================
+        
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const isVisible = overlay.style.display === 'flex';
+            
+            if (isVisible) {
+                overlay.style.display = 'none';
+                playSound('closeSound');
+            } else {
+                overlay.style.display = 'flex';
+                playSound('openSound');
+            }
+        }
+
+        // Open mobile stats modal
+        function openMobileStats() {
+            updateMobileStats();
+            document.getElementById('mobileStatsModal').style.display = 'flex';
+            playSound('openSound');
+        }
+
+        // Close mobile stats modal
+        function closeMobileStats() {
+            document.getElementById('mobileStatsModal').style.display = 'none';
+            playSound('closeSound');
+        }
+
+        // Update mobile stats display
+        function updateMobileStats() {
+            const elements = [
+                'mobilePoints', 'mobilePointsPerSecond', 'mobileLevel', 'mobileTotalClicks',
+                'mobilePlayTime', 'mobileOwnedItems', 'mobilePrestigeLevel', 
+                'mobilePrestigePoints', 'mobilePrestigeMultiplier', 'mobileDailyStreak'
+            ];
+            
+            // Check if elements exist before updating
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    switch(id) {
+                        case 'mobilePoints':
+                            element.textContent = Math.floor(gameState.points);
+                            break;
+                        case 'mobilePointsPerSecond':
+                            element.textContent = gameState.pointsPerSecond;
+                            break;
+                        case 'mobileLevel':
+                            element.textContent = Math.floor(gameState.totalClicks / 10) + 1;
+                            break;
+                        case 'mobileTotalClicks':
+                            element.textContent = gameState.totalClicks;
+                            break;
+                        case 'mobilePlayTime':
+                            element.textContent = gameState.playTime;
+                            break;
+                        case 'mobileOwnedItems':
+                            element.textContent = gameState.ownedItems.length;
+                            break;
+                        case 'mobilePrestigeLevel':
+                            element.textContent = gameState.prestigeLevel;
+                            break;
+                        case 'mobilePrestigePoints':
+                            element.textContent = gameState.prestigePoints;
+                            break;
+                        case 'mobilePrestigeMultiplier':
+                            element.textContent = gameState.prestigeMultiplier.toFixed(1);
+                            break;
+                        case 'mobileDailyStreak':
+                            element.textContent = gameState.dailyStreak;
+                            break;
+                    }
+                }
+            });
         }
 
         // ==================== UPDATE FUNCTIONS ====================
         function updateEquipment() {
-            document.getElementById('hat').style.display = gameState.equippedItems.hat ? 'block' : 'none';
-            document.getElementById('glasses').style.display = gameState.equippedItems.glasses ? 'block' : 'none';
-            document.getElementById('vehicle').style.display = (gameState.equippedItems.motorcycle || gameState.equippedItems.car) ? 'block' : 'none';
+            const hat = document.getElementById('hat');
+            const glasses = document.getElementById('glasses');
+            const vehicle = document.getElementById('vehicle');
+            
+            if (hat) hat.style.display = gameState.equippedItems.hat ? 'block' : 'none';
+            if (glasses) glasses.style.display = gameState.equippedItems.glasses ? 'block' : 'none';
+            if (vehicle) vehicle.style.display = (gameState.equippedItems.motorcycle || gameState.equippedItems.car) ? 'block' : 'none';
         }
 
         function updateDisplay() {
-            document.getElementById('points').textContent = Math.floor(gameState.points);
-            document.getElementById('pointsPerSecond').textContent = gameState.pointsPerSecond;
-            document.getElementById('totalClicks').textContent = gameState.totalClicks;
-            document.getElementById('ownedItems').textContent = gameState.ownedItems.length;
-            document.getElementById('level').textContent = Math.floor(gameState.totalClicks / 10) + 1;
+            // Update main display elements
+            const elements = {
+                'points': Math.floor(gameState.points),
+                'pointsPerSecond': gameState.pointsPerSecond,
+                'totalClicks': gameState.totalClicks,
+                'ownedItems': gameState.ownedItems.length,
+                'level': Math.floor(gameState.totalClicks / 10) + 1,
+                'playTime': gameState.playTime
+            };
             
+            // Update elements if they exist
+            Object.keys(elements).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = elements[id];
+                }
+            });
+            
+            // Update upgrade costs and levels
             const autoClickerCost = Math.floor(10 * Math.pow(1.15, gameState.autoClickerLevel));
             const clickPowerCost = Math.floor(50 * Math.pow(1.2, gameState.clickPowerLevel - 1));
             
-            document.getElementById('autoClickerCost').textContent = autoClickerCost;
-            document.getElementById('clickPowerCost').textContent = clickPowerCost;
-            document.getElementById('autoClickerLevel').textContent = gameState.autoClickerLevel;
-            document.getElementById('clickPowerLevel').textContent = gameState.clickPowerLevel;
+            const upgradeCosts = {
+                'autoClickerCost': autoClickerCost,
+                'clickPowerCost': clickPowerCost,
+                'autoClickerLevel': gameState.autoClickerLevel,
+                'clickPowerLevel': gameState.clickPowerLevel
+            };
             
+            Object.keys(upgradeCosts).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = upgradeCosts[id];
+                }
+            });
+            
+            // Update upgrade button states
             const autoClickerBtn = document.getElementById('autoClickerBtn');
             const clickPowerBtn = document.getElementById('clickPowerBtn');
             
-            if (gameState.points >= autoClickerCost) {
-                autoClickerBtn.classList.add('available');
-                autoClickerBtn.disabled = false;
-            } else {
-                autoClickerBtn.classList.remove('available');
-                autoClickerBtn.disabled = false;
+            if (autoClickerBtn) {
+                if (gameState.points >= autoClickerCost) {
+                    autoClickerBtn.classList.add('available');
+                    autoClickerBtn.disabled = false;
+                } else {
+                    autoClickerBtn.classList.remove('available');
+                    autoClickerBtn.disabled = false;
+                }
             }
             
-            if (gameState.points >= clickPowerCost) {
-                clickPowerBtn.classList.add('available');
-                clickPowerBtn.disabled = false;
-            } else {
-                clickPowerBtn.classList.remove('available');
-                clickPowerBtn.disabled = false;
+            if (clickPowerBtn) {
+                if (gameState.points >= clickPowerCost) {
+                    clickPowerBtn.classList.add('available');
+                    clickPowerBtn.disabled = false;
+                } else {
+                    clickPowerBtn.classList.remove('available');
+                    clickPowerBtn.disabled = false;
+                }
             }
 
             updatePrestigeDisplay();
+            
+            // Update mobile stats if modal is open
+            const mobileStatsModal = document.getElementById('mobileStatsModal');
+            if (mobileStatsModal && mobileStatsModal.style.display === 'flex') {
+                updateMobileStats();
+            }
         }
 
         function updatePrestigeDisplay() {
-            document.getElementById('prestigeLevel').textContent = gameState.prestigeLevel;
-            document.getElementById('prestigePoints').textContent = gameState.prestigePoints;
-            document.getElementById('prestigeMultiplier').textContent = gameState.prestigeMultiplier.toFixed(1);
-            document.getElementById('dailyStreak').textContent = gameState.dailyStreak;
+            const prestigeElements = {
+                'prestigeLevel': gameState.prestigeLevel,
+                'prestigePoints': gameState.prestigePoints,
+                'prestigeMultiplier': gameState.prestigeMultiplier.toFixed(1),
+                'dailyStreak': gameState.dailyStreak
+            };
+            
+            Object.keys(prestigeElements).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = prestigeElements[id];
+                }
+            });
             
             const prestigeBtn = document.getElementById('prestigeBtn');
             const nextPrestigePoints = calculatePrestigePoints();
             
-            if (canPrestige()) {
-                prestigeBtn.disabled = false;
-                prestigeBtn.textContent = `🌟 Prestige (+${nextPrestigePoints} PP)`;
-            } else {
-                prestigeBtn.disabled = true;
-                prestigeBtn.textContent = `🌟 Prestige (Need 1000 Points)`;
+            if (prestigeBtn) {
+                if (canPrestige()) {
+                    prestigeBtn.disabled = false;
+                    prestigeBtn.textContent = `🌟 Prestige (+${nextPrestigePoints} PP)`;
+                } else {
+                    prestigeBtn.disabled = true;
+                    prestigeBtn.textContent = `🌟 Prestige (Need 1000 Points)`;
+                }
             }
             
-            document.getElementById('nextPrestigePoints').textContent = nextPrestigePoints;
-            document.getElementById('doPrestigeBtn').disabled = !canPrestige();
+            const nextPrestigePointsElement = document.getElementById('nextPrestigePoints');
+            const doPrestigeBtnElement = document.getElementById('doPrestigeBtn');
+            
+            if (nextPrestigePointsElement) {
+                nextPrestigePointsElement.textContent = nextPrestigePoints;
+            }
+            
+            if (doPrestigeBtnElement) {
+                doPrestigeBtnElement.disabled = !canPrestige();
+            }
         }
 
         function updateShop() {
@@ -668,6 +813,8 @@
 
         function updateShopGrid(category, gridId) {
             const grid = document.getElementById(gridId);
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             shopItems[category].forEach(item => {
@@ -694,6 +841,8 @@
 
         function updateInventory() {
             const inventoryGrid = document.getElementById('inventoryGrid');
+            if (!inventoryGrid) return;
+            
             inventoryGrid.innerHTML = '';
             
             if (gameState.ownedItems.length === 0) {
@@ -732,6 +881,8 @@
 
         function updateAchievementGrid(category, gridId) {
             const grid = document.getElementById(gridId);
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             achievements[category].forEach(achievement => {
@@ -779,6 +930,8 @@
 
         function updatePrestigeShop() {
             const grid = document.getElementById('prestigeShopGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             prestigeShop.forEach(item => {
@@ -812,47 +965,71 @@
         function openShop() {
             playSound('openSound');
             updateShop();
-            document.getElementById('shopPopup').style.display = 'flex';
+            const shopPopup = document.getElementById('shopPopup');
+            if (shopPopup) {
+                shopPopup.style.display = 'flex';
+            }
         }
 
         function closeShop() {
             playSound('closeSound');
-            document.getElementById('shopPopup').style.display = 'none';
+            const shopPopup = document.getElementById('shopPopup');
+            if (shopPopup) {
+                shopPopup.style.display = 'none';
+            }
         }
 
         function openInventory() {
             playSound('openSound');
             updateInventory();
-            document.getElementById('inventoryPopup').style.display = 'flex';
+            const inventoryPopup = document.getElementById('inventoryPopup');
+            if (inventoryPopup) {
+                inventoryPopup.style.display = 'flex';
+            }
         }
 
         function closeInventory() {
             playSound('closeSound');
-            document.getElementById('inventoryPopup').style.display = 'none';
+            const inventoryPopup = document.getElementById('inventoryPopup');
+            if (inventoryPopup) {
+                inventoryPopup.style.display = 'none';
+            }
         }
 
         function openAchievements() {
             playSound('openSound');
             updateAchievements();
             updateDailyCalendar();
-            document.getElementById('achievementsPopup').style.display = 'flex';
+            const achievementsPopup = document.getElementById('achievementsPopup');
+            if (achievementsPopup) {
+                achievementsPopup.style.display = 'flex';
+            }
         }
 
         function closeAchievements() {
             playSound('closeSound');
-            document.getElementById('achievementsPopup').style.display = 'none';
+            const achievementsPopup = document.getElementById('achievementsPopup');
+            if (achievementsPopup) {
+                achievementsPopup.style.display = 'none';
+            }
         }
 
         function openPrestige() {
             playSound('openSound');
             updatePrestigeShop();
             updatePrestigeDisplay();
-            document.getElementById('prestigePopup').style.display = 'flex';
+            const prestigePopup = document.getElementById('prestigePopup');
+            if (prestigePopup) {
+                prestigePopup.style.display = 'flex';
+            }
         }
 
         function closePrestige() {
             playSound('closeSound');
-            document.getElementById('prestigePopup').style.display = 'none';
+            const prestigePopup = document.getElementById('prestigePopup');
+            if (prestigePopup) {
+                prestigePopup.style.display = 'none';
+            }
         }
 
         function switchTab(tabName) {
@@ -863,55 +1040,92 @@
                 btn.classList.remove('active');
             });
             
-            document.getElementById(tabName).classList.add('active');
+            const targetTab = document.getElementById(tabName);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
             event.target.classList.add('active');
         }
 
         function switchAchievementTab(tabName) {
-            document.querySelectorAll('#achievementsPopup .tab-content').forEach(tab => {
+            const popup = document.getElementById('achievementsPopup');
+            if (!popup) return;
+            
+            popup.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            document.querySelectorAll('#achievementsPopup .tab-btn').forEach(btn => {
+            popup.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            document.getElementById(tabName + 'Achievements').classList.add('active');
+            const targetTab = document.getElementById(tabName + 'Achievements');
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
             event.target.classList.add('active');
         }
 
         function switchPrestigeTab(tabName) {
-            document.querySelectorAll('#prestigePopup .tab-content').forEach(tab => {
+            const popup = document.getElementById('prestigePopup');
+            if (!popup) return;
+            
+            popup.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            document.querySelectorAll('#prestigePopup .tab-btn').forEach(btn => {
+            popup.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            document.getElementById('prestige' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+            const targetTab = document.getElementById('prestige' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
             event.target.classList.add('active');
         }
 
         function showNotification(message) {
-            document.getElementById('notificationMessage').textContent = message;
-            document.getElementById('notificationPopup').style.display = 'flex';
+            const notificationMessage = document.getElementById('notificationMessage');
+            const notificationPopup = document.getElementById('notificationPopup');
+            
+            if (notificationMessage) {
+                notificationMessage.textContent = message;
+            }
+            if (notificationPopup) {
+                notificationPopup.style.display = 'flex';
+            }
         }
 
         function closeNotification() {
             playSound('closeSound');
-            document.getElementById('notificationPopup').style.display = 'none';
+            const notificationPopup = document.getElementById('notificationPopup');
+            if (notificationPopup) {
+                notificationPopup.style.display = 'none';
+            }
         }
 
         function confirmReset() {
-            document.getElementById('resetPopup').style.display = 'flex';
+            const resetPopup = document.getElementById('resetPopup');
+            if (resetPopup) {
+                resetPopup.style.display = 'flex';
+            }
         }
 
         function closeResetPopup() {
-            document.getElementById('resetPopup').style.display = 'none';
+            const resetPopup = document.getElementById('resetPopup');
+            if (resetPopup) {
+                resetPopup.style.display = 'none';
+            }
         }
 
         function toggleSound() {
             gameState.soundEnabled = !gameState.soundEnabled;
-            document.getElementById('soundStatus').textContent = gameState.soundEnabled ? 'On' : 'Off';
+            const soundStatus = document.getElementById('soundStatus');
+            if (soundStatus) {
+                soundStatus.textContent = gameState.soundEnabled ? 'On' : 'Off';
+            }
             
             if (gameState.soundEnabled) {
                 playSound('clickSound');
@@ -922,6 +1136,8 @@
 
         function showSaveStatus(message, isError = false) {
             const saveStatus = document.getElementById('saveStatus');
+            if (!saveStatus) return;
+            
             saveStatus.textContent = message;
             saveStatus.classList.toggle('error', isError);
             saveStatus.classList.add('show');
@@ -931,12 +1147,48 @@
             }, 2000);
         }
 
+        // ==================== EVENT LISTENERS ====================
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.querySelector('.menu-btn');
+            
+            if (mobileMenuOverlay && menuBtn && 
+                mobileMenuOverlay.style.display === 'flex' && 
+                !mobileMenuOverlay.querySelector('.mobile-menu').contains(event.target) &&
+                !menuBtn.contains(event.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Handle escape key for mobile modals
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                // Close mobile menu
+                const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+                if (mobileMenuOverlay && mobileMenuOverlay.style.display === 'flex') {
+                    toggleMobileMenu();
+                }
+                // Close mobile stats
+                const mobileStatsModal = document.getElementById('mobileStatsModal');
+                if (mobileStatsModal && mobileStatsModal.style.display === 'flex') {
+                    closeMobileStats();
+                }
+            }
+        });
+
         // ==================== GAME LOOP ====================
         setInterval(() => {
             gameState.points += gameState.pointsPerSecond;
             gameState.playTime++;
             gameState.totalPlaytime++;
-            document.getElementById('playTime').textContent = gameState.playTime;
+            
+            const playTimeElement = document.getElementById('playTime');
+            if (playTimeElement) {
+                playTimeElement.textContent = gameState.playTime;
+            }
+            
             updateDisplay();
         }, 1000);
 
@@ -968,7 +1220,10 @@
             updateDailyCalendar();
             
             // Update sound status
-            document.getElementById('soundStatus').textContent = gameState.soundEnabled ? 'On' : 'Off';
+            const soundStatus = document.getElementById('soundStatus');
+            if (soundStatus) {
+                soundStatus.textContent = gameState.soundEnabled ? 'On' : 'Off';
+            }
             
             // Check for daily rewards
             if (checkDailyReward() && gameState.totalClicks > 0) {

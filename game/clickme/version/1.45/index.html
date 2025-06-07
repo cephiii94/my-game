@@ -49,37 +49,117 @@
       </button>
     </div>
 
+    <!-- TAMBAHKAN KODE INI SETELAH </header> -->
+    <div class="mobile-controls">
+      <!-- Info Button untuk Stats -->
+      <button class="info-btn" onclick="openMobileStats()" title="Game Stats">
+        <p>ℹ️</p>
+      </button>
+
+      <!-- Menu Button untuk Navigation -->
+      <button class="menu-btn" onclick="toggleMobileMenu()" title="Menu">
+        <p>☰</p>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay">
+      <div class="mobile-menu">
+        <button class="menu-close-btn" onclick="toggleMobileMenu()">✕</button>
+        <div class="mobile-menu-items">
+          <button
+            class="mobile-menu-item"
+            onclick="openShop(); toggleMobileMenu();"
+          >
+            🛍️ Toko
+          </button>
+          <button
+            class="mobile-menu-item"
+            onclick="openInventory(); toggleMobileMenu();"
+          >
+            🎒 Inventory
+          </button>
+          <button
+            class="mobile-menu-item"
+            onclick="openAchievements(); toggleMobileMenu();"
+          >
+            🏆 Prestasi
+          </button>
+          <button
+            class="mobile-menu-item"
+            onclick="openPrestige(); toggleMobileMenu();"
+          >
+            🌟 Prestige
+          </button>
+          <button
+            class="mobile-menu-item"
+            onclick="confirmReset(); toggleMobileMenu();"
+          >
+            🔄 Reset Game
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Stats Modal -->
+    <div id="mobileStatsModal" class="modal-overlay">
+      <div class="modal-content mobile-stats-modal">
+        <button class="close-btn" onclick="closeMobileStats()">✕</button>
+        <h3>📊 Game Stats</h3>
+        <div class="mobile-stats-content">
+          <div class="mobile-stat-section">
+            <h4>💰 Current Stats</h4>
+            <div class="stat-item">
+              💰 Points: <span id="mobilePoints">0</span>
+            </div>
+            <div class="stat-item">
+              ⚡ Per Second: <span id="mobilePointsPerSecond">0</span>/s
+            </div>
+            <div class="stat-item">
+              🔥 Level: <span id="mobileLevel">1</span>
+            </div>
+            <div class="stat-item">
+              🎯 Total Clicks: <span id="mobileTotalClicks">0</span>
+            </div>
+            <div class="stat-item">
+              ⏰ Play Time: <span id="mobilePlayTime">0</span>s
+            </div>
+            <div class="stat-item">
+              💎 Items Owned: <span id="mobileOwnedItems">0</span>
+            </div>
+          </div>
+
+          <div class="mobile-stat-section">
+            <h4>🌟 Prestige Stats</h4>
+            <div class="stat-item">
+              🌟 Prestige Level: <span id="mobilePrestigeLevel">0</span>
+            </div>
+            <div class="stat-item">
+              ⭐ Prestige Points: <span id="mobilePrestigePoints">0</span>
+            </div>
+            <div class="stat-item">
+              📈 Multiplier: x<span id="mobilePrestigeMultiplier">1</span>
+            </div>
+            <div class="stat-item">
+              🔥 Daily Streak: <span id="mobileDailyStreak">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- AKHIR TAMBAHAN -->
+
     <!-- Main Game Area -->
     <div class="game-container">
       <!-- Control Panel KIRI-->
 
       <div class="control-panel">
-        <div class="baris-bawah">
-          <div class="stats">
-            <div class="stat-item">💰 <span id="points">0</span></div>
-            <div class="stat-item">
-              ⚡ <span id="pointsPerSecond">0</span>/s
-            </div>
-            <div class="stat-item">🔥 Lv.<span id="level">1</span></div>
-            <div class="stat-item">🎯 <span id="totalClicks">0</span></div>
-            <div class="stat-item">⏰ <span id="playTime">0</span>s</div>
-            <div class="stat-item">💎 <span id="ownedItems">0</span></div>
-          </div>
-
-          <div class="prestige-stats">
-            <div class="prestige-stat">
-              🌟 Prestige: <span id="prestigeLevel">0</span>
-            </div>
-            <div class="prestige-stat">
-              ⭐ Points: <span id="prestigePoints">0</span>
-            </div>
-            <div class="prestige-stat">
-              📈 Multiplier: x<span id="prestigeMultiplier">1</span>
-            </div>
-            <div class="prestige-stat">
-              🔥 Streak: <span id="dailyStreak">0</span>
-            </div>
-          </div>
+        <div class="baris-bawah desktop-navigation">
+          <button class="shop-btn" onclick="openShop()">🛍️ Toko</button>
+          <button class="shop-btn" onclick="openInventory()">🎒 Items</button>
+          <button class="shop-btn" onclick="openAchievements()">
+            🏆 Prestasi
+          </button>
         </div>
       </div>
 
@@ -123,31 +203,35 @@
       </div>
 
       <!-- Control Panel KANAN-->
-      <div class="control-panel">
-        <div class="shop-buttons">
-          <button class="shop-btn" onclick="openShop()">🛍️ Toko</button>
-          <button
-            class="shop-btn"
-            onclick="openInventory()"
-            style="background: linear-gradient(135deg, #ab47bc, #7b1fa2);"
-          >
-            🎒 Items
-          </button>
-          <button
-            class="shop-btn"
-            onclick="openAchievements()"
-            style="background: linear-gradient(135deg, #ff9800, #f57c00);"
-          >
-            🏆 Prestasi
-          </button>
-        </div>
 
-        <button class="prestige-btn" onclick="openPrestige()" id="prestigeBtn">
-          🌟 Prestige (Need 1000 Points)
-        </button>
-        <button class="reset-btn" onclick="confirmReset()">
+
+
+
+      
+      <div class="control-panel">
+        <div class="stats">
+                <div class="stat-item">💰 <span id="points">0</span></div>
+                <div class="stat-item">⚡ <span id="pointsPerSecond">0</span>/s</div>
+                <div class="stat-item">🔥 Lv.<span id="level">1</span></div>
+                <div class="stat-item">🎯 <span id="totalClicks">0</span></div>
+                <div class="stat-item">⏰ <span id="playTime">0</span>s</div>
+                <div class="stat-item">💎 <span id="ownedItems">0</span></div>
+            </div>
+
+            <div class="prestige-stats">
+                <div class="prestige-stat">🌟 Prestige: <span id="prestigeLevel">0</span></div>
+                <div class="prestige-stat">⭐ Points: <span id="prestigePoints">0</span></div>
+                <div class="prestige-stat">📈 Multiplier: x<span id="prestigeMultiplier">1</span></div>
+                <div class="prestige-stat">🔥 Streak: <span id="dailyStreak">0</span></div>
+            </div>
+                <button class="reset-btn" onclick="confirmReset()">
           🔄 Reset Game
         </button>
+
+        </div>
+
+        
+
       </div>
     </div>
 
