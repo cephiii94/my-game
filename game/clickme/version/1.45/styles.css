@@ -55,7 +55,7 @@ body {
 .game-container {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 300px 1fr;
+    grid-template-columns: 1fr 450px 1fr;
     gap: 20px;
     padding: 20px;
     align-items: start;
@@ -64,12 +64,15 @@ body {
 }
 
 /* ========== CHARACTER SECTION ========== */
-.character-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
+  .character-section {
+    
+      position: flex;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+  }
+  
 
 .character-container {
     position: relative;
@@ -165,7 +168,7 @@ body {
     border: 2px solid #ffc107;
     padding: 10px;
     border-radius: 15px;
-    text-align: center;
+    text-align: left;
     margin-bottom: 15px;
     backdrop-filter: blur(5px);
 }
@@ -177,8 +180,14 @@ body {
     font-size: 0.9rem;
 }
 
+.stats, .prestige-stat{
+  flex: 1;
+  box-sizing: border-box;
+}
+
 /* ========== CONTROL PANEL ========== */
 .control-panel {
+    grid: 3;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -807,6 +816,15 @@ body {
     font-weight: bold;
 }
 
+.baris-bawah {
+            display: flex;
+            justify-content: center;
+           gap: 20px;
+            padding: 20px;
+            align-items: stretch;
+}
+
+
 /* ========== MOBILE RESPONSIVE DESIGN ========== */
 @media (max-width: 768px) {
     .game-container {
@@ -818,6 +836,8 @@ body {
     }
 
     .character-section {
+        display: flex;
+        flex-direction: column;
         order: 1;
         justify-content: center;
         min-height: 0;
@@ -836,16 +856,26 @@ body {
     }
 
     .stats, .prestige-stats {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-        margin-bottom: 10px;
+      width: 100%;
+      display: flex;
+    flex-direction: column;  /* Menyusun item secara vertikal */
+    align-items: center;     /* Menyelaraskan item di tengah */
+    justify-content: center;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.9);
+    flex: 1;
+
+        
     }
 
     .stat-item, .prestige-stat {
-        margin: 4px 0;
+        margin: 5px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        display: inline;
     }
 
     .control-panel {
@@ -862,6 +892,7 @@ body {
         z-index: 100;
         max-height: 50vh;
         overflow-y: auto;
+        display: inline;
     }
 
     .click-button {
@@ -869,6 +900,7 @@ body {
         font-size: 0.95rem;
         margin-bottom: 8px;
         border-radius: 25px;
+        display: none;
     }
 
     .upgrades {
