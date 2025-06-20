@@ -67,10 +67,8 @@
       <div class="mobile-menu">
         <button class="menu-close-btn" onclick="toggleMobileMenu()">✕</button>
         <div class="mobile-menu-items">
-          <button
-            class="mobile-menu-item"
-            onclick="openShop(); toggleMobileMenu();"
-          >
+
+          <button class="mobile-menu-item" onclick="openShop(); toggleMobileMenu();">
             🛍️ Toko
           </button>
           <button
@@ -96,6 +94,9 @@
             onclick="confirmReset(); toggleMobileMenu();"
           >
             🔄 Reset Game
+          </button>
+                    <button class="sound-toggle mobile-sound-toggle " onclick="toggleSound()">
+            🔊 <span id="soundStatusMobile">On</span>
           </button>
         </div>
       </div>
@@ -167,7 +168,7 @@
       <!-- Character Section -->
       <div class="character-section">
         <div class="character-container">
-          <div class="character" onclick="clickCharacter()"></div>
+          <img class="character" src="/img/char1anime.png" onclick="clickCharacter()">
           <!-- Equipment Slots -->
           <div class="equipment hat" id="hat"></div>
           <div class="equipment glasses" id="glasses"></div>
@@ -203,12 +204,7 @@
         </div>
       </div>
 
-      <!-- Control Panel KANAN-->
-
-
-
-
-      
+      <!-- Control Panel KANAN-->   
       <div class="control-panel">
         <div class="stats">
                 <div class="stat-item">💰 <span id="points">0</span></div>

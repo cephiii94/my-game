@@ -81,19 +81,20 @@
       margin-bottom: 20px;
   }
 
-  .character {
-      width: 100px;
-      height: 150px;
-      background: #64b5f6;
-      border-radius: 50px 50px 20px 20px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation: idle 2s ease-in-out infinite;
-      cursor: pointer;
-      transition: transform 0.1s ease;
-  }
+.character {
+    width: 250px !important;
+    height: 250px !important;
+    /* background: #64b5f6; */ /* Hapus ini */
+    /* border-radius: 50px 50px 20px 20px; */ /* Hapus ini */
+    object-fit: contain; /* Agar gambar tidak terdistorsi */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: idle 2s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
 
   .character:hover {
       transform: translate(-50%, -50%) scale(1.05);
@@ -830,7 +831,7 @@
 .mobile-controls {
     display: none;
     position: fixed;
-    top: 80px;
+    top: 150px;
     right: 20px;
     z-index: 100;
     flex-direction: column;
@@ -869,6 +870,7 @@
     background: rgba(0,0,0,0.5);
     z-index: 200;
     backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease;
 }
 
 .mobile-menu {
@@ -1037,7 +1039,7 @@
     }
     
     .sound-toggle {
-        top: 12px;
+        top: 275px;
         right: 15px;
         padding: 6px 10px;
         font-size: 0.9rem;
