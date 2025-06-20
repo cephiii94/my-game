@@ -82,8 +82,8 @@
   }
 
 .character {
-    width: 250px !important;
-    height: 250px !important;
+    width: 200px !important;
+    height: 200px !important;
     /* background: #64b5f6; */ /* Hapus ini */
     /* border-radius: 50px 50px 20px 20px; */ /* Hapus ini */
     object-fit: contain; /* Agar gambar tidak terdistorsi */
@@ -870,7 +870,6 @@
     background: rgba(0,0,0,0.5);
     z-index: 200;
     backdrop-filter: blur(5px);
-    transition: opacity 0.3s ease;
 }
 
 .mobile-menu {
@@ -1039,7 +1038,7 @@
     }
     
     .sound-toggle {
-        top: 275px;
+        top: 12px;
         right: 15px;
         padding: 6px 10px;
         font-size: 0.9rem;
