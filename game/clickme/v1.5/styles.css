@@ -1,0 +1,379 @@
+/* RESET */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #fff;
+  color: #222;
+}
+
+.header {
+  width: 100vw;
+  height: 110px;
+  background: #6ab6ef;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 18px 18px 0 0;
+  padding: 0 32px 0 0;
+  box-sizing: border-box;
+}
+
+.header-avatar {
+  width: 80px;
+  height: 80px;
+  background: #000;
+  border-radius: 50%;
+  margin: 16px 0 0 16px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 24px;
+}
+
+.header-box {
+  width: 90px;
+  height: 70px;
+  background: #fff;
+  border-radius: 24px;
+  margin-top: 10px;
+}
+
+/* MAIN LAYOUT */
+.main-dashboard {
+  display: grid;
+  grid-template-columns: 260px 1fr 380px;
+  height: calc(100vh - 110px);
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: calc(100vh - 110px);
+}
+
+.sidebar-left {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  margin-top: 40px;
+}
+
+.sidebar-btn {
+  width: 110px;
+  height: 80px;
+  background: #6ab6ef;
+  color: #fff;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 26px;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-btn:hover {
+  background: #4fa3e3;
+}
+
+.main-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+}
+
+.character {
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: #2e5cb8;
+  box-shadow: 0 4px 24px #0003;
+  object-fit: contain;
+  border: 6px solid #1de9b6;
+}
+
+.main-avatar {
+  height: 420px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.main-buttons {
+  display: flex;
+  gap: 40px;
+  margin-top: 32px;
+}
+
+.main-btn {
+  width: 140px;
+  height: 100px;
+  background: #6ab6ef;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 26px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.main-btn:hover {
+  background: #4fa3e3;
+}
+
+.sidebar-right {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 32px;
+  margin-top: 60px;
+  margin-right: 24px;
+}
+
+.panel {
+  background: #6ab6ef;
+  border-radius: 26px;
+  padding: 24px 28px;
+  color: #fff;
+  font-size: 1.25rem;
+  min-width: 260px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+  box-shadow: 0 2px 12px #0001;
+}
+
+.panel-top {
+  margin-bottom: 24px;
+}
+
+.panel div {
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+}
+
+/* AREA TENGAH */
+.main-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #244a8d 60%, #1e3a5c 100%);
+}
+
+.avatar-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80%;
+}
+
+/* SIDEBAR KANAN */
+.sidebar-tabs {
+  background: #244a8d;
+  padding: 22px 22px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 12px 12px 0;
+  min-width: 320px;
+  box-shadow: -2px 0 10px #0002;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.coin, .gem {
+  background: #183366;
+  border-radius: 18px;
+  padding: 6px 16px;
+  font-weight: bold;
+  font-size: 1.08rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: #b0cfff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+  background: #183366;
+  color: #fff;
+}
+
+.tab-content {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.inventory-item {
+  background: #2e5cb8;
+  border-radius: 12px;
+  padding: 14px 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px #0001;
+}
+
+.item-icon {
+  font-size: 1.7rem;
+  background: #183366;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
+.item-desc {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.equipment-section {
+  margin-top: 10px;
+}
+
+.equipment-title {
+  font-size: 1.09rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.equipment-item {
+  background: #2e5cb8;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-left: 4px solid transparent;
+  transition: border 0.2s;
+}
+
+.equipment-item.equipped {
+  border-left: 4px solid #1de9b6;
+  background: #183366;
+}
+
+.equip-btn {
+  background: #1de9b6;
+  color: #183366;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.equip-btn:hover {
+  background: #00bfa3;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .main-dashboard {
+    grid-template-columns: 200px 1fr 260px;
+  }
+  .sidebar-profile, .sidebar-tabs {
+    min-width: 140px;
+    padding: 12px 8px;
+  }
+  .sidebar-right {
+    width: 200px;
+    min-width: 160px;
+    padding: 0;
+  }
+  .panel {
+    min-width: 120px;
+    padding: 14px 10px;
+    font-size: 1rem;
+  }
+  .main-avatar {
+    height: 220px;
+  }
+  .main-btn {
+    width: 90px;
+    height: 60px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .main-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+  }
+  .sidebar-profile, .sidebar-tabs {
+    border-radius: 12px;
+    min-width: unset;
+    margin-bottom: 12px;
+  }
+  .main-content {
+    min-height: 220px;
+    border-radius: 12px;
+  }
+}

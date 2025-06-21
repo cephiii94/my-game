@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Clicker Game</title>
+    <style>
+        html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #87CEEB, #B0E0E6);
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    display: grid;
+    grid-template-columns: 150px 1fr 200px;
+    grid-template-rows: 60px 1fr 80px;
+    height: 100vh;
+    max-height: 100vh;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Header */
+.header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 0 20px;
+    backdrop-filter: blur(10px);
+    height: 60px;
+}
+
+.menu-toggle {
+    display: none;
+    background: #4A90E2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.music-toggle, .settings-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Left Sidebar */
+.left-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    grid-row: 2 / span 1;
+}
+
+.sidebar-btn {
+    background: #4A90E2;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.sidebar-btn:hover {
+    background: #357ABD;
+    transform: translateY(-2px);
+}
+
+/* Main Game Area */
+.main-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    grid-row: 2 / span 1;
+    overflow: hidden;
+}
+
+.character-container {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.character {
+    width: 300px;
+    height: 300px;
+    background: url('../img/char1anime.png') center/contain no-repeat;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    border-radius: 20px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.character:hover {
+    transform: scale(1.05);
+}
+
+.character:active {
+    transform: scale(0.95);
+}
+
+.click-effect {
+    position: absolute;
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 24px;
+    pointer-events: none;
+    animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0);}
+    100% { opacity: 0; transform: translateY(-50px);}
+}
+
+/* Bottom Controls */
+.bottom-controls {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 80px;
+}
+
+.control-btn {
+    background: #4A90E2;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    font-size: 16px;
+}
+
+.control-btn:hover {
+    background: #357ABD;
+    transform: translateY(-2px);
+}
+
+.status-panel {
+    grid-row: 3;
+    grid-column: 1 / -1;
+    position: static;
+    margin: 0 auto 10px auto;
+    background: rgba(74, 144, 226, 0.8);
+    color: rgb(114, 70, 70);
+    padding: 15px 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10;
+    max-width: 90vw;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: none ; /* Hidden by default */
+}
+
+/* Right Sidebar */
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    grid-row: 2 / span 1;
+}
+
+.stats-panel {
+    background: rgba(74, 144, 226, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.stats-panel h3 {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.stats-panel div {
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+/* Mobile Styles */
+@media (max-width: 900px) {
+    .game-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 60px 1fr 80px;
+    }
+    .left-sidebar, .right-sidebar {
+        display: none;
+    }
+    .main-area {
+        grid-column: 1 / -1;
+    }
+    .character {
+        width: 200px;
+        height: 200px;
+    }
+    .status-panel {
+      display: block;
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .character {
+        width: 120px;
+        height: 120px;
+    }
+    .status-panel {
+      display: block;
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.shop-item,
+.achievement-item {
+    background: #f0f0f0;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buy-btn {
+    background: #4A90E2;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.buy-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Prestige Effect */
+.prestige-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    animation: prestigeFlash 2s ease-in-out;
+}
+
+@keyframes prestigeFlash {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.8; }
+}
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header">
+            <button class="menu-toggle" onclick="toggleMobileMenu()">☰ MENU</button>
+            <div class="header-controls">
+                <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 ON</button>
+                <button class="settings-btn">⚙️</button>
+            </div>
+        </div>
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar" id="leftSidebar">
+            <button class="sidebar-btn" onclick="openShop()">TOKO</button>
+            <button class="sidebar-btn" onclick="openItems()">ITEM</button>
+            <button class="sidebar-btn" onclick="openAchievements()">PRESTASI</button>
+        </div>
+
+        <!-- Main Game Area -->
+        <div class="main-area">
+            <div class="character-container">
+                <div class="character" onclick="clickCharacter()" id="character" style="background: url('../img/char1anime.png') center/contain no-repeat; border-radius: 20px;">
+                    <!-- GANTI KARAKTER: Tambahkan gambar karakter di sini -->
+                    <!-- <img src="path/to/your/character.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain;"> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar" id="rightSidebar">
+            <div class="stats-panel">
+                <h3>Status</h3>
+                <div>✨ Prestige: <span id="prestige">0</span></div>
+                <div>💰 Bonus: <span id="bonus">0</span></div>
+                <div>✖️ Multiplier: x<span id="multiplier">1.0</span></div>
+                <div>🔥 Streak: <span id="streak">0</span></div>
+            </div>
+            <div class="stats-panel">
+                <h3>Resources</h3>
+                <div>💎 <span id="points">0</span></div>
+                <div>⚡ <span id="pointsPerSecond">0</span>/s</div>
+                <div>🎯 <span id="clickPower">1</span></div>
+                <div>🔴 <span id="redResource">0</span></div>
+                <div>🟡 <span id="yellowResource">135s</span></div>
+                <div>⚪ <span id="whiteResource">0</span></div>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="bottom-controls">
+            <button class="control-btn" id="autoUpgradeBtn" onclick="upgradeAutoClicker()">
+                AUTO Lv.<span id="autoLevel">0</span> (<span id="autoPrice">10</span>💎)
+            </button>
+            <button class="control-btn" id="powerUpgradeBtn" onclick="upgradeClickPower()">
+                POWER Lv.<span id="powerLevel">1</span> (<span id="powerPrice">25</span>💎)
+            </button>
+        </div>
+        <div class="status-panel" style="text-align:left; margin-top:10px; color:#4A90E2; font-weight:bold;">
+            💰 Gold: <span id="statusGold">0</span> &nbsp; | &nbsp;
+            🤖 Auto Click Lv: <span id="statusAutoLevel">0</span> &nbsp; | &nbsp;
+            💪 Power Click Lv: <span id="statusPowerLevel">1</span>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Modal -->
+    <div class="modal" id="mobileMenu">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeMobileMenu()">&times;</button>
+            <h2>Menu</h2>
+            <button class="sidebar-btn" onclick="openShop(); closeMobileMenu();" style="width: 100%; margin: 10px 0;">TOKO</button>
+            <button class="sidebar-btn" onclick="openItems(); closeMobileMenu();" style="width: 100%; margin: 10px 0;">ITEM</button>
+            <button class="sidebar-btn" onclick="openAchievements(); closeMobileMenu();" style="width: 100%; margin: 10px 0;">PRESTASI</button>
+            <div style="margin: 20px 0;">
+                <h3>Status</h3>
+                <div>✨ Prestige: <span id="mobilePrestige">0</span></div>
+                <div>💰 Bonus: <span id="mobileBonus">0</span></div>
+                <div>✖️ Multiplier: x<span id="mobileMultiplier">1.0</span></div>
+                <div>🔥 Streak: <span id="mobileStreak">0</span></div>
+            </div>
+            <div>
+                <h3>Resources</h3>
+                <div>💎 <span id="mobilePoints">0</span></div>
+                <div>⚡ <span id="mobilePointsPerSecond">0</span>/s</div>
+                <div>🎯 <span id="mobileClickPower">1</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div class="modal" id="shopModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeShop()">&times;</button>
+            <h2>Toko</h2>
+            <div id="shopItems">
+                <div class="shop-item">
+                    <div>
+                        <strong>Auto Clicker</strong><br>
+                        <small>+1 click per detik</small>
+                    </div>
+                    <button class="buy-btn" onclick="buyUpgrade('autoClicker', 10)">Beli (10💎)</button>
+                </div>
+                <div class="shop-item">
+                    <div>
+                        <strong>Click Power</strong><br>
+                        <small>+1 power per click</small>
+                    </div>
+                    <button class="buy-btn" onclick="buyUpgrade('clickPower', 25)">Beli (25💎)</button>
+                </div>
+                <div class="shop-item">
+                    <div>
+                        <strong>Multiplier</strong><br>
+                        <small>x1.5 semua income</small>
+                    </div>
+                    <button class="buy-btn" onclick="buyUpgrade('multiplier', 100)">Beli (100💎)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Items Modal -->
+    <div class="modal" id="itemsModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeItems()">&times;</button>
+            <h2>Item</h2>
+            <div id="itemsList">
+                <div class="achievement-item">
+                    <div>
+                        <strong>Lucky Charm</strong><br>
+                        <small>Owned: <span id="luckyCharmCount">0</span></small>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div>
+                        <strong>Power Crystal</strong><br>
+                        <small>Owned: <span id="powerCrystalCount">0</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div class="modal" id="achievementsModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAchievements()">&times;</button>
+            <h2>Prestasi</h2>
+            <div id="achievementsList">
+                <div class="achievement-item">
+                    <div>
+                        <strong>First Click</strong><br>
+                        <small>Click pertama kali</small>
+                    </div>
+                    <span id="firstClickAchievement">❌</span>
+                </div>
+                <div class="achievement-item">
+                    <div>
+                        <strong>Century Club</strong><br>
+                        <small>Kumpulkan 100 poin</small>
+                    </div>
+                    <span id="centuryAchievement">❌</span>
+                </div>
+                <div class="achievement-item">
+                    <div>
+                        <strong>Click Master</strong><br>
+                        <small>Click 1000 kali</small>
+                    </div>
+                    <span id="clickMasterAchievement">❌</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <!-- GANTI MUSIK: Tambahkan file musik Anda di sini -->
+        <!-- <source src="path/to/your/music.mp3" type="audio/mpeg"> -->
+    </audio>
+
+    <script>
+        // Game State
+        let gameState = {
+            points: 0,
+            clickPower: 1,
+            autoClickerCount: 0,
+            multiplier: 1.0,
+            prestige: 0,
+            bonus: 0,
+            streak: 0,
+            totalClicks: 0,
+            pointsPerSecond: 0,
+            redResource: 0,
+            yellowResource: 135,
+            whiteResource: 0,
+            isAutoActive: false,
+            isPowerActive: false,
+            musicEnabled: true,
+            achievements: {
+                firstClick: false,
+                century: false,
+                clickMaster: false
+            }
+        };
+
+        // Upgrade prices
+        let autoClickerPrice = 10;
+        let clickPowerPrice = 25;
+
+        // Game Logic
+        function clickCharacter() {
+            const earnedPoints = gameState.clickPower * gameState.multiplier;
+            gameState.points += earnedPoints;
+            gameState.totalClicks++;
+            gameState.streak++;
+
+            // Show click effect
+            showClickEffect(earnedPoints);
+            
+            // Check achievements
+            checkAchievements();
+            
+            // Update display
+            updateDisplay();
+
+            // Character animation
+            const character = document.getElementById('character');
+            character.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                character.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        function showClickEffect(points) {
+            const character = document.getElementById('character');
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.textContent = `+${points}`;
+            effect.style.left = Math.random() * 100 + 'px';
+            effect.style.top = Math.random() * 100 + 'px';
+            
+            character.parentElement.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 1000);
+        }
+
+        function buyUpgrade(type, cost) {
+            if (gameState.points >= cost) {
+                gameState.points -= cost;
+                
+                switch(type) {
+                    case 'autoClicker':
+                        gameState.autoClickerCount++;
+                        gameState.pointsPerSecond += 1;
+                        break;
+                    case 'clickPower':
+                        gameState.clickPower++;
+                        break;
+                    case 'multiplier':
+                        gameState.multiplier += 0.5;
+                        break;
+                }
+                
+                updateDisplay();
+            }
+        }
+
+        // Upgrade Auto Clicker
+        function upgradeAutoClicker() {
+            if (gameState.points >= autoClickerPrice) {
+                gameState.points -= autoClickerPrice;
+                gameState.autoClickerCount++;
+                gameState.pointsPerSecond = gameState.autoClickerCount;
+                autoClickerPrice = Math.floor(autoClickerPrice * 1.5);
+                updateDisplay();
+                updateUpgradeButtons();
+            } else {
+                showNotification('Poin tidak cukup untuk upgrade Auto Clicker!');
+            }
+        }
+
+        // Upgrade Click Power
+        function upgradeClickPower() {
+            if (gameState.points >= clickPowerPrice) {
+                gameState.points -= clickPowerPrice;
+                gameState.clickPower++;
+                clickPowerPrice = Math.floor(clickPowerPrice * 1.7);
+                updateDisplay();
+                updateUpgradeButtons();
+            } else {
+                showNotification('Poin tidak cukup untuk upgrade Power!');
+            }
+        }
+
+        // Update button text and level
+        function updateUpgradeButtons() {
+            document.getElementById('autoLevel').textContent = gameState.autoClickerCount;
+            document.getElementById('autoPrice').textContent = autoClickerPrice;
+            document.getElementById('powerLevel').textContent = gameState.clickPower;
+            document.getElementById('powerPrice').textContent = clickPowerPrice;
+        }
+
+        function toggleAuto() {
+            gameState.isAutoActive = !gameState.isAutoActive;
+            const btn = event.target;
+            btn.textContent = gameState.isAutoActive ? 'AUTO ON' : 'AUTO';
+            btn.style.background = gameState.isAutoActive ? '#28a745' : '#4A90E2';
+        }
+
+        function activatePower() {
+            if (!gameState.isPowerActive) {
+                gameState.isPowerActive = true;
+                const originalMultiplier = gameState.multiplier;
+                gameState.multiplier *= 2;
+                
+                const btn = event.target;
+                btn.textContent = 'POWER ON';
+                btn.style.background = '#dc3545';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    gameState.multiplier = originalMultiplier;
+                    gameState.isPowerActive = false;
+                    btn.textContent = 'POWER';
+                    btn.style.background = '#4A90E2';
+                    btn.disabled = false;
+                }, 10000); // 10 seconds
+            }
+        }
+
+        function checkAchievements() {
+            if (!gameState.achievements.firstClick && gameState.totalClicks >= 1) {
+                gameState.achievements.firstClick = true;
+                document.getElementById('firstClickAchievement').textContent = '✅';
+                showNotification('Achievement Unlocked: First Click!');
+            }
+            
+            if (!gameState.achievements.century && gameState.points >= 100) {
+                gameState.achievements.century = true;
+                document.getElementById('centuryAchievement').textContent = '✅';
+                showNotification('Achievement Unlocked: Century Club!');
+            }
+            
+            if (!gameState.achievements.clickMaster && gameState.totalClicks >= 1000) {
+                gameState.achievements.clickMaster = true;
+                document.getElementById('clickMasterAchievement').textContent = '✅';
+                showNotification('Achievement Unlocked: Click Master!');
+            }
+        }
+
+        function showNotification(message) {
+            // Simple notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px;
+                border-radius: 10px;
+                z-index: 1001;
+                animation: slideIn 0.5s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Panggil juga di updateDisplay dan initGame
+        const originalUpdateDisplay = updateDisplay;
+        updateDisplay = function() {
+            originalUpdateDisplay();
+            updateUpgradeButtons();
+        };
+
+        function updateDisplay() {
+            // Update main stats
+            document.getElementById('points').textContent = Math.floor(gameState.points);
+            document.getElementById('clickPower').textContent = gameState.clickPower;
+            document.getElementById('multiplier').textContent = gameState.multiplier.toFixed(1);
+            document.getElementById('prestige').textContent = gameState.prestige;
+            document.getElementById('bonus').textContent = gameState.bonus;
+            document.getElementById('streak').textContent = gameState.streak;
+            document.getElementById('pointsPerSecond').textContent = gameState.pointsPerSecond;
+            document.getElementById('redResource').textContent = gameState.redResource;
+            document.getElementById('whiteResource').textContent = gameState.whiteResource;
+
+            // Update status panel bawah
+            document.getElementById('statusGold').textContent = Math.floor(gameState.points);
+            document.getElementById('statusAutoLevel').textContent = gameState.autoClickerCount;
+            document.getElementById('statusPowerLevel').textContent = gameState.clickPower;
+
+            // Update mobile stats
+            document.getElementById('mobilePoints').textContent = Math.floor(gameState.points);
+            document.getElementById('mobileClickPower').textContent = gameState.clickPower;
+            document.getElementById('mobileMultiplier').textContent = gameState.multiplier.toFixed(1);
+            document.getElementById('mobilePrestige').textContent = gameState.prestige;
+            document.getElementById('mobileBonus').textContent = gameState.bonus;
+            document.getElementById('mobileStreak').textContent = gameState.streak;
+            document.getElementById('mobilePointsPerSecond').textContent = gameState.pointsPerSecond;
+        }
+
+        // Modal Functions
+        function openShop() { document.getElementById('shopModal').style.display = 'block'; }
+        function closeShop() { document.getElementById('shopModal').style.display = 'none'; }
+        function openItems() { document.getElementById('itemsModal').style.display = 'block'; }
+        function closeItems() { document.getElementById('itemsModal').style.display = 'none'; }
+        function openAchievements() { document.getElementById('achievementsModal').style.display = 'block'; }
+        function closeAchievements() { document.getElementById('achievementsModal').style.display = 'none'; }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').style.display = 'block';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').style.display = 'none';
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const btn = document.getElementById('musicBtn');
+            
+            gameState.musicEnabled = !gameState.musicEnabled;
+            
+            if (gameState.musicEnabled) {
+                music.play().catch(() => {}); // Handle autoplay restrictions
+                btn.textContent = '🎵 ON';
+            } else {
+                music.pause();
+                btn.textContent = '🎵 OFF';
+            }
+        }
+
+        // Game Loop
+        function gameLoop() {
+            // AUTO CLICKER: aktif jika autoClickerCount > 0
+            if (gameState.autoClickerCount > 0) {
+                const autoPoints = gameState.autoClickerCount * gameState.multiplier;
+                gameState.points += autoPoints / 10; // 10x per detik
+            }
+
+            // Decrease yellow resource (timer)
+            if (gameState.yellowResource > 0) {
+                gameState.yellowResource--;
+                document.getElementById('yellowResource').textContent = gameState.yellowResource + 's';
+            }
+
+            updateDisplay();
+        }
+
+        // Initialize game
+        function initGame() {
+            updateDisplay();
+            setInterval(gameLoop, 100); // Run every 100ms
+            
+            // Try to start background music
+            const music = document.getElementById('backgroundMusic');
+            if (gameState.musicEnabled) {
+                music.play().catch(() => {
+                    // Autoplay blocked, user needs to interact first
+                    console.log('Autoplay blocked - user interaction required');
+                });
+            }
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Start the game
+        initGame();
+
+        // Add CSS animation for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
