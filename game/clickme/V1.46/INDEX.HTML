@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Idle Clicker Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="../img/favicon.png" type="image/png" />
+  </head>
+  <body>
+    <!-- Audio Elements -->
+    <audio id="clickSound" preload="auto">
+      <source src="sounds/click.mp3" type="audio/mpeg" />
+      <source src="sounds/click.wav" type="audio/wav" />
+      <source src="sounds/click.ogg" type="audio/ogg" />
+    </audio>
+
+    <audio id="buySound" preload="auto">
+      <source src="sounds/buy.mp3" type="audio/mpeg" />
+      <source src="sounds/buy.wav" type="audio/wav" />
+      <source src="sounds/buy.ogg" type="audio/ogg" />
+    </audio>
+
+    <audio id="openSound" preload="auto">
+      <source src="sounds/open.mp3" type="audio/mpeg" />
+      <source src="sounds/open.wav" type="audio/wav" />
+      <source src="sounds/open.ogg" type="audio/ogg" />
+    </audio>
+
+    <audio id="closeSound" preload="auto">
+      <source src="sounds/close.mp3" type="audio/mpeg" />
+      <source src="sounds/close.wav" type="audio/wav" />
+      <source src="sounds/close.ogg" type="audio/ogg" />
+    </audio>
+
+    <!-- Notifications -->
+    <div class="save-status" id="saveStatus">💾 Game Saved!</div>
+    <div class="achievement-notification" id="achievementNotification">
+      🏆 Achievement Unlocked!
+    </div>
+    <div class="daily-reward-notification" id="dailyRewardNotification">
+      🎁 Daily Reward!
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo"></div>
+      <div class="header-buttons">
+        <button class="sound-toggle" onclick="toggleSound()">
+          🔊 <span id="soundStatus">On</span>
+        </button>
+        <button class="header-btn"></button>
+      </div>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div class="mobile-controls">
+      <button class="info-btn" onclick="openMobileStats()" title="Game Stats">
+        <p>ℹ️</p>
+      </button>
+      <button class="menu-btn" onclick="toggleMobileMenu()" title="Menu">
+        <p>☰</p>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay">
+      <div class="mobile-menu">
+        <button class="menu-close-btn" onclick="toggleMobileMenu()">✕</button>
+        <div class="mobile-menu-items">
+          <button class="mobile-menu-item" onclick="openShop(); toggleMobileMenu();">
+            🛍️ Toko
+          </button>
+          <button class="mobile-menu-item" onclick="openInventory(); toggleMobileMenu();">
+            🎒 Inventory
+          </button>
+          <button class="mobile-menu-item" onclick="openAchievements(); toggleMobileMenu();">
+            🏆 Prestasi
+          </button>
+          <button class="mobile-menu-item" onclick="openPrestige(); toggleMobileMenu();">
+            🌟 Prestige
+          </button>
+          <button class="mobile-menu-item" onclick="confirmReset(); toggleMobileMenu();">
+            🔄 Reset Game
+          </button>
+          <button class="sound-toggle mobile-sound-toggle" onclick="toggleSound()">
+            🔊 <span id="soundStatusMobile">On</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Stats Modal -->
+    <div id="mobileStatsModal" class="modal-overlay">
+      <div class="modal-content mobile-stats-modal">
+        <button class="close-btn" onclick="closeMobileStats()">✕</button>
+        <h3>📊 Game Stats</h3>
+        <div class="mobile-stats-content">
+          <div class="mobile-stat-section">
+            <h4>💰 Current Stats</h4>
+            <div class="stat-item">
+              💰 Points: <span id="mobilePoints">0</span>
+            </div>
+            <div class="stat-item">
+              ⚡ Per Second: <span id="mobilePointsPerSecond">0</span>/s
+            </div>
+            <div class="stat-item">
+              🔥 Level: <span id="mobileLevel">1</span>
+            </div>
+            <div class="stat-item">
+              🎯 Total Clicks: <span id="mobileTotalClicks">0</span>
+            </div>
+            <div class="stat-item">
+              ⏰ Play Time: <span id="mobilePlayTime">0</span>s
+            </div>
+            <div class="stat-item">
+              💎 Items Owned: <span id="mobileOwnedItems">0</span>
+            </div>
+          </div>
+
+          <div class="mobile-stat-section">
+            <h4>🌟 Prestige Stats</h4>
+            <div class="stat-item">
+              🌟 Prestige Level: <span id="mobilePrestigeLevel">0</span>
+            </div>
+            <div class="stat-item">
+              ⭐ Prestige Points: <span id="mobilePrestigePoints">0</span>
+            </div>
+            <div class="stat-item">
+              📈 Multiplier: x<span id="mobilePrestigeMultiplier">1</span>
+            </div>
+            <div class="stat-item">
+              🔥 Daily Streak: <span id="mobileDailyStreak">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Game Area -->
+    <div class="game-container">
+      <!-- Left Navigation -->
+      <div class="control-panel left-nav">
+        <div class="desktop-navigation">
+          <button class="shop-btn" onclick="openShop()">
+            <div>🛍️</div>
+            <div>TOKO</div>
+          </button>
+          <button class="shop-btn" onclick="openInventory()">
+            <div>🎒</div>
+            <div>ITEM</div>
+          </button>
+          <button class="shop-btn" onclick="openAchievements()">
+            <div>🏆</div>
+            <div>PRESTASI</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Character Section -->
+      <div class="character-section">
+        <div class="character-container">
+          <img class="character" src="../img/char1anime.png" onclick="clickCharacter()">
+          <!-- Equipment Slots -->
+          <div class="equipment hat" id="hat"></div>
+          <div class="equipment glasses" id="glasses"></div>
+          <div class="equipment vehicle" id="vehicle"></div>
+        </div>
+
+        <button class="click-button" onclick="clickCharacter()">
+          🖱️ Klik Saya!
+        </button>
+
+        <div class="upgrades">
+          <button
+            class="upgrade-btn"
+            onclick="buyUpgrade('autoClicker')"
+            id="autoClickerBtn"
+          >
+            🤖 Auto<br />
+            <small>💰 <span id="autoClickerCost">10</span></small
+            ><br />
+            <small>Lv: <span id="autoClickerLevel">0</span></small>
+          </button>
+
+          <button
+            class="upgrade-btn"
+            onclick="buyUpgrade('clickPower')"
+            id="clickPowerBtn"
+          >
+            💪 Power<br />
+            <small>💰 <span id="clickPowerCost">50</span></small
+            ><br />
+            <small>Lv: <span id="clickPowerLevel">1</span></small>
+          </button>
+        </div>
+      </div>
+      
+
+      <!-- Right Stats Panels -->   
+      <div class="control-panel right-stats">
+        <!-- Prestige Stats -->
+        <div class="prestige-stats">
+          <div class="prestige-stat">🌟 Prestige: <span id="prestigeLevel">0</span></div>
+          <div class="prestige-stat">⭐ Points: <span id="prestigePoints">0</span></div>
+          <div class="prestige-stat">📈 Multiplier: x<span id="prestigeMultiplier">1</span></div>
+          <div class="prestige-stat">🔥 Streak: <span id="dailyStreak">0</span></div>
+        </div>
+
+        <!-- Main Stats -->
+        <div class="stats">
+          <div class="stat-item">💰 <span id="points">0</span></div>
+          <div class="stat-item">⚡ <span id="pointsPerSecond">0</span>/s</div>
+          <div class="stat-item">🔥 Lv.<span id="level">1</span></div>
+          <div class="stat-item">🎯 <span id="totalClicks">0</span></div>
+          <div class="stat-item">⏰ <span id="playTime">0</span>s</div>
+          <div class="stat-item">💎 <span id="ownedItems">0</span></div>
+        </div>
+
+        <button class="prestige-btn" onclick="openPrestige()" id="prestigeBtn">🌟 Prestige (Need 1000 Points)</button>
+        <button class="reset-btn" onclick="confirmReset()">🔄 Reset Game</button>
+      </div>
+    </div>
+
+    <!-- Shop Popup -->
+    <div class="popup-overlay" id="shopPopup">
+      <div class="popup">
+        <div class="popup-header" position="sticky">
+          <h2 class="popup-title">🛍️ Toko</h2>
+          <button class="close-btn" onclick="closeShop()">×</button>
+        </div>
+
+        <div class="shop-tabs">
+          <button class="tab-btn active" onclick="switchTab('accessories')">
+            🎭 Aksesoris
+          </button>
+          <button class="tab-btn" onclick="switchTab('characters')">
+            👤 Karakter
+          </button>
+          <button class="tab-btn" onclick="switchTab('themes')">🎨 Tema</button>
+        </div>
+
+        <div class="tab-content active" id="accessories">
+          <div class="shop-grid" id="accessoriesGrid"></div>
+        </div>
+
+        <div class="tab-content" id="characters">
+          <div class="shop-grid" id="charactersGrid"></div>
+        </div>
+
+        <div class="tab-content" id="themes">
+          <div class="shop-grid" id="themesGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Popup -->
+    <div class="popup-overlay" id="inventoryPopup">
+      <div class="popup">
+        <div class="popup-header">
+          <h2 class="popup-title">🎒 Inventory</h2>
+          <button class="close-btn" onclick="closeInventory()">×</button>
+        </div>
+        <div class="inventory-grid" id="inventoryGrid">
+          <div style="text-align: center; color: #666; grid-column: 1 / -1; padding: 50px;">
+            Belum ada item yang dimiliki
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements Popup -->
+    <div class="popup-overlay" id="achievementsPopup">
+      <div class="popup">
+        <div class="popup-header">
+          <h2 class="popup-title">🏆 Prestasi</h2>
+          <button class="close-btn" onclick="closeAchievements()">×</button>
+        </div>
+
+        <div class="shop-tabs">
+          <button class="tab-btn active" onclick="switchAchievementTab('clicks')">
+            🖱️ Klik
+          </button>
+          <button class="tab-btn" onclick="switchAchievementTab('points')">
+            💰 Poin
+          </button>
+          <button class="tab-btn" onclick="switchAchievementTab('upgrades')">
+            ⚡ Upgrade
+          </button>
+          <button class="tab-btn" onclick="switchAchievementTab('daily')">
+            🎁 Harian
+          </button>
+        </div>
+
+        <div class="tab-content active" id="clicksAchievements">
+          <div class="achievement-grid" id="clicksAchievementGrid"></div>
+        </div>
+
+        <div class="tab-content" id="pointsAchievements">
+          <div class="achievement-grid" id="pointsAchievementGrid"></div>
+        </div>
+
+        <div class="tab-content" id="upgradesAchievements">
+          <div class="achievement-grid" id="upgradesAchievementGrid"></div>
+        </div>
+
+        <div class="tab-content" id="dailyAchievements">
+          <div class="daily-calendar" id="dailyCalendar"></div>
+          <button class="notification-btn" onclick="claimDailyReward()" id="claimDailyBtn">
+            🎁 Klaim Reward Harian
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prestige Popup -->
+    <div class="popup-overlay" id="prestigePopup">
+      <div class="popup">
+        <div class="popup-header">
+          <h2 class="popup-title">🌟 Prestige</h2>
+          <button class="close-btn" onclick="closePrestige()">×</button>
+        </div>
+
+        <div class="shop-tabs">
+          <button class="tab-btn active" onclick="switchPrestigeTab('info')">
+            📊 Info
+          </button>
+          <button class="tab-btn" onclick="switchPrestigeTab('shop')">
+            🛒 Prestige Shop
+          </button>
+        </div>
+
+        <div class="tab-content active" id="prestigeInfo">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 1.2rem; font-weight: bold; color: #ff9800; margin-bottom: 10px;">
+              🌟 Prestige akan reset progress kamu tapi memberikan:
+            </div>
+            <div style="margin: 10px 0;">
+              ⭐ <span id="nextPrestigePoints">0</span> Prestige Points
+            </div>
+            <div style="margin: 10px 0;">📈 Permanent income multiplier</div>
+            <div style="margin: 10px 0;">🛒 Akses Prestige Shop</div>
+            <div style="margin: 10px 0; color: #f44336;">
+              ⚠️ Memerlukan minimal 1000 poin
+            </div>
+          </div>
+          <button class="notification-btn warning" onclick="doPrestige()" id="doPrestigeBtn" disabled>
+            🌟 PRESTIGE SEKARANG
+          </button>
+        </div>
+
+        <div class="tab-content" id="prestigeShop">
+          <div class="prestige-grid" id="prestigeShopGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offline Earnings Popup -->
+    <div class="popup-overlay" id="offlinePopup">
+      <div class="notification-popup">
+        <div class="notification-icon">💤</div>
+        <div class="notification-title">Welcome Back!</div>
+        <div class="notification-message" id="offlineMessage">
+          Kamu offline selama 5 menit dan mendapat 150 poin!
+        </div>
+        <div class="notification-buttons">
+          <button class="notification-btn" onclick="closeOfflinePopup()">
+            Terima Kasih!
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Confirmation Popup -->
+    <div class="popup-overlay" id="resetPopup">
+      <div class="notification-popup">
+        <div class="notification-icon">⚠️</div>
+        <div class="notification-title">Reset Game</div>
+        <div class="notification-message">
+          Apakah Anda yakin ingin mereset semua progress? Data tidak dapat
+          dikembalikan!
+        </div>
+        <div class="notification-buttons">
+          <button class="notification-btn" onclick="resetGame(); closeResetPopup();">
+            Ya, Reset
+          </button>
+          <button class="notification-btn secondary" onclick="closeResetPopup()">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Popup -->
+    <div class="popup-overlay" id="notificationPopup">
+      <div class="notification-popup">
+        <div class="notification-icon" id="notificationIcon">🎉</div>
+        <div class="notification-title" id="notificationTitle">
+          Item Berhasil Dibeli!
+        </div>
+        <div class="notification-message" id="notificationMessage">
+          Item telah ditambahkan ke inventory Anda.
+        </div>
+        <div class="notification-buttons">
+          <button class="notification-btn" onclick="closeNotification(); openInventory();">
+            Lihat Inventory
+          </button>
+          <button class="notification-btn secondary" onclick="closeNotification()">
+            Ok!
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
