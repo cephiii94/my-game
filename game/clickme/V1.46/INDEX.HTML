@@ -49,7 +49,9 @@
         <button class="sound-toggle" onclick="toggleSound()">
           🔊 <span id="soundStatus">On</span>
         </button>
-        <button class="header-btn"></button>
+        <button class="reset-btn" onclick="confirmReset()">
+          🔄 Reset Game
+        </button>
       </div>
     </div>
 
@@ -160,9 +162,10 @@
       <!-- Character Section -->
       <div class="character-section">
         <div class="character-container">
-          <img class="character" src="../img/char1anime.png" onclick="clickCharacter()">
+          <img class="character" src="../img/char1anime.png" onclick="clickCharacter()" alt="Karakter Anime">
           <!-- Equipment Slots -->
-          <div class="equipment hat" id="hat"></div>
+          <!-- [Image of Topi] -->
+          <img class="equipment hat" id="hat" src="../img/hat.png" alt="Topi">
           <div class="equipment glasses" id="glasses"></div>
           <div class="equipment vehicle" id="vehicle"></div>
         </div>
