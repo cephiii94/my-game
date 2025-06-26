@@ -164,10 +164,9 @@
         <div class="character-container">
           <img class="character" src="../img/char1anime.png" onclick="clickCharacter()" alt="Karakter Anime">
           <!-- Equipment Slots -->
-          <!-- [Image of Topi] -->
           <img class="equipment hat" id="hat" src="../img/hat.png" alt="Topi">
-          <div class="equipment glasses" id="glasses"></div>
-          <div class="equipment vehicle" id="vehicle"></div>
+          <img class="equipment glasses" id="glasses" src="https://placehold.co/70x20/424242/ffffff?text=Kacamata" alt="Kacamata Hitam">
+          <img class="equipment vehicle" id="vehicle" src="https://placehold.co/80x40/ff9800/ffffff?text=Kendaraan" alt="Kendaraan">
         </div>
 
         <button class="click-button" onclick="clickCharacter()">
@@ -228,19 +227,19 @@
     <!-- Shop Popup -->
     <div class="popup-overlay" id="shopPopup">
       <div class="popup">
-        <div class="popup-header" position="sticky">
+        <div class="popup-header">
           <h2 class="popup-title">🛍️ Toko</h2>
           <button class="close-btn" onclick="closeShop()">×</button>
         </div>
 
         <div class="shop-tabs">
-          <button class="tab-btn active" onclick="switchTab('accessories')">
+          <button class="tab-btn active" onclick="switchTab('accessories', this)">
             🎭 Aksesoris
           </button>
-          <button class="tab-btn" onclick="switchTab('characters')">
+          <button class="tab-btn" onclick="switchTab('characters', this)">
             👤 Karakter
           </button>
-          <button class="tab-btn" onclick="switchTab('themes')">🎨 Tema</button>
+          <button class="tab-btn" onclick="switchTab('themes', this)">🎨 Tema</button>
         </div>
 
         <div class="tab-content active" id="accessories">
@@ -281,16 +280,16 @@
         </div>
 
         <div class="shop-tabs">
-          <button class="tab-btn active" onclick="switchAchievementTab('clicks')">
+          <button class="tab-btn active" onclick="switchAchievementTab('clicks', this)">
             🖱️ Klik
           </button>
-          <button class="tab-btn" onclick="switchAchievementTab('points')">
+          <button class="tab-btn" onclick="switchAchievementTab('points', this)">
             💰 Poin
           </button>
-          <button class="tab-btn" onclick="switchAchievementTab('upgrades')">
+          <button class="tab-btn" onclick="switchAchievementTab('upgrades', this)">
             ⚡ Upgrade
           </button>
-          <button class="tab-btn" onclick="switchAchievementTab('daily')">
+          <button class="tab-btn" onclick="switchAchievementTab('daily', this)">
             🎁 Harian
           </button>
         </div>
@@ -325,10 +324,10 @@
         </div>
 
         <div class="shop-tabs">
-          <button class="tab-btn active" onclick="switchPrestigeTab('info')">
+          <button class="tab-btn active" onclick="switchPrestigeTab('info', this)">
             📊 Info
           </button>
-          <button class="tab-btn" onclick="switchPrestigeTab('shop')">
+          <button class="tab-btn" onclick="switchPrestigeTab('shop', this)">
             🛒 Prestige Shop
           </button>
         </div>

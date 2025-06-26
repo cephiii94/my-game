@@ -182,11 +182,7 @@ function playSound(soundId) {
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     console.log('Audio play failed:', error);
-                    try {
-                        audio.play();
-                    } catch(e) {
-                        console.log('Audio fallback failed:', e);
-                    }
+                    // No need for a fallback here, the original catch should suffice.
                 });
             }
         }
@@ -296,8 +292,10 @@ function buyItem(itemId, cost) {
 
 function equipItem(itemId) {
     if (gameState.equippedItems[itemId]) {
+        // If already equipped, unequip it
         gameState.equippedItems[itemId] = false;
     } else {
+        // If not equipped, equip it
         gameState.equippedItems[itemId] = true;
     }
     updateEquipment();
@@ -500,6 +498,7 @@ function claimDailyReward() {
     gameState.lastDailyReward = now;
     
     const today = new Date().getDate();
+    // Only add if not already claimed for today to prevent duplicates on manual saves or reloads
     if (!gameState.dailyRewardsClaimed.includes(today)) {
         gameState.dailyRewardsClaimed.push(today);
     }
@@ -528,27 +527,31 @@ function updateDailyCalendar() {
     
     calendar.innerHTML = '';
     
-    const today = new Date();
-    const currentDay = today.getDate();
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
-    
-    for (let day = 1; day <= 28; day++) {
+    const todayDate = new Date();
+    const currentDayOfMonth = todayDate.getDate(); // Get the day of the month (1-31)
+    const daysInMonth = new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0).getDate(); // Get total days in current month
+
+    // To ensure the calendar always shows a consistent 28 days or can be dynamic
+    // For simplicity, sticking to a 28-day display as per original, but made today's highlight better.
+    for (let day = 1; day <= daysInMonth; day++) { // Loop through actual days in month
         const dayDiv = document.createElement('div');
         dayDiv.className = 'daily-day';
         
-        const reward = 100 + (day * 10);
+        // Example reward calculation (can be more complex)
+        const reward = 100 + (day * 10); 
         
+        // Use a more robust check for claimed days (could store as YYYY-MM-DD for longer persistence)
+        // For now, assuming dailyRewardsClaimed stores only the day of the month that was claimed for the current 'month' context
         if (gameState.dailyRewardsClaimed.includes(day)) {
             dayDiv.classList.add('claimed');
         }
         
-        if (day === currentDay) {
+        if (day === currentDayOfMonth) {
             dayDiv.classList.add('today');
         }
         
         dayDiv.innerHTML = `
-            <div class="daily-day-number">Day ${day}</div>
+            <div class="daily-day-number">Hari ${day}</div>
             <div class="daily-reward-amount">+${reward} poin</div>
         `;
         
@@ -710,9 +713,25 @@ function updateEquipment() {
     const glasses = document.getElementById('glasses');
     const vehicle = document.getElementById('vehicle');
     
+    // Ensure all elements exist before trying to manipulate their style
     if (hat) hat.style.display = gameState.equippedItems.hat ? 'block' : 'none';
     if (glasses) glasses.style.display = gameState.equippedItems.glasses ? 'block' : 'none';
-    if (vehicle) vehicle.style.display = (gameState.equippedItems.motorcycle || gameState.equippedItems.car) ? 'block' : 'none';
+
+    // Logic for vehicle is slightly different as it could be motorcycle or car
+    if (vehicle) {
+        const hasVehicleEquipped = gameState.equippedItems.motorcycle || gameState.equippedItems.car;
+        vehicle.style.display = hasVehicleEquipped ? 'block' : 'none';
+        // You might want to update the src of the vehicle image based on which one is equipped
+        if (hasVehicleEquipped) {
+            if (gameState.equippedItems.motorcycle) {
+                vehicle.src = 'https://placehold.co/80x40/ff9800/ffffff?text=Motor';
+                vehicle.alt = 'Motor Sport';
+            } else if (gameState.equippedItems.car) {
+                vehicle.src = 'https://placehold.co/80x40/ff9800/ffffff?text=Mobil';
+                vehicle.alt = 'Mobil Mewah';
+            }
+        }
+    }
 }
 
 function updateDisplay() {
@@ -762,7 +781,7 @@ function updateDisplay() {
             autoClickerBtn.disabled = false;
         } else {
             autoClickerBtn.classList.remove('available');
-            autoClickerBtn.disabled = false;
+            autoClickerBtn.disabled = false; // Still enabled, just not 'available'
         }
     }
     
@@ -772,7 +791,7 @@ function updateDisplay() {
             clickPowerBtn.disabled = false;
         } else {
             clickPowerBtn.classList.remove('available');
-            clickPowerBtn.disabled = false;
+            clickPowerBtn.disabled = false; // Still enabled, just not 'available'
         }
     }
 
@@ -1052,7 +1071,7 @@ function closePrestige() {
     }
 }
 
-function switchTab(tabName) {
+function switchTab(tabName, clickedButton) {
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
     });
@@ -1065,10 +1084,12 @@ function switchTab(tabName) {
         targetTab.classList.add('active');
     }
     
-    event.target.classList.add('active');
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
 }
 
-function switchAchievementTab(tabName) {
+function switchAchievementTab(tabName, clickedButton) {
     const popup = document.getElementById('achievementsPopup');
     if (!popup) return;
     
@@ -1084,10 +1105,12 @@ function switchAchievementTab(tabName) {
         targetTab.classList.add('active');
     }
     
-    event.target.classList.add('active');
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
 }
 
-function switchPrestigeTab(tabName) {
+function switchPrestigeTab(tabName, clickedButton) {
     const popup = document.getElementById('prestigePopup');
     if (!popup) return;
     
@@ -1103,7 +1126,9 @@ function switchPrestigeTab(tabName) {
         targetTab.classList.add('active');
     }
     
-    event.target.classList.add('active');
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
 }
 
 function showNotification(message) {
@@ -1179,11 +1204,11 @@ document.addEventListener('click', function(event) {
     const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
     const menuBtn = document.querySelector('.menu-btn');
     
-    if (mobileMenuOverlay && menuBtn && 
-        mobileMenuOverlay.style.display === 'flex' && 
-        !mobileMenuOverlay.querySelector('.mobile-menu').contains(event.target) &&
-        !menuBtn.contains(event.target)) {
-        toggleMobileMenu();
+    if (mobileMenuOverlay && mobileMenuOverlay.style.display === 'flex') {
+        const mobileMenu = mobileMenuOverlay.querySelector('.mobile-menu');
+        if (mobileMenu && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+            toggleMobileMenu();
+        }
     }
 });
 
@@ -1200,6 +1225,15 @@ document.addEventListener('keydown', function(event) {
         if (mobileStatsModal && mobileStatsModal.style.display === 'flex') {
             closeMobileStats();
         }
+        // Close other popups
+        const popups = ['shopPopup', 'inventoryPopup', 'achievementsPopup', 'prestigePopup', 'offlinePopup', 'resetPopup', 'notificationPopup'];
+        popups.forEach(popupId => {
+            const popupElement = document.getElementById(popupId);
+            if (popupElement && popupElement.style.display === 'flex') {
+                popupElement.style.display = 'none';
+                playSound('closeSound'); // Play close sound when any popup is closed via Escape
+            }
+        });
     }
 });
 
