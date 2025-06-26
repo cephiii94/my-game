@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Clicker Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Soft background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Pastikan tinggi body adalah tinggi viewport */
+            margin: 0;
+            overflow: hidden; /* Sembunyikan scrollbar */
+        }
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1200px;
+            width: 95%;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100vh; /* Atur tinggi wrapper ke 100% viewport height pada semua ukuran */
+        }
+        .main-layout {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            flex-grow: 1; /* Izinkan main-layout mengambil sisa ruang vertikal */
+            align-items: flex-start; /* Posisikan item ke atas */
+        }
+        .panel {
+            background: #faf9fa;
+            border-radius: 32px;
+            box-shadow: none;
+            border: 2.5px solid #222;
+            padding: 32px 28px 32px 28px;
+            margin: 0;
+            position: relative;
+            min-height: 500px;
+            box-sizing: border-box;
+        }
+
+        .panel-header {
+            left: 28px;
+            top: -28px;
+            transform: none;
+            background: #f8f3f8;
+            border-radius: 22px 22px 22px 22px;
+            border: 2.5px solid #222;
+            font-size: 1.25rem;
+            padding: 8px 28px;
+            font-weight: 700;
+            color: #3b5998;
+            letter-spacing: 1px;
+            position: absolute;
+        }
+        .upgrade-panel {
+            position: relative;
+            flex: 1 1 300px; /* Flexible width for upgrade panel */
+            order: 0;
+            min-width: 340px;
+            max-width: 370px;
+            margin-right: 0;
+            margin-left: 0;
+            align-self: flex-start;
+        }
+        .status-panel {
+            position: relative;
+            flex: 1 1 300px; /* Flexible width for status panel */
+            order: 2;
+            min-width: 340px;
+            max-width: 370px;
+            margin-left: 0;
+            align-self: flex-start;
+        }
+        .character-panel {
+            position: relative;
+            flex: 2 1 400px; /* Wider for character panel */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            order: 1;
+            min-width: 420px;
+            max-width: 520px;
+            width: 100%;
+            margin: 0 0;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            background: #f6f6f6;
+            border-radius: 32px;
+            border: 2.5px solid #222;
+            min-height: 600px;
+            box-sizing: border-box;
+            padding: 32px 0 32px 0;
+        }
+
+        .resource-display {
+            background: #fffbe8;
+            color: #eab308;
+            border-radius: 14px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            margin-top: 0;
+            padding: 12px 0;
+            box-shadow: none;
+            width: 80%;
+            text-align: center;
+        }
+
+        .character-image {
+            width: 100%;
+            max-width: 340px;
+            min-height: 380px;
+            border-radius: 18px;
+            border: none;
+            background: #f6f6f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7rem;
+            margin-bottom: 24px;
+            margin-top: 8px;
+            box-shadow: none;
+        }
+
+        .click-button-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .click-button {
+            background-image: linear-gradient(to right, #6EE7B7, #34D399);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 100px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: transform 0.1s ease-in-out, box-shadow 0.2s ease;
+            box-shadow: 0 8px 15px rgba(52, 211, 153, 0.4);
+            animation: pulse 2s infinite;
+        }
+        .click-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 4px 8px rgba(52, 211, 153, 0.6);
+        }
+        .click-button:hover {
+            box-shadow: 0 12px 20px rgba(52, 211, 153, 0.5);
+        }
+
+        .upgrade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            background: #f6f6f6;
+            border-radius: 16px;
+            border: 2px solid #222;
+            margin-bottom: 18px;
+            padding: 14px 18px;
+            background: #f6f6f6;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .upgrade-icon {
+            font-size: 2.1rem;
+            margin-right: 10px;
+            width: 40px;
+            text-align: center;
+        }
+        .upgrade-info {
+            flex-grow: 1;
+            text-align: left;
+        }
+        .upgrade-info h3 {
+            font-size: 1.08rem;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+        .upgrade-info p {
+            font-size: 0.92rem;
+            margin-bottom: 0;
+        }
+        .buy-button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 7px 0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            min-width: 90px; /* Ensure button has a minimum width */
+        }
+        .buy-button:hover {
+            background-color: #2563eb;
+        }
+        .buy-button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #334155;
+            gap: 8px;
+        }
+        .status-item span {
+            margin-right: 8px;
+            font-size: 1.25rem; /* Emoji size for status icons */
+        }
+
+        .bottom-navigation {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f3f8;
+            border: 2.5px solid #222;
+            border-radius: 22px 22px 0 0;
+            padding: 18px 0 14px 0;
+            margin: 0;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            z-index: 1001;
+            box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            border-top: 2.5px solid #222;
+            background: #f8f3f8;
+            padding: 18px 0 14px 0;
+            justify-content: center;
+            gap: 32px;
+        }
+        .nav-button {
+            font-size: 2.3rem;
+            padding: 10px 18px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #222;
+            margin: 0 10px;
+            transition: background 0.2s, border 0.2s;
+        }
+        .nav-button:hover {
+            background: #f0f4f8;
+            border-color: #3b5998;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Modal specific styles */
+        .status-modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .status-modal-container.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .status-modal-content {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 32px;
+            border: 2px solid #000;
+            max-width: 450px; /* Max width for modal */
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px); /* Initial slight offset */
+            transition: transform 0.3s ease;
+        }
+        .status-modal-container.show .status-modal-content {
+            transform: translateY(0); /* Slide into place */
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #334155;
+            transition: color 0.2s ease;
+        }
+        .modal-close-button:hover {
+            color: #ef4444; /* Red on hover */
+        }
+
+        /* Mobile inline upgrades section */
+        .mobile-inline-upgrades {
+            display: none; /* Hidden by default, shown on mobile */
+            flex-direction: column; /* Stack by default */
+            gap: 12px;
+            width: 95%;
+            max-width: 500px;
+            margin: 0 auto; /* Center it */
+            margin-top: 24px;
+            padding: 24px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid #000;
+            flex-grow: 1; /* Izinkan mengambil sisa ruang */
+            overflow-y: auto; /* Izinkan scroll di sini jika item upgrade banyak */
+        }
+        .mobile-upgrade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        .mobile-upgrade-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f8fafc;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        }
+        .mobile-upgrade-item .upgrade-info h3, .mobile-upgrade-item .upgrade-info p {
+            text-align: center;
+        }
+
+
+        /* Responsive adjustments for desktop */
+        @media (min-width: 1025px) {
+            .game-wrapper {
+                flex-direction: column;
+                height: 100vh;
+                justify-content: flex-start;
+                align-items: center;
+                max-width: 100vw;
+                width: 100vw;
+                padding: 0;
+                gap: 0;
+                overflow-y: auto; /* Tambahkan ini */
+            }
+            .main-layout {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: flex-start;
+                flex-grow: 1;
+                height: calc(100vh - 120px);
+                gap: 40px; /* Perbesar gap antar panel */
+                width: 100vw;
+                max-width: 100vw;
+                margin: 0 auto;
+                padding-top: 40px;
+                padding-bottom: 0;
+                box-sizing: border-box;
+            }
+            .panel {
+                padding: 28px 20px 28px 20px; /* Kurangi padding agar isi tidak menumpuk */
+                min-height: 480px;
+                flex-shrink: 0; /* Panel tidak menyusut */
+            }
+            .upgrade-panel,
+            .status-panel {
+                flex: 1 1 340px;
+                min-width: 340px;
+                max-width: 370px;
+            }
+            .character-panel {
+                flex: 2 1 440px;
+                min-width: 420px;
+                max-width: 520px;
+                padding: 32px 0 32px 0;
+                gap: 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* Responsive adjustments for tablets and smaller desktops */
+        @media (max-width: 1024px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+                flex-grow: 0; /* Jangan ambil sisa ruang vertikal lagi di sini */
+            }
+            .panel {
+                width: 95%; /* Adjust width for panels on smaller screens */
+                max-width: 500px; /* Limit max width */
+            }
+            .upgrade-panel, .status-panel {
+                display: none; /* Hide desktop panels on mobile */
+            }
+            .panel-header {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -20px;
+            }
+            .bottom-navigation {
+                display: flex; /* Show navigation for mobile */
+            }
+            .character-panel {
+                margin-bottom: 0; /* Remove space if mobile-inline-upgrades is below */
+                flex-grow: 2; /* Berikan karakter panel lebih banyak ruang */
+                min-height: 40vh; /* Minimum tinggi untuk panel karakter */
+                max-height: 50vh;
+            }
+            .mobile-inline-upgrades {
+                display: flex; /* Show mobile inline upgrades */
+                flex-grow: 1; /* Biarkan dia mengambil sisa ruang */
+            }
+            #statusToggleButton {
+                display: block; /* Show status toggle button on character panel for mobile */
+            }
+            .game-wrapper {
+                 gap: 12px; /* Kurangi gap antar bagian */
+                 padding: 10px; /* Kurangi padding wrapper */
+            }
+            .panel {
+                 padding: 20px; /* Kurangi padding panel */
+            }
+            .character-image {
+                min-height: 150px; /* Kurangi tinggi min gambar karakter */
+                font-size: 4rem; /* Kurangi ukuran font emoji karakter */
+            }
+            .resource-display {
+                font-size: 1.5rem; /* Kurangi ukuran font resource */
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+            .click-button {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+            }
+            .mobile-panel-toggle {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                margin-top: 15px;
+            }
+            .mobile-upgrade-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Kolom lebih kecil untuk mobile */
+                gap: 8px;
+            }
+            .mobile-upgrade-item {
+                padding: 8px;
+            }
+            .upgrade-info h3 {
+                font-size: 0.9rem;
+            }
+            .upgrade-info p {
+                font-size: 0.75rem;
+            }
+            .buy-button {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+            .upgrade-icon {
+                font-size: 1.2rem;
+                width: 25px;
+            }
+            .bottom-navigation {
+                padding: 8px 10px;
+                margin-top: 12px;
+            }
+            .nav-button {
+                font-size: 2rem;
+                padding: 5px;
+            }
+            .status-modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            .status-item {
+                font-size: 0.9rem;
+            }
+            .status-item span {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) { /* Untuk ponsel yang lebih kecil */
+            .character-panel {
+                min-height: 35vh;
+                max-height: 45vh;
+            }
+            .resource-display {
+                font-size: 1.2rem;
+                padding: 8px;
+                margin-bottom: 10px;
+            }
+            .click-button {
+                font-size: 1rem;
+                padding: 12px 25px;
+            }
+            .mobile-upgrade-grid {
+                grid-template-columns: 1fr; /* Stack items vertically on very small screens */
+            }
+            .upgrade-info h3 {
+                font-size: 0.85rem;
+            }
+            .upgrade-info p {
+                font-size: 0.7rem;
+            }
+            .buy-button {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+            .nav-button {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="main-layout">
+            <!-- Panel Peningkatan (Desktop Only) -->
+            <div class="panel upgrade-panel">
+                <div class="panel-header">UPGRADE</div>
+                <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">Peningkatan</h2>
+
+                <!-- Item Peningkatan: Power -->
+                <div class="upgrade-item">
+                    <!-- Ganti emoji ini dengan ikon power kustom Anda -->
+                    <span class="upgrade-icon">🔥</span>
+                    <div class="upgrade-info">
+                        <h3 id="powerName">Kekuatan Klik (Level 0)</h3>
+                        <p>Biaya: <span id="powerCost">10</span> Emas</p>
+                        <p>Kekuatan Perklik: <span id="powerPerClick">1</span></p>
+                    </div>
+                    <button id="buyPowerButton" class="buy-button">Beli</button>
+                </div>
+
+                <!-- Item Peningkatan: Auto -->
+                <div class="upgrade-item">
+                    <!-- Ganti emoji ini dengan ikon auto kustom Anda -->
+                    <span class="upgrade-icon">⏱️</span>
+                    <div class="upgrade-info">
+                        <h3 id="autoName">Otomatis (Level 0)</h3>
+                        <p>Biaya: <span id="autoCost">100</span> Emas</p>
+                        <p>Pendapatan per detik: <span id="autoPerSecond">0</span></p>
+                    </div>
+                    <button id="buyAutoButton" class="buy-button">Beli</button>
+                </div>
+
+                <!-- Contoh Item Peningkatan Kosong (untuk penambahan di masa mendatang) -->
+                <div class="upgrade-item">
+                    <span class="upgrade-icon"></span> <!-- Placeholder untuk ikon -->
+                    <div class="upgrade-info">
+                        <h3>Item Kosong</h3>
+                        <p>Biaya: <span>???</span> Emas</p>
+                        <p>Efek: ???</p>
+                    </div>
+                    <button class="buy-button" disabled>Beli</button>
+                </div>
+                <div class="upgrade-item">
+                    <span class="upgrade-icon"></span> <!-- Placeholder untuk ikon -->
+                    <div class="upgrade-info">
+                        <h3>Item Kosong</h3>
+                        <p>Biaya: <span>???</span> Emas</p>
+                        <p>Efek: ???</p>
+                    </div>
+                    <button class="buy-button" disabled>Beli</button>
+                </div>
+            </div>
+
+            <!-- Panel Karakter Utama -->
+            <div class="panel character-panel">
+                <!-- Ganti emoji ini dengan gambar karakter utama Anda -->
+                <div class="character-image">
+                    👦
+                </div>
+
+                <!-- Tampilan Sumber Daya -->
+                <div class="resource-display" id="resourceDisplay">
+                    Emas: 0 G
+                </div>
+
+                <!-- Tombol Klik Utama -->
+                <div class="click-button-wrapper">
+                    <button id="clickButton" class="click-button">
+                        Klik
+                    </button>
+                </div>
+                <!-- Tombol Status untuk mobile -->
+                <button id="statusToggleButton" class="mobile-panel-toggle">STATUS</button>
+            </div>
+
+            <!-- Panel Status (Desktop Only) -->
+            <div class="panel status-panel">
+                <div class="panel-header">STATUS</div>
+                <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">Status</h2>
+
+                <div class="status-content">
+                    <div class="status-item"><span>🔹</span> Level: <span id="playerLevel">1</span></div>
+                    <div class="status-item"><span>💰</span> Emas: <span id="statusGold">0 G</span></div>
+                    <div class="status-item"><span>🏆</span> Prestise: <span id="prestigeLevel">0</span></div>
+                    <div class="status-item"><span>🔥</span> Kekuatan Klik: <span id="statusPower">1</span></div>
+                    <div class="status-item"><span>🚗</span> Otomatis: <span id="statusAuto">0/s</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Peningkatan Inline Mobile (Hanya Mobile) -->
+        <div class="mobile-inline-upgrades">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">Peningkatan</h2>
+            <div class="mobile-upgrade-grid">
+                <!-- Item Peningkatan: Power Mobile -->
+                <div class="mobile-upgrade-item">
+                    <span class="upgrade-icon">🔥</span>
+                    <div class="upgrade-info">
+                        <h3 id="powerNameMobile">Kekuatan Klik (Level 0)</h3>
+                        <p>Biaya: <span id="powerCostMobile">10</span> Emas</p>
+                        <p>Kekuatan Perklik: <span id="powerPerClickMobile">1</span></p>
+                    </div>
+                    <button id="buyPowerButtonMobile" class="buy-button">Beli</button>
+                </div>
+
+                <!-- Item Peningkatan: Auto Mobile -->
+                <div class="mobile-upgrade-item">
+                    <span class="upgrade-icon">⏱️</span>
+                    <div class="upgrade-info">
+                        <h3 id="autoNameMobile">Otomatis (Level 0)</h3>
+                        <p>Biaya: <span id="autoCostMobile">100</span> Emas</p>
+                        <p>Pendapatan per detik: <span id="autoPerSecondMobile">0</span></p>
+                    </div>
+                    <button id="buyAutoButtonMobile" class="buy-button">Beli</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Navigasi Bawah -->
+        <div class="bottom-navigation">
+            <!-- Ganti emoji ini dengan ikon navigasi kustom Anda -->
+            <button class="nav-button" id="navProfile">👤</button>
+            <button class="nav-button" id="navInventory">📦</button>
+            <button class="nav-button" id="navShop">🛒</button>
+            <button class="nav-button" id="navSettings">⚙️</button>
+        </div>
+    </div>
+
+    <!-- Modal Status -->
+    <div id="statusModalContainer" class="status-modal-container">
+        <div class="status-modal-content">
+            <button id="statusModalCloseButton" class="modal-close-button">&times;</button>
+            <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">STATUS</h2>
+            <div class="status-content">
+                <div class="status-item"><span>🔹</span> Level: <span id="playerLevelModal">1</span></div>
+                <div class="status-item"><span>💰</span> Emas: <span id="statusGoldModal">0 G</span></div>
+                <div class="status-item"><span>🏆</span> Prestise: <span id="prestigeLevelModal">0</span></div>
+                <div class="status-item"><span>🔥</span> Kekuatan Klik: <span id="statusPowerModal">1</span></div>
+                <div class="status-item"><span>🚗</span> Otomatis: <span id="statusAutoModal">0/s</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game variables initialization
+        let gold = 0;
+        let powerPerClick = 1;
+        let autoPerSecond = 0;
+        let playerLevel = 1;
+        let prestigeLevel = 0;
+
+        // Upgrades
+        const upgrades = {
+            power: {
+                level: 0,
+                baseCost: 10,
+                costMultiplier: 1.2, // Cost multiplier per level
+                basePowerIncrease: 1 // Base power increase per level
+            },
+            auto: {
+                level: 0,
+                baseCost: 100,
+                costMultiplier: 1.3,
+                baseProduction: 10 // Base production per second
+            }
+            // Add more upgrades here
+        };
+
+        // Get DOM elements
+        const resourceDisplay = document.getElementById('resourceDisplay');
+        const clickButton = document.getElementById('clickButton');
+
+        // Desktop Upgrade elements
+        const powerName = document.getElementById('powerName');
+        const powerCostDisplay = document.getElementById('powerCost');
+        const powerPerClickDisplay = document.getElementById('powerPerClick');
+        const buyPowerButton = document.getElementById('buyPowerButton');
+
+        const autoName = document.getElementById('autoName');
+        const autoCostDisplay = document.getElementById('autoCost');
+        const autoPerSecondDisplay = document.getElementById('autoPerSecond');
+        const buyAutoButton = document.getElementById('buyAutoButton');
+
+        // Desktop Status elements
+        const playerLevelDisplay = document.getElementById('playerLevel');
+        const statusGoldDisplay = document.getElementById('statusGold');
+        const prestigeLevelDisplay = document.getElementById('prestigeLevel');
+        const statusPowerDisplay = document.getElementById('statusPower');
+        const statusAutoDisplay = document.getElementById('statusAuto');
+
+        // Mobile specific elements
+        const statusToggleButton = document.getElementById('statusToggleButton'); // On character panel
+        const mobileInlineUpgrades = document.querySelector('.mobile-inline-upgrades');
+
+        // Mobile Upgrade Inline elements
+        const powerNameMobile = document.getElementById('powerNameMobile');
+        const powerCostMobile = document.getElementById('powerCostMobile');
+        const powerPerClickMobile = document.getElementById('powerPerClickMobile');
+        const buyPowerButtonMobile = document.getElementById('buyPowerButtonMobile');
+
+        const autoNameMobile = document.getElementById('autoNameMobile');
+        const autoCostMobile = document.getElementById('autoCostMobile');
+        const autoPerSecondMobile = document.getElementById('autoPerSecondMobile');
+        const buyAutoButtonMobile = document.getElementById('buyAutoButtonMobile');
+
+        // Status Modal elements
+        const statusModalContainer = document.getElementById('statusModalContainer');
+        const statusModalCloseButton = document.getElementById('statusModalCloseButton');
+
+        const playerLevelModal = document.getElementById('playerLevelModal');
+        const statusGoldModal = document.getElementById('statusGoldModal');
+        const prestigeLevelModal = document.getElementById('prestigeLevelModal');
+        const statusPowerModal = document.getElementById('statusPowerModal');
+        const statusAutoModal = document.getElementById('statusAutoModal');
+
+
+        /**
+         * Updates the resource display in the UI.
+         */
+        function updateResourceDisplay() {
+            resourceDisplay.textContent = `Emas: ${Math.floor(gold)} G`;
+            statusGoldDisplay.textContent = `${Math.floor(gold)} G`; // Desktop status panel
+            statusGoldModal.textContent = `${Math.floor(gold)} G`; // Mobile status modal
+        }
+
+        /**
+         * Updates the UI for a specific upgrade (cost, level, button status).
+         * @param {string} upgradeKey - The key of the upgrade (e.g., 'power', 'auto').
+         */
+        function updateUpgradeUI(upgradeKey) {
+            const upgrade = upgrades[upgradeKey];
+            const currentCost = Math.floor(upgrade.baseCost * (upgrade.costMultiplier ** upgrade.level));
+
+            // Desktop updates
+            document.getElementById(`${upgradeKey}Name`).textContent =
+                `${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)} (Level ${upgrade.level})`;
+            document.getElementById(`${upgradeKey}Cost`).textContent = currentCost;
+            const desktopButton = document.getElementById(`buy${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)}Button`);
+            desktopButton.disabled = gold < currentCost;
+
+            // Mobile inline upgrades updates
+            document.getElementById(`${upgradeKey}NameMobile`).textContent =
+                `${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)} (Level ${upgrade.level})`;
+            document.getElementById(`${upgradeKey}CostMobile`).textContent = currentCost;
+            const mobileButton = document.getElementById(`buy${upgradeKey.charAt(0).toUpperCase() + upgradeKey.slice(1)}ButtonMobile`);
+            mobileButton.disabled = gold < currentCost;
+
+            // Update specific stats for upgrades (both desktop and mobile)
+            if (upgradeKey === 'power') {
+                powerPerClickDisplay.textContent = powerPerClick;
+                powerPerClickMobile.textContent = powerPerClick;
+            } else if (upgradeKey === 'auto') {
+                autoPerSecondDisplay.textContent = autoPerSecond;
+                autoPerSecondMobile.textContent = autoPerSecond;
+            }
+        }
+
+        /**
+         * Updates all upgrade UIs.
+         */
+        function updateAllUpgradeUIs() {
+            for (const key in upgrades) {
+                updateUpgradeUI(key);
+            }
+        }
+
+        /**
+         * Updates the status panel UI for desktop and mobile modal.
+         */
+        function updateStatusUI() {
+            // Desktop status panel
+            playerLevelDisplay.textContent = playerLevel;
+            prestigeLevelDisplay.textContent = prestigeLevel;
+            statusPowerDisplay.textContent = powerPerClick;
+            statusAutoDisplay.textContent = `${autoPerSecond}/s`;
+
+            // Mobile status modal
+            playerLevelModal.textContent = playerLevel;
+            prestigeLevelModal.textContent = prestigeLevel;
+            statusPowerModal.textContent = powerPerClick;
+            statusAutoModal.textContent = `${autoPerSecond}/s`;
+        }
+
+        /**
+         * Handles the click on the main button.
+         */
+        function handleClick() {
+            gold += powerPerClick;
+            updateResourceDisplay();
+            updateAllUpgradeUIs(); // Update button status after each click
+            updateStatusUI();
+        }
+
+        /**
+         * Buys an upgrade.
+         * @param {string} upgradeKey - The key of the upgrade to buy.
+         */
+        function buyUpgrade(upgradeKey) {
+            const upgrade = upgrades[upgradeKey];
+            const currentCost = Math.floor(upgrade.baseCost * (upgrade.costMultiplier ** upgrade.level));
+
+            if (gold >= currentCost) {
+                gold -= currentCost;
+                upgrade.level++;
+
+                if (upgradeKey === 'power') {
+                    powerPerClick += upgrade.basePowerIncrease;
+                } else if (upgradeKey === 'auto') {
+                    autoPerSecond += upgrade.baseProduction;
+                }
+
+                updateResourceDisplay();
+                updateAllUpgradeUIs(); // Update all button statuses (since gold changed)
+                updateStatusUI();
+            } else {
+                console.log(`Not enough gold to buy ${upgradeKey}.`);
+            }
+        }
+
+        /**
+         * Main game loop that runs every second.
+         */
+        function gameLoop() {
+            gold += autoPerSecond;
+            updateResourceDisplay();
+            updateAllUpgradeUIs(); // Update button status every second
+            updateStatusUI();
+        }
+
+        /**
+         * Shows the status modal.
+         */
+        function showStatusModal() {
+            statusModalContainer.classList.add('show');
+            // Ensure status UI is up-to-date when showing the modal
+            updateStatusUI();
+        }
+
+        /**
+         * Hides the status modal.
+         */
+        function hideStatusModal() {
+            statusModalContainer.classList.remove('show');
+        }
+
+
+        // Add event listeners
+        clickButton.addEventListener('click', handleClick);
+        buyPowerButton.addEventListener('click', () => buyUpgrade('power')); // Desktop buy button
+        buyAutoButton.addEventListener('click', () => buyUpgrade('auto'));   // Desktop buy button
+
+        buyPowerButtonMobile.addEventListener('click', () => buyUpgrade('power')); // Mobile buy button
+        buyAutoButtonMobile.addEventListener('click', () => buyUpgrade('auto'));   // Mobile buy button
+
+        // Event listeners for showing/hiding status modal
+        statusToggleButton.addEventListener('click', showStatusModal);
+        document.getElementById('navProfile').addEventListener('click', showStatusModal);
+        statusModalCloseButton.addEventListener('click', hideStatusModal);
+
+        // Close modal when clicking outside the content
+        statusModalContainer.addEventListener('click', (event) => {
+            if (event.target === statusModalContainer) {
+                hideStatusModal();
+            }
+        });
+
+        // Adjust panel visibility on window resize and initial load
+        function adjustPanelVisibility() {
+            const desktopUpgradePanel = document.querySelector('.panel.upgrade-panel');
+            const desktopStatusPanel = document.querySelector('.panel.status-panel');
+
+            if (window.innerWidth <= 1024) {
+                // Mobile layout
+                desktopUpgradePanel.style.display = 'none';
+                desktopStatusPanel.style.display = 'none';
+                mobileInlineUpgrades.style.display = 'flex'; // Show mobile inline upgrades
+                statusToggleButton.style.display = 'block'; // Show status toggle button on character panel
+            } else {
+                // Desktop layout
+                desktopUpgradePanel.style.display = 'block';
+                desktopStatusPanel.style.display = 'block';
+                mobileInlineUpgrades.style.display = 'none'; // Hide mobile inline upgrades
+                statusToggleButton.style.display = 'none'; // Hide status toggle button on character panel
+                hideStatusModal(); // Ensure modal is hidden on desktop view
+            }
+        }
+
+        // Initial UI setup and game loop start
+        window.addEventListener('load', () => {
+            updateResourceDisplay();
+            updateAllUpgradeUIs();
+            updateStatusUI();
+
+            // Start the game loop (every 1000ms = 1 second)
+            setInterval(gameLoop, 1000);
+
+            // Initial adjustment of panel visibility
+            adjustPanelVisibility(); // Call it once on load
+        });
+
+        window.addEventListener('resize', adjustPanelVisibility); // Keep this for dynamic resizing
+    </script>
+</body>
+</html>
