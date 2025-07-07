@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense - Level 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="exp-bar-container">
+            <div id="exp-bar-fill"></div>
+            <span id="exp-text">EXP: 0/100 (Lv. 1)</span>
+        </div>
+
+        <div id="game-area">
+            <div id="enemy-path-area">
+                <p>JALUR MUSUH</p>
+                </div>
+
+            <div id="defense-area">
+                <p>AREA BERTAHAN</p>
+                <div id="hp-tower-display">HP Tower: <span id="current-hp">100</span>/<span id="max-hp">100</span></div>
+                <div id="tower-placement-area">
+                    <div class="tower-slot" data-slot-id="0"></div>
+                    <div class="tower-slot" data-slot-id="1"></div>
+                    <div class="tower-slot" data-slot-id="2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="choice-popup" class="hidden">
+            <div class="popup-content">
+                <h2>Pilih Unit atau Upgrade!</h2>
+                <div id="choices">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

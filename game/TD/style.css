@@ -1,0 +1,279 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: sans-serif;
+    overflow: hidden; /* Mencegah scroll */
+}
+
+#game-container {
+    border: 2px solid #333;
+    padding: 10px; /* Padding lebih kecil */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    overflow: hidden;
+    position: relative; /* Untuk positioning pop-up */
+}
+
+/* --- Bar EXP --- */
+#exp-bar-container {
+    width: 90%;
+    height: 20px;
+    background-color: #ddd;
+    border: 1px solid #999;
+    margin: 10px auto;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#exp-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #28a745; /* Warna hijau EXP */
+    transition: width 0.3s ease-in-out;
+}
+
+#exp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    font-size: 0.8em;
+}
+/* --------------- */
+
+#game-area {
+    width: 300px; /* Lebar area game */
+    height: 450px; /* Tinggi area game */
+    border: 1px solid #ccc;
+    margin: 10px auto; /* Margin disesuaikan */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    /* --- GANTI BACKGROUND AREA GAME DI SINI --- */
+    /* Ini adalah background untuk seluruh area bermain (map) */
+    /* background-image: url('URL_GAMBAR_PETA_UTAMA_ANDA'); */
+    background-color: #A6D19E; /* Contoh warna hijau rumput */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* ------------------------------------------- */
+}
+
+/* Area jalur musuh */
+#enemy-path-area {
+    width: 100%;
+    height: 70%; /* Sekitar 70% dari tinggi game-area untuk jalur musuh */
+    background-color: rgba(139, 69, 19, 0.3); /* Contoh warna tanah transparan */
+    /* --- GANTI BACKGROUND JALUR MUSUH DI SINI --- */
+    /* background-image: url('URL_GAMBAR_JALUR_MUSUH_ANDA'); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* ------------------------------------------- */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+#enemy-path-area p {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+
+/* Area Bertahan */
+#defense-area {
+    width: 100%;
+    height: 30%; /* Sisa tinggi untuk area bertahan */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; /* Konten di bagian bawah */
+    padding-bottom: 10px;
+    box-sizing: border-box;
+
+    /* --- GANTI BACKGROUND AREA BERTAHAN DI SINI --- */
+    /* Misalnya, gambar pagar atau benteng */
+    /* background-image: url('URL_GAMBAR_PAGAR_ANDA'); */
+    background-color: #8B4513; /* Contoh warna coklat */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* ------------------------------------------- */
+}
+
+#defense-area p {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+#hp-tower-display {
+    color: yellow;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-shadow: 1px 1px 2px black;
+    margin-bottom: 5px; /* Jarak dari tulisan "AREA BERTAHAN" */
+}
+
+#tower-placement-area {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 0;
+}
+
+.tower-slot {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 0, 0, 0.7);
+    border: 2px dashed #eee;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em; /* Ukuran emoji menara */
+    position: relative; /* Untuk menempatkan menara di dalamnya */
+
+    /* --- GANTI BACKGROUND SLOT MENARA DI SINI (opsional, jika bukan hanya kotak warna) --- */
+    /* background-image: url('URL_GAMBAR_SLOT_KOSONG_ANDA'); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* --------------------------------------------------------------------------------- */
+}
+
+/* Gaya untuk menara yang sudah ditempatkan (akan memiliki emoji di dalamnya) */
+.tower-unit { /* Ini adalah unit yang sebenarnya, bukan slot */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em; /* Ukuran emoji unit */
+    background-color: transparent; /* Awalnya transparan */
+    /* --- GANTI BACKGROUND UNTUK GAMBAR UNIT TOWER/TANK/MORTAR --- */
+    /* background-image: url('URL_GAMBAR_UNIT_ANDA'); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
+    /* background-position: center; */
+    /* ----------------------------------------------------------- */
+}
+
+
+/* Gaya untuk musuh (akan dibuat dengan JS, menggunakan emoji) */
+.enemy {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em; /* Ukuran emoji musuh */
+    /* --- GANTI BACKGROUND MUSUH DI SINI (jika ingin gambar, bukan emoji) --- */
+    /* background-image: url('URL_GAMBAR_MUSUH_ANDA'); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
+    /* background-position: center; */
+    /* --------------------------------------------------------------------- */
+
+    transition: top linear;
+}
+
+/* --- Pop-up Pilihan --- */
+.hidden {
+    display: none !important;
+}
+
+#choice-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Pastikan di atas elemen lain */
+}
+
+.popup-content {
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    text-align: center;
+    max-width: 80%;
+}
+
+#choices {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.choice-button {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    min-width: 120px;
+}
+
+.choice-button:hover {
+    background-color: #0056b3;
+}
+
+.choice-button.upgrade-option {
+    background-color: #28a745; /* Warna hijau untuk upgrade */
+}
+
+.choice-button.upgrade-option:hover {
+    background-color: #1e7e34;
+}
+
+.choice-button.disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Tambahkan ke style.css */
+.missile {
+    transition: left 0.2s linear, top 0.2s linear;
+    pointer-events: none;
+}

@@ -1,0 +1,68 @@
+/* Main CSS styles for the entire game */
+
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+}
+
+#game-area {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    border: 2px solid #333;
+    overflow: hidden;
+    background-image: url('../assets/maps/grass_map.png'); /* Default background */
+    background-size: cover;
+}
+
+.tower-unit {
+    position: absolute;
+    font-size: 24px;
+    text-align: center;
+}
+
+.enemy {
+    position: absolute;
+    font-size: 24px;
+}
+
+.missile {
+    position: absolute;
+    transition: all 0.2s ease;
+}
+
+.tower-slot {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #eee;
+    background-color: rgba(255, 0, 0, 0.7);
+    display: inline-block;
+    margin: 5px;
+    position: relative;
+}
+
+.hidden {
+    display: none;
+}
+
+#choice-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid #333;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.choice-button {
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.upgrade-option {
+    background-color: #ffcc00;
+}
